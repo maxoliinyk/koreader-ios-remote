@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>KOReaderKeychainAccessGroup</key>
-	<string>$(AppIdentifierPrefix)git.shin.koreaderRemoteTurner.shared</string>
+	<string>$(AppIdentifierPrefix)com.maxoliinyk.koreaderremote.shared</string>
     <key>CFBundleURLTypes</key>
     <array>
         <dict>
@@ -18,7 +18,7 @@
     <key>NSCameraUsageDescription</key>
     <string>Scan the pairing code displayed by the KOReader plugin.</string>
     <key>NSLocalNetworkUsageDescription</key>
-    <string>Send page actions directly to KOReader on your Kindle.</string>
+    <string>Send page actions directly to a KOReader device on your local network.</string>
     <key>UIApplicationShortcutItems</key>
     <array>
         <dict>
@@ -27,7 +27,7 @@
             <key>UIApplicationShortcutItemTitle</key>
             <string>Next Page</string>
             <key>UIApplicationShortcutItemType</key>
-            <string>git.shin.koreaderRemoteTurner.next</string>
+            <string>com.maxoliinyk.koreaderremote.next</string>
         </dict>
         <dict>
             <key>UIApplicationShortcutItemIconType</key>
@@ -35,7 +35,7 @@
             <key>UIApplicationShortcutItemTitle</key>
             <string>Previous Page</string>
             <key>UIApplicationShortcutItemType</key>
-            <string>git.shin.koreaderRemoteTurner.previous</string>
+            <string>com.maxoliinyk.koreaderremote.previous</string>
         </dict>
     </array>
     <key>UIApplicationSupportsIndirectInputEvents</key>

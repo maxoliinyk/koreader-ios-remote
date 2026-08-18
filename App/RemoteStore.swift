@@ -19,7 +19,7 @@ final class RemoteStore {
 
     private let client: KindleClient
     private let storage: PairingStore
-    private let logger = Logger(subsystem: "git.shin.koreaderRemoteTurner", category: "remote")
+    private let logger = Logger(subsystem: "com.maxoliinyk.koreaderremote", category: "remote")
 
     init(client: KindleClient = KindleClient(), storage: PairingStore = PairingStore()) {
         self.client = client
@@ -27,7 +27,7 @@ final class RemoteStore {
         do {
             configuration = try storage.load()
         } catch {
-            activity = .failure(String(localized: "The saved Kindle could not be loaded."))
+            activity = .failure(String(localized: "The saved KOReader device could not be loaded."))
         }
     }
 
@@ -39,7 +39,7 @@ final class RemoteStore {
         do {
             try save(PairingPayload(url: url).configuration)
             isPairingPresented = false
-            activity = .success(String(localized: "Kindle paired."))
+            activity = .success(String(localized: "KOReader paired."))
             Feedback.success()
             Task { await testConnection() }
         } catch {
@@ -58,7 +58,7 @@ final class RemoteStore {
             )
             try save(value)
             isPairingPresented = false
-            activity = .success(String(localized: "Kindle paired."))
+            activity = .success(String(localized: "KOReader paired."))
             Feedback.success()
             Task { await testConnection() }
         } catch {

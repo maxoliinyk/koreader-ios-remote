@@ -8,7 +8,7 @@ extension RemoteStore {
         var configuration: PairingConfiguration?
         if paired {
             configuration = try? PairingConfiguration(
-                endpoint: KindleEndpoint(name: "Bedroom Kindle", host: "192.168.1.20"),
+                endpoint: KindleEndpoint(name: "Bedroom Reader", host: "192.168.1.20"),
                 secret: Data(repeating: 1, count: 32)
             )
         }

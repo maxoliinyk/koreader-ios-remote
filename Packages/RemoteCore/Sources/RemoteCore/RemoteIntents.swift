@@ -23,7 +23,7 @@ public enum RemoteIntentError: Error, CustomLocalizedStringResourceConvertible {
     public var localizedStringResource: LocalizedStringResource {
         switch self {
         case .unpaired:
-            "Open KOReader Remote and pair a Kindle first."
+            "Open KOReader Remote and pair a KOReader device first."
         case let .client(error):
             LocalizedStringResource(stringLiteral: error.localizedDescription)
         }
@@ -58,9 +58,9 @@ public struct PreviousPageIntent: AppIntent {
     }
 }
 
-public struct SleepKindleIntent: AppIntent {
-    public static let title: LocalizedStringResource = "Sleep Kindle"
-    public static let description = IntentDescription("Put the paired Kindle to sleep.")
+public struct SleepDeviceIntent: AppIntent {
+    public static let title: LocalizedStringResource = "Sleep Device"
+    public static let description = IntentDescription("Put the paired KOReader device to sleep.")
     public static let openAppWhenRun = false
     public static let authenticationPolicy: IntentAuthenticationPolicy = .alwaysAllowed
 

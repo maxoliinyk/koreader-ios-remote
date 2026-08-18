@@ -15,7 +15,7 @@ public enum StorageError: Error, Equatable, LocalizedError, Sendable {
 
     public var errorDescription: String? {
         switch self {
-        case .encodingFailed: "The Kindle configuration could not be saved."
+        case .encodingFailed: "The KOReader configuration could not be saved."
         case let .keychain(status): "Keychain returned error \(status)."
         }
     }
@@ -24,7 +24,7 @@ public enum StorageError: Error, Equatable, LocalizedError, Sendable {
 public struct PairingStore: @unchecked Sendable {
     private let defaults: UserDefaults
     private let secrets: any SecretStoring
-    private let endpointKey = "pairedKindleEndpoint"
+    private let endpointKey = "pairedKOReaderEndpoint"
 
     public init(defaults: UserDefaults? = nil, secrets: any SecretStoring = KeychainSecretStore()) {
         if let defaults {
@@ -118,7 +118,7 @@ public struct KeychainSecretStore: SecretStoring {
     private var baseQuery: [String: Any] {
         var query: [String: Any] = [
             kSecClass as String: kSecClassGenericPassword,
-            kSecAttrService as String: "git.shin.koreaderRemoteTurner",
+            kSecAttrService as String: "com.maxoliinyk.koreaderremote",
             kSecAttrAccount as String: ProtocolConstants.secretAccount,
             kSecAttrSynchronizable as String: false,
         ]

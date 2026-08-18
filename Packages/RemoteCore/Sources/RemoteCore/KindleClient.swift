@@ -33,11 +33,11 @@ public enum KindleClientError: Error, Equatable, LocalizedError, Sendable {
 
     public var errorDescription: String? {
         switch self {
-        case .invalidConfiguration: "The paired Kindle configuration is invalid."
-        case .localNetworkDenied: "Local Network access is off. Enable it in Settings to reach your Kindle."
-        case .timedOut: "The Kindle did not respond. Check that KOReader is open and both devices use the same Wi‑Fi."
-        case .unreachable: "The Kindle could not be reached on the local network."
-        case .invalidResponse: "The Kindle returned an unreadable response."
+        case .invalidConfiguration: "The paired KOReader configuration is invalid."
+        case .localNetworkDenied: "Local Network access is off. Enable it in Settings to reach KOReader."
+        case .timedOut: "KOReader did not respond. Check that it is open and both devices use the same Wi‑Fi."
+        case .unreachable: "The KOReader device could not be reached on the local network."
+        case .invalidResponse: "KOReader returned an unreadable response."
         case .authenticationFailed: "The pairing secret no longer matches. Scan a new code from KOReader."
         case .replayRejected: "KOReader rejected a repeated request. Try again."
         case .portConflict: "KOReader could not use the configured listener port."

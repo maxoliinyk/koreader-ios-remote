@@ -10,11 +10,11 @@ struct RemoteView: View {
                 pairedContent(endpoint: endpoint)
             } else {
                 ContentUnavailableView {
-                    Label("Pair your Kindle", systemImage: "rectangle.connected.to.line.below")
+                    Label("Pair your KOReader device", systemImage: "rectangle.connected.to.line.below")
                 } description: {
                     Text("Open KOReader, show the Remote Turner pairing code, then scan it here.")
                 } actions: {
-                    Button("Pair Kindle") {
+                    Button("Pair KOReader") {
                         store.isPairingPresented = true
                     }
                     .buttonStyle(.borderedProminent)
@@ -40,12 +40,12 @@ struct RemoteView: View {
                 Button(role: .destructive) {
                     Task { await store.send(.sleep) }
                 } label: {
-                    Label("Sleep Kindle", systemImage: "moon.zzz")
+                    Label("Sleep Device", systemImage: "moon.zzz")
                         .frame(maxWidth: .infinity)
                 }
                 .buttonStyle(.bordered)
                 .disabled(store.isSending)
-                .accessibilityHint("Puts the paired Kindle to sleep")
+                .accessibilityHint("Puts the paired KOReader device to sleep")
 
                 resultView
             }
@@ -138,5 +138,5 @@ struct RemoteView: View {
 
 #Preview("Failure") {
     NavigationStack { RemoteView() }
-        .environment(RemoteStore.preview(activity: .failure("The Kindle could not be reached.")))
+        .environment(RemoteStore.preview(activity: .failure("The KOReader device could not be reached.")))
 }

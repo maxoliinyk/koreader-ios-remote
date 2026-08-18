@@ -4,11 +4,11 @@
 <dict>
     <key>com.apple.security.application-groups</key>
     <array>
-        <string>group.git.shin.koreaderRemoteTurner</string>
+        <string>group.com.maxoliinyk.koreaderremote</string>
     </array>
     <key>keychain-access-groups</key>
     <array>
-        <string>$(AppIdentifierPrefix)git.shin.koreaderRemoteTurner.shared</string>
+        <string>$(AppIdentifierPrefix)com.maxoliinyk.koreaderremote.shared</string>
     </array>
 </dict>
 </plist>

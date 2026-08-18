@@ -1,6 +1,5 @@
 #if DEBUG
 import CoreMotion
-import Darwin
 import Observation
 import SwiftUI
 
@@ -68,26 +67,9 @@ final class WatchGestureExperiment {
     }
 }
 
-enum WatchPrivateGestureProbe {
-    static func result() -> String {
-        let path = "/System/Library/Frameworks/SwiftUI.framework/SwiftUI"
-        guard let handle = dlopen(path, RTLD_LAZY | RTLD_LOCAL) else {
-            return "SwiftUI image unavailable"
-        }
-        defer { dlclose(handle) }
-        let symbols = [
-            "_$s7SwiftUI4ViewPAAE23handGestureShortcutTask018prepareToHighlightG0QryAA04HandeF0VYaScMYcc_tF",
-            "_$s7SwiftUI4ViewPAAE29handGestureShortcutPagination9directionQrAA04HandefG9DirectionO_tF",
-        ]
-        let found = symbols.filter { dlsym(handle, $0) != nil }.count
-        return "\(found)/\(symbols.count) private shortcut symbols present"
-    }
-}
-
 struct WatchGestureLabView: View {
     @Environment(WatchRemoteStore.self) private var store
     @State private var experiment = WatchGestureExperiment()
-    @State private var privateResult = "Not inspected"
 
     var body: some View {
         @Bindable var experiment = experiment
@@ -113,14 +95,7 @@ struct WatchGestureLabView: View {
             Section("System Gesture") {
                 Button("Next") { Task { await store.send(.nextPage) } }
                     .handGestureShortcut(.primaryAction)
-                Text("Primary Action is the public Double Tap route. watchOS 27 Single Tap is owned by Smart Stack and has no app callback in Beta 5.")
-                    .font(.footnote)
-            }
-
-            Section("Private SwiftUI") {
-                Button("Inspect Symbols") { privateResult = WatchPrivateGestureProbe.result() }
-                Text(privateResult)
-                Text("The private symbols prepare highlighting and pagination; they do not expose a raw Single Tap event.")
+                Text("Primary Action enables Double Tap on supported watches while this scene is visible.")
                     .font(.footnote)
             }
         }

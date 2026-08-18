@@ -12,7 +12,7 @@ struct KOReaderControls: WidgetBundle {
 
 struct NextPageControl: ControlWidget {
     var body: some ControlWidgetConfiguration {
-        StaticControlConfiguration(kind: "git.shin.koreaderRemoteTurner.next") {
+        StaticControlConfiguration(kind: "com.maxoliinyk.koreaderremote.next") {
             ControlWidgetButton(action: NextPageIntent()) {
                 Label("Next Page", systemImage: "chevron.forward")
                     .controlWidgetActionHint("Turn the next page")
@@ -25,7 +25,7 @@ struct NextPageControl: ControlWidget {
 
 struct PreviousPageControl: ControlWidget {
     var body: some ControlWidgetConfiguration {
-        StaticControlConfiguration(kind: "git.shin.koreaderRemoteTurner.previous") {
+        StaticControlConfiguration(kind: "com.maxoliinyk.koreaderremote.previous") {
             ControlWidgetButton(action: PreviousPageIntent()) {
                 Label("Previous Page", systemImage: "chevron.backward")
                     .controlWidgetActionHint("Turn the previous page")

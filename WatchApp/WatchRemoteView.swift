@@ -42,8 +42,8 @@ struct WatchRemoteView: View {
 #endif
         }
         .padding(.horizontal, 4)
-        .confirmationDialog("Sleep Kindle?", isPresented: $confirmsSleep) {
-            Button("Sleep Kindle", role: .destructive) {
+        .confirmationDialog("Sleep KOReader device?", isPresented: $confirmsSleep) {
+            Button("Sleep Device", role: .destructive) {
                 Task { await store.send(.sleep) }
             }
             Button("Cancel", role: .cancel) {}

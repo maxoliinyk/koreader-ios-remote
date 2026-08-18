@@ -1,6 +1,6 @@
 # KOReader Remote Labs
 
-`KOReader Remote Labs` is a separate iOS application with bundle identifier `git.shin.koreaderRemoteTurner.Labs`. It is for sideloaded research only. The normal app does not import Labs code or link private frameworks.
+`KOReader Remote Labs` is a separate iOS application with bundle identifier `com.maxoliinyk.koreaderremote.labs`. It is for sideloaded research only. The normal app does not import Labs code or link private frameworks.
 
 ## What works without Labs
 
@@ -10,7 +10,7 @@ Labs explores hardware and media-control routes that Apple does not offer as a n
 
 ## iPhone experiments
 
-Start the `KOReaderRemoteLabs` scheme after pairing in the normal app. Use the same development team for both targets. Open the normal app once after updating so its pairing secret is available to the shared Keychain group.
+Start the `KOReaderRemoteLabs` scheme after pairing in the normal app. Use the same development team for both targets so they can use the shared App Group and Keychain group.
 
 Tap **Start Experiment**. This does three things:
 
@@ -34,26 +34,22 @@ Raw locked-screen delivery and volume suppression depend on the exact iOS build 
 
 The probe dynamically loads `/System/Library/PrivateFrameworks/MediaRemote.framework/MediaRemote`. It can inspect selected symbols and invoke `MRMediaRemoteSetCanBeNowPlayingApplication`. The public Now Playing implementation remains the primary experiment; MediaRemote behavior and ABI can change in any beta.
 
-## watchOS 27 research
+## Apple Watch experiments
 
-Xcode 27 beta 5 exposes one public hand-gesture shortcut: `.handGestureShortcut(.primaryAction)`, documented for Double Tap. It does not contain a public Single Tap event, recognizer, intent trigger, or extra `HandGestureShortcut` case.
-
-watchOS 27's new Single Tap is system-owned Smart Stack behavior: it acts on the highlighted item. The supported experiment is therefore to add **Next Page** to the watch Smart Stack or Control Center and let the system invoke the control's App Intent.
+The Next button uses `.handGestureShortcut(.primaryAction)` for Double Tap on supported watches.
 
 Debug Watch builds include **Gesture Lab**:
 
 - 50 Hz `CoreMotion` device-motion sampling;
 - adjustable impulse threshold and cooldown;
 - optional automatic Next action;
-- runtime checks for private SwiftUI shortcut-task and pagination symbols.
-
-Those private SwiftUI symbols manage shortcut highlighting/pagination. They do not expose the recognizer that produced the new system Single Tap. The motion detector is intentionally labeled a heuristic because ordinary wrist movement can cause false positives.
+The motion detector is intentionally labeled a heuristic because ordinary wrist movement can cause false positives.
 
 ## Physical test checklist
 
 ### iPhone
 
-1. Pair and test the Kindle in the normal app.
+1. Pair and test KOReader in the normal app.
 2. Add **Next Page** to the Lock Screen and verify it while locked.
 3. Run `KOReaderRemoteLabs`, tap **Start Experiment**, then lock the phone.
 4. Test both **Previous / Next** and **10-Second Arrows** in Now Playing.
@@ -65,9 +61,8 @@ Those private SwiftUI symbols manage shortcut highlighting/pagination. They do n
 
 1. Install the Watch companion and confirm its on-screen Next button.
 2. Test Double Tap with the watch app visible.
-3. Add Next Page to Smart Stack/Control Center and test watchOS 27 Single Tap on the highlighted control.
-4. In a Debug build, open Gesture Lab, start sampling, make several deliberate taps, then set the threshold just above normal movement peaks.
-5. Enable **Send Next** only after the detector is stable.
+3. In a Debug build, open Gesture Lab, start sampling, make several deliberate taps, then set the threshold just above normal movement peaks.
+4. Enable **Send Next** only after the detector is stable.
 
 ## Important limits
 

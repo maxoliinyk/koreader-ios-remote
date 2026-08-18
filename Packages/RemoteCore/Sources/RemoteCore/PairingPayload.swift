@@ -62,8 +62,8 @@ public enum PairingError: Error, Equatable, LocalizedError, Sendable {
         case .invalidURL: "This is not a KOReader Remote pairing code."
         case .missingField: "The pairing code is incomplete."
         case let .unsupportedVersion(version): "Protocol version \(version) is not supported."
-        case .invalidDeviceName: "Enter a valid Kindle name."
-        case .invalidHost: "Enter a valid Kindle address."
+        case .invalidDeviceName: "Enter a valid KOReader device name."
+        case .invalidHost: "Enter a valid KOReader device address."
         case .invalidPort: "Enter a port from 1 to 65535."
         case .invalidSecret: "The pairing secret must contain 32 bytes."
         }

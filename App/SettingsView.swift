@@ -9,7 +9,7 @@ struct SettingsView: View {
     var body: some View {
         Form {
             if let endpoint = store.configuration?.endpoint {
-                Section("Paired Kindle") {
+                Section("Paired KOReader") {
                     LabeledContent("Name", value: endpoint.name)
                     LabeledContent("Address", value: endpoint.host)
                     LabeledContent("Port", value: String(endpoint.port))
@@ -29,11 +29,11 @@ struct SettingsView: View {
                 }
             } else {
                 Section {
-                    Button("Pair Kindle", systemImage: "qrcode.viewfinder") {
+                    Button("Pair KOReader", systemImage: "qrcode.viewfinder") {
                         store.isPairingPresented = true
                     }
                 } footer: {
-                    Text("Pairing stores the Kindle address in shared settings and the secret in Keychain.")
+                    Text("Pairing stores the KOReader device address in shared settings and the secret in Keychain.")
                 }
             }
 
@@ -65,7 +65,7 @@ struct SettingsView: View {
             }
 
             Section("About") {
-                Link("Source Code", destination: URL(string: "https://github.com/tachibana-shin/koreader_remote_turner")!)
+                Link("Source Code", destination: URL(string: "https://github.com/maxoliinyk/koreader_remote_turner")!)
                 Link("AGPL-3.0 License", destination: URL(string: "https://www.gnu.org/licenses/agpl-3.0.html")!)
             }
         }
@@ -73,7 +73,7 @@ struct SettingsView: View {
         .sheet(isPresented: Bindable(store).isPairingPresented) {
             PairingView()
         }
-        .confirmationDialog("Forget this Kindle?", isPresented: $confirmsForget, titleVisibility: .visible) {
+        .confirmationDialog("Forget this KOReader device?", isPresented: $confirmsForget, titleVisibility: .visible) {
             Button("Forget Device", role: .destructive) { store.forget() }
             Button("Cancel", role: .cancel) {}
         } message: {
@@ -95,7 +95,7 @@ private struct SystemControlsHelpView: View {
                 Text("In iPhone Settings, open Action Button, choose Controls or Shortcut, then select KOReader Remote — Next Page.")
             }
             Section("Before locking") {
-                Label("Pair the Kindle in this app", systemImage: "checkmark.circle")
+                Label("Pair KOReader in this app", systemImage: "checkmark.circle")
                 Label("Allow Local Network access", systemImage: "checkmark.circle")
                 Label("Keep KOReader awake on the same Wi‑Fi", systemImage: "checkmark.circle")
             }
@@ -108,7 +108,7 @@ private struct LocalNetworkHelpView: View {
     var body: some View {
         List {
             Section {
-                Label("Keep the iPhone and Kindle on the same Wi‑Fi network.", systemImage: "wifi")
+                Label("Keep the iPhone and KOReader device on the same Wi‑Fi network.", systemImage: "wifi")
                 Label("Open KOReader so the Remote Turner listener is active.", systemImage: "book")
                 Label("Allow Local Network access in the iPhone Settings app.", systemImage: "switch.2")
             }

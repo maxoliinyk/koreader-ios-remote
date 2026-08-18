@@ -2,7 +2,7 @@
 
 ## Transport
 
-The Apple client sends one short HTTP request to the Kindle for each action. KOReader listens only while active.
+The Apple client sends one short HTTP request to the KOReader device for each action. KOReader listens only while active.
 
 - Default port: `9090`, configurable in the plugin.
 - `POST /v1/action`: page and sleep actions.
@@ -16,7 +16,7 @@ The Apple client sends one short HTTP request to the Kindle for each action. KOR
 KOReader generates 32 cryptographically random bytes from `/dev/urandom` and stores the unpadded base64url value locally. The pairing QR contains:
 
 ```text
-koreaderturner://pair?v=1&host=192.168.1.20&port=9090&name=Kindle&secret=<base64url>
+koreaderturner://pair?v=1&host=192.168.1.20&port=9090&name=KOReader&secret=<base64url>
 ```
 
 The iOS app validates every field before saving. Endpoint metadata goes into shared `UserDefaults`; the secret goes into Keychain. Generating a new secret invalidates every existing phone and watch pairing.

@@ -106,7 +106,7 @@ end
 local function pairing_uri()
     local host = local_address()
     if not host or not ensure_secret() then return nil end
-    local name = Device.model or "Kindle"
+    local name = Device.model or "KOReader"
     return string.format(
         "koreaderturner://pair?v=1&host=%s&port=%d&name=%s&secret=%s",
         util.urlEncode(host), settings.port, util.urlEncode(tostring(name)), settings.secret
@@ -261,7 +261,7 @@ end
 function RemoteTurner.showPairingCode()
     local uri = pairing_uri()
     if not uri then
-        UIManager:show(InfoMessage:new { text = _("Could not determine this Kindle's Wi-Fi address.") })
+        UIManager:show(InfoMessage:new { text = _("Could not determine this device's Wi-Fi address.") })
         return
     end
     UIManager:show(QRMessage:new {
@@ -276,7 +276,7 @@ function RemoteTurner.showManualDetails()
     ensure_secret()
     UIManager:show(InfoMessage:new {
         text = T(_("Name: %1\nAddress: %2\nPort: %3\nProtocol: 1\nSecret:\n%4"),
-            tostring(Device.model or "Kindle"), host, settings.port, settings.secret),
+            tostring(Device.model or "KOReader"), host, settings.port, settings.secret),
     })
 end
 

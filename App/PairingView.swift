@@ -26,7 +26,7 @@ struct PairingView: View {
                 case .manual: ManualPairingForm()
                 }
             }
-            .navigationTitle("Pair Kindle")
+            .navigationTitle("Pair KOReader")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
@@ -68,14 +68,14 @@ private struct ScannerPane: View {
 
 private struct ManualPairingForm: View {
     @Environment(RemoteStore.self) private var store
-    @State private var name = "My Kindle"
+    @State private var name = "My KOReader"
     @State private var host = ""
     @State private var port = "9090"
     @State private var secret = ""
 
     var body: some View {
         Form {
-            Section("Kindle") {
+            Section("KOReader Device") {
                 TextField("Name", text: $name)
                 TextField("IP address or hostname", text: $host)
                     .textInputAutocapitalization(.never)

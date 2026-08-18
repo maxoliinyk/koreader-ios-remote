@@ -64,7 +64,7 @@ final class PhoneConnectivity: NSObject, WCSessionDelegate, @unchecked Sendable 
         Task { @MainActor [weak self] in
             do {
                 guard let self, let configuration = try storage.load() else {
-                    reply.send(["ok": false, "message": "Kindle is not paired"])
+                    reply.send(["ok": false, "message": "KOReader is not paired"])
                     return
                 }
                 _ = try await KindleClient().send(action, using: configuration)

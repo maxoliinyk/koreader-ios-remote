@@ -57,8 +57,8 @@ public enum ProtocolConstants {
     public static let version = 1
     public static let actionPath = "/v1/action"
     public static let pingPath = "/v1/ping"
-    public static let appGroup = "group.git.shin.koreaderRemoteTurner"
-    public static let secretAccount = "kindle-pairing-secret"
+    public static let appGroup = "group.com.maxoliinyk.koreaderremote"
+    public static let secretAccount = "koreader-pairing-secret"
 }
 
 enum HostValidator {

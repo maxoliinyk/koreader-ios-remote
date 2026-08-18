@@ -39,7 +39,7 @@ final class WatchRemoteStore {
 
     func send(_ action: RemoteAction) async {
         guard let configuration, state != .sending else {
-            state = .failure(String(localized: "Pair a Kindle on your iPhone first."))
+            state = .failure(String(localized: "Pair KOReader on your iPhone first."))
             WKInterfaceDevice.current().play(.failure)
             return
         }

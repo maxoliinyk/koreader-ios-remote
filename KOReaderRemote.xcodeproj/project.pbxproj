@@ -482,7 +482,7 @@
 				INFOPLIST_KEY_CFBundleDisplayName = "KOReader Remote";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				MARKETING_VERSION = 2.0.0;
-				PRODUCT_BUNDLE_IDENTIFIER = git.shin.koreaderRemoteTurner;
+				PRODUCT_BUNDLE_IDENTIFIER = com.maxoliinyk.koreaderremote;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
@@ -509,7 +509,7 @@
 				INFOPLIST_KEY_CFBundleDisplayName = "KOReader Remote";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				MARKETING_VERSION = 2.0.0;
-				PRODUCT_BUNDLE_IDENTIFIER = git.shin.koreaderRemoteTurner;
+				PRODUCT_BUNDLE_IDENTIFIER = com.maxoliinyk.koreaderremote;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
@@ -533,7 +533,7 @@
 				INFOPLIST_KEY_CFBundleDisplayName = "KOReader Controls";
 				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
 				MARKETING_VERSION = 2.0.0;
-				PRODUCT_BUNDLE_IDENTIFIER = git.shin.koreaderRemoteTurner.Controls;
+				PRODUCT_BUNDLE_IDENTIFIER = com.maxoliinyk.koreaderremote.controls;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
@@ -556,7 +556,7 @@
 				INFOPLIST_KEY_CFBundleDisplayName = "KOReader Controls";
 				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
 				MARKETING_VERSION = 2.0.0;
-				PRODUCT_BUNDLE_IDENTIFIER = git.shin.koreaderRemoteTurner.Controls;
+				PRODUCT_BUNDLE_IDENTIFIER = com.maxoliinyk.koreaderremote.controls;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
@@ -579,13 +579,13 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = WatchApp/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "KOReader Remote";
-				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = git.shin.koreaderRemoteTurner;
+				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = com.maxoliinyk.koreaderremote;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 2.0.0;
-				PRODUCT_BUNDLE_IDENTIFIER = git.shin.koreaderRemoteTurner.watchkitapp;
+				PRODUCT_BUNDLE_IDENTIFIER = com.maxoliinyk.koreaderremote.watch;
 				PRODUCT_NAME = "KOReader Watch";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
@@ -610,13 +610,13 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = WatchApp/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "KOReader Remote";
-				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = git.shin.koreaderRemoteTurner;
+				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = com.maxoliinyk.koreaderremote;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 2.0.0;
-				PRODUCT_BUNDLE_IDENTIFIER = git.shin.koreaderRemoteTurner.watchkitapp;
+				PRODUCT_BUNDLE_IDENTIFIER = com.maxoliinyk.koreaderremote.watch;
 				PRODUCT_NAME = "KOReader Watch";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
@@ -644,7 +644,7 @@
 				INFOPLIST_KEY_CFBundleDisplayName = "KOReader Remote Labs";
 				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
 				MARKETING_VERSION = 2.0.0;
-				PRODUCT_BUNDLE_IDENTIFIER = git.shin.koreaderRemoteTurner.Labs;
+				PRODUCT_BUNDLE_IDENTIFIER = com.maxoliinyk.koreaderremote.labs;
 				PRODUCT_NAME = "KOReader Remote Labs";
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
 				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
@@ -669,7 +669,7 @@
 				INFOPLIST_KEY_CFBundleDisplayName = "KOReader Remote Labs";
 				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
 				MARKETING_VERSION = 2.0.0;
-				PRODUCT_BUNDLE_IDENTIFIER = git.shin.koreaderRemoteTurner.Labs;
+				PRODUCT_BUNDLE_IDENTIFIER = com.maxoliinyk.koreaderremote.labs;
 				PRODUCT_NAME = "KOReader Remote Labs";
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
 				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;

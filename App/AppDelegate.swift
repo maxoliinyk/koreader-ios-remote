@@ -9,8 +9,8 @@ final class AppDelegate: NSObject, UIApplicationDelegate {
     ) {
         let action: RemoteAction?
         switch shortcutItem.type {
-        case "git.shin.koreaderRemoteTurner.next": action = .nextPage
-        case "git.shin.koreaderRemoteTurner.previous": action = .previousPage
+        case "com.maxoliinyk.koreaderremote.next": action = .nextPage
+        case "com.maxoliinyk.koreaderremote.previous": action = .previousPage
         default: action = nil
         }
 

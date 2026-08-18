@@ -22,11 +22,11 @@ struct KOReaderAppShortcuts: AppShortcutsProvider {
             systemImageName: "chevron.backward"
         )
         AppShortcut(
-            intent: SleepKindleIntent(),
+            intent: SleepDeviceIntent(),
             phrases: [
-                "Sleep my Kindle with \(.applicationName)",
+                "Sleep my KOReader device with \(.applicationName)",
             ],
-            shortTitle: "Sleep Kindle",
+            shortTitle: "Sleep Device",
             systemImageName: "moon.zzz"
         )
     }

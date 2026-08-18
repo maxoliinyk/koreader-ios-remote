@@ -1,15 +1,17 @@
 # KOReader Remote
 
-A native iPhone and Apple Watch remote for KOReader. It turns pages over your local Wi-Fi network. There is no cloud service or account.
+A native iPhone and Apple Watch remote for KOReader. It sends authenticated page actions directly over your local Wi-Fi network. There is no cloud service or account.
 
-## What you need
+The plugin is developed and tested on a jailbroken Kindle. Other KOReader devices should work if they support external plugins, can accept an inbound TCP connection, and expose the same KOReader page and suspend events. Automatic firewall configuration is currently Kindle-specific.
 
-- A jailbroken Kindle with a working KOReader installation
-- An iPhone on iOS 26 or later
-- Xcode 27 beta 5 or later
-- The Kindle and iPhone on the same Wi-Fi network
+## Requirements
 
-The simulator is useful for checking the interface, but it cannot scan the Kindle's QR code. Use manual pairing there.
+- A network-connected device running KOReader
+- An iPhone running iOS 26 or later
+- Xcode 26 or later
+- Both devices on the same Wi-Fi network
+
+The simulator is useful for interface testing but cannot scan a pairing QR code. Use manual pairing there.
 
 ## Install the KOReader plugin
 
@@ -19,108 +21,115 @@ Build the plugin archive from the repository root:
 make koplugin VERSION=dev
 ```
 
-This creates `dist/remote_turner-dev.koplugin.zip`. Unzip it and copy the enclosed `remote_turner.koplugin` folder to the Kindle over USB:
+This creates `dist/remote_turner-dev.koplugin.zip`. Extract it and copy the enclosed `remote_turner.koplugin` directory into KOReader's `plugins` directory. A common installation looks like this:
 
 ```text
-Kindle USB storage/
-└── koreader/
-    └── plugins/
-        └── remote_turner.koplugin/
-            ├── _meta.lua
-            ├── httpserver.lua
-            └── main.lua
+koreader/
+└── plugins/
+    └── remote_turner.koplugin/
+        ├── _meta.lua
+        ├── httpserver.lua
+        └── main.lua
 ```
 
-Do not leave an extra folder level around `remote_turner.koplugin`. Eject the Kindle, quit KOReader completely, and start it again. KOReader loads external plugins from `koreader/plugins/`; this is also the layout used by the [KOReader community plugin collection](https://github.com/koreader/contrib).
+Do not leave an extra directory level around `remote_turner.koplugin`. Restart KOReader completely after copying the plugin. The exact KOReader directory depends on the device; `koreader/plugins/` is the usual path and the layout used by the [KOReader community plugin collection](https://github.com/koreader/contrib).
 
 Open a book, open KOReader's top menu, then choose **Tools → Remote Turner**. The menu should show that it is listening on port `9090`. From there you can:
 
 - show the pairing QR code;
-- show the same address, port, and secret as text;
+- show the address, port, and secret as text;
 - stop or start the listener;
 - change the port;
 - generate a new pairing secret.
 
-The listener runs only while KOReader is active. It closes when the Kindle suspends or KOReader exits, then starts again when KOReader resumes. Leave Wi-Fi enabled on the Kindle.
+The listener runs only while KOReader is active. It closes during suspend or exit and starts again when KOReader resumes. Keep Wi-Fi enabled on the KOReader device.
 
-## Run the iPhone app
+## Run the Apple app
 
-Open `KOReaderRemote.xcodeproj` in Xcode 27 beta 5. In the toolbar, select the **KOReaderRemote** scheme—not the Labs, Controls, or Watch scheme.
+Open `KOReaderRemote.xcodeproj` in Xcode 26 or later. Select the **KOReaderRemote** scheme, not Labs, Controls, or Watch.
 
 ### Simulator
 
 1. Select an iPhone simulator running iOS 26 or later.
 2. Press Run.
-3. Tap **Pair Kindle**, switch to **Manual**, and enter the values shown by **Tools → Remote Turner → Show manual pairing details** on the Kindle.
+3. Tap **Pair KOReader**, switch to **Manual**, and enter the values shown by **Tools → Remote Turner → Show manual pairing details**.
 
 Let Xcode sign the simulator build normally. `CODE_SIGNING_ALLOWED=NO` is only for compile checks; an unsigned simulator build cannot save the pairing secret to Keychain.
 
 ### Physical iPhone
 
-1. Connect and unlock the iPhone. Enable Developer Mode if Xcode asks for it.
+1. Connect and unlock the iPhone. Enable Developer Mode if Xcode requests it.
 2. Select the `KOReaderRemote` target, open **Signing & Capabilities**, and choose your development team.
-3. Use the same team for `KOReaderControls` and `WatchRemote` if Xcode reports a signing error for an embedded target.
-4. Select the iPhone in the toolbar and press Run.
-5. Accept Camera access when scanning and Local Network access when the app first tests the Kindle connection.
+3. Use the same team for `KOReaderControls`, `WatchRemote`, and `KOReaderRemoteLabs` when building those targets.
+4. Select the iPhone and press Run.
+5. Accept Camera access when scanning and Local Network access when the app first tests KOReader.
 
-If Xcode still has an old paused process from a failed run, stop it, delete KOReader Remote from the device or simulator, and run again. Do not use the SwiftUI Preview play button to launch the app; run the `KOReaderRemote` scheme.
+If Xcode still has an old paused process, stop it, remove KOReader Remote from the device or simulator, and run again. Launch the `KOReaderRemote` scheme rather than the SwiftUI Preview button.
 
 ## Pair and use it
 
-On a physical iPhone, tap **Pair Kindle** and scan **Tools → Remote Turner → Show pairing QR code**. Manual entry is always available.
+On a physical iPhone, tap **Pair KOReader** and scan **Tools → Remote Turner → Show pairing QR code**. Manual entry is always available.
 
-After pairing, the app immediately tests the connection. A successful test shows **KOReader is ready**. The Remote tab then provides Previous, Next, and Sleep controls. The Settings tab can test the connection, rescan, or forget the Kindle.
+After pairing, the app tests the connection. A successful test shows **KOReader is ready**. The Remote tab provides Previous, Next, and Sleep controls. Settings can test the connection, rescan, or forget the device.
 
 For the first test:
 
 1. Keep a book open in KOReader.
 2. Confirm **Remote Turner** says it is listening.
-3. Keep the Kindle awake and on the same Wi-Fi as the iPhone.
+3. Keep the KOReader device awake and on the same Wi-Fi as the iPhone.
 4. Tap **Test Connection**, then **Next**.
 
-Some guest and mesh networks block devices from talking to each other. If pairing succeeds but connection tests time out, try the main Wi-Fi network and confirm that client isolation is disabled.
+Some guest and mesh networks block communication between clients. If pairing succeeds but the connection times out, try the main Wi-Fi network and confirm client isolation is disabled.
 
 ## Use it while the iPhone is locked
 
-The normal app includes native **Next Page** and **Previous Page** controls. They can run without opening or unlocking the app after pairing and approving Local Network access once.
+The normal app includes native **Next Page** and **Previous Page** controls. They can run without opening the app after pairing and approving Local Network access once.
 
 - Lock Screen: touch and hold the Lock Screen, choose **Customize**, select a control slot, then add **KOReader Remote — Next Page**.
 - Control Center: touch and hold an empty area, choose **Add a Control**, then add **Next Page**.
 - Action Button: open **Settings → Action Button**, choose Controls or Shortcut, then select **KOReader Remote — Next Page**.
-- Siri and Shortcuts: use the supplied Next Page action. The action is explicitly allowed while locked.
+- Siri and Shortcuts: use the supplied Next Page or Previous Page action.
 
-The Kindle still needs to be awake, running KOReader, and reachable on the same Wi-Fi. Open the normal app once after installing this update so an older pairing secret can move into the shared Keychain group used by the controls.
+KOReader still needs to be active and reachable on the same network.
 
 ## Apple Watch
 
-Pair the Kindle in the iPhone app first. Install or run the `WatchRemote` companion through Xcode, then open KOReader Remote on the watch. It tries the Kindle directly over Wi-Fi and falls back to the paired iPhone. The iPhone must have completed its first Local Network permission prompt before relay actions can work.
+Pair KOReader in the iPhone app first. Install or run the `WatchRemote` companion through Xcode, then open KOReader Remote on the watch. It tries the KOReader device directly over Wi-Fi and falls back through the paired iPhone.
 
-The Next button is the watch scene's primary hand-gesture action, so supported watches can use Double Tap while the app is visible. On watchOS 27, Single Tap selects the currently highlighted Smart Stack item; Apple does not expose it as a raw app gesture in the Xcode 27 beta 5 SDK. Try adding the paired iPhone's **Next Page** control to the watch Smart Stack or Control Center. This is the supported route for the new Single Tap behavior, but it still needs a physical-watch pass.
+The Next button is the watch scene's primary hand-gesture action, so supported watches can use Double Tap while the app is visible. Debug builds also contain Gesture Lab, an experimental Core Motion impulse detector that requires physical-watch calibration.
 
-Debug builds also contain **Gesture Lab** on the watch. It samples wrist motion and can treat a tuned impulse as Next. This is an experimental heuristic, not Apple's finger-tap recognizer, and will need calibration on each watch and wrist.
+## Bundle identifiers
+
+The project uses one reverse-domain identifier family:
+
+- App: `com.maxoliinyk.koreaderremote`
+- Controls: `com.maxoliinyk.koreaderremote.controls`
+- Watch: `com.maxoliinyk.koreaderremote.watch`
+- Labs: `com.maxoliinyk.koreaderremote.labs`
+- Shared App Group: `group.com.maxoliinyk.koreaderremote`
+
+Changing from an older build installs a new app identity. Pair KOReader again and re-add Lock Screen, Control Center, Action Button, and Shortcut actions.
 
 ## Troubleshooting
 
-- **App stops in `_dispatch_assert_queue_fail`:** update to the current source, stop the old Xcode process, remove the installed app, and run again. The crash was caused by a WatchConnectivity callback using the wrong actor.
-- **Keychain error `-34018` in the simulator:** rebuild without `CODE_SIGNING_ALLOWED=NO`.
 - **Scanner unavailable:** expected in the simulator; use Manual pairing.
-- **Connection refused:** start the listener in KOReader and check that the port matches.
-- **Connection timed out:** wake the Kindle, enable its Wi-Fi, and check both devices are on the same LAN.
-- **Authentication failed:** scan again or copy the current secret exactly. Generating a new secret invalidates older pairings.
-- **No Remote Turner menu:** verify the final path is `koreader/plugins/remote_turner.koplugin/main.lua`, then restart KOReader.
+- **Connection refused:** start Remote Turner in KOReader and check that the port matches.
+- **Connection timed out:** wake the KOReader device, enable Wi-Fi, and confirm both devices are on the same LAN.
+- **Authentication failed:** pair again or copy the current secret exactly. Regenerating the secret invalidates older pairings.
+- **No Remote Turner menu:** verify the final path ends in `koreader/plugins/remote_turner.koplugin/main.lua`, then restart KOReader.
+- **Keychain error `-34018` in the simulator:** rebuild without `CODE_SIGNING_ALLOWED=NO`.
 
 ## Development checks
 
 ```bash
-DEVELOPER_DIR=/Applications/Xcode-27.0.0-beta.app/Contents/Developer \
-  xcrun swift test --package-path Packages/RemoteCore
+xcrun swift test --package-path Packages/RemoteCore
 
-DEVELOPER_DIR=/Applications/Xcode-27.0.0-beta.app/Contents/Developer \
-  xcodebuild -project KOReaderRemote.xcodeproj -scheme KOReaderRemote \
-  -destination 'generic/platform=iOS Simulator' CODE_SIGNING_ALLOWED=NO build
+xcodebuild -project KOReaderRemote.xcodeproj -scheme KOReaderRemote \
+  -destination 'generic/platform=iOS Simulator' \
+  CODE_SIGNING_ALLOWED=NO build
 ```
 
-The request format and authentication details are documented in [CONNECTION.md](CONNECTION.md). Private API experiments stay isolated in the Labs target; see [LABS.md](LABS.md).
+The request format and authentication details are documented in [CONNECTION.md](CONNECTION.md). Unsupported experiments stay isolated in the Labs target; see [LABS.md](LABS.md).
 
 ## License
 
