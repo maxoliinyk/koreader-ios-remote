@@ -34,6 +34,7 @@ public struct NextPageIntent: AppIntent {
     public static let title: LocalizedStringResource = "Next Page"
     public static let description = IntentDescription("Turn forward one page in KOReader.")
     public static let openAppWhenRun = false
+    public static let authenticationPolicy: IntentAuthenticationPolicy = .alwaysAllowed
 
     public init() {}
 
@@ -47,6 +48,7 @@ public struct PreviousPageIntent: AppIntent {
     public static let title: LocalizedStringResource = "Previous Page"
     public static let description = IntentDescription("Turn back one page in KOReader.")
     public static let openAppWhenRun = false
+    public static let authenticationPolicy: IntentAuthenticationPolicy = .alwaysAllowed
 
     public init() {}
 
@@ -60,6 +62,7 @@ public struct SleepKindleIntent: AppIntent {
     public static let title: LocalizedStringResource = "Sleep Kindle"
     public static let description = IntentDescription("Put the paired Kindle to sleep.")
     public static let openAppWhenRun = false
+    public static let authenticationPolicy: IntentAuthenticationPolicy = .alwaysAllowed
 
     public init() {}
 

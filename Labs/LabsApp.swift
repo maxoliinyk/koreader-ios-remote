@@ -2,12 +2,12 @@ import SwiftUI
 
 @main
 struct KOReaderRemoteLabsApp: App {
-    @State private var volume = VolumeButtonExperiment()
+    @State private var experiment = VolumeButtonExperiment()
 
     var body: some Scene {
         WindowGroup {
             LabsView()
-                .environment(volume)
+                .environment(experiment)
         }
     }
 }

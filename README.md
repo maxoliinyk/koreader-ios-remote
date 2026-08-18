@@ -80,9 +80,24 @@ For the first test:
 
 Some guest and mesh networks block devices from talking to each other. If pairing succeeds but connection tests time out, try the main Wi-Fi network and confirm that client isolation is disabled.
 
+## Use it while the iPhone is locked
+
+The normal app includes native **Next Page** and **Previous Page** controls. They can run without opening or unlocking the app after pairing and approving Local Network access once.
+
+- Lock Screen: touch and hold the Lock Screen, choose **Customize**, select a control slot, then add **KOReader Remote — Next Page**.
+- Control Center: touch and hold an empty area, choose **Add a Control**, then add **Next Page**.
+- Action Button: open **Settings → Action Button**, choose Controls or Shortcut, then select **KOReader Remote — Next Page**.
+- Siri and Shortcuts: use the supplied Next Page action. The action is explicitly allowed while locked.
+
+The Kindle still needs to be awake, running KOReader, and reachable on the same Wi-Fi. Open the normal app once after installing this update so an older pairing secret can move into the shared Keychain group used by the controls.
+
 ## Apple Watch
 
 Pair the Kindle in the iPhone app first. Install or run the `WatchRemote` companion through Xcode, then open KOReader Remote on the watch. It tries the Kindle directly over Wi-Fi and falls back to the paired iPhone. The iPhone must have completed its first Local Network permission prompt before relay actions can work.
+
+The Next button is the watch scene's primary hand-gesture action, so supported watches can use Double Tap while the app is visible. On watchOS 27, Single Tap selects the currently highlighted Smart Stack item; Apple does not expose it as a raw app gesture in the Xcode 27 beta 5 SDK. Try adding the paired iPhone's **Next Page** control to the watch Smart Stack or Control Center. This is the supported route for the new Single Tap behavior, but it still needs a physical-watch pass.
+
+Debug builds also contain **Gesture Lab** on the watch. It samples wrist motion and can treat a tuned impulse as Next. This is an experimental heuristic, not Apple's finger-tap recognizer, and will need calibration on each watch and wrist.
 
 ## Troubleshooting
 

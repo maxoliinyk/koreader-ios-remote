@@ -31,6 +31,15 @@ struct WatchRemoteView: View {
             }
             .font(.footnote)
             .disabled(store.state == .sending)
+
+#if DEBUG
+            NavigationLink {
+                WatchGestureLabView()
+            } label: {
+                Label("Gesture Lab", systemImage: "waveform.path")
+            }
+            .font(.footnote)
+#endif
         }
         .padding(.horizontal, 4)
         .confirmationDialog("Sleep Kindle?", isPresented: $confirmsSleep) {

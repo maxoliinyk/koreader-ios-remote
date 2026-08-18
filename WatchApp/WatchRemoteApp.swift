@@ -6,9 +6,11 @@ struct WatchRemoteApp: App {
 
     var body: some Scene {
         WindowGroup {
-            WatchRemoteView()
-                .environment(store)
-                .task { store.activate() }
+            NavigationStack {
+                WatchRemoteView()
+            }
+            .environment(store)
+            .task { store.activate() }
         }
     }
 }

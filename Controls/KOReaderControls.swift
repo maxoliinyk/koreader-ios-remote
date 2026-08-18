@@ -15,6 +15,7 @@ struct NextPageControl: ControlWidget {
         StaticControlConfiguration(kind: "git.shin.koreaderRemoteTurner.next") {
             ControlWidgetButton(action: NextPageIntent()) {
                 Label("Next Page", systemImage: "chevron.forward")
+                    .controlWidgetActionHint("Turn the next page")
             }
         }
         .displayName("Next Page")
@@ -27,6 +28,7 @@ struct PreviousPageControl: ControlWidget {
         StaticControlConfiguration(kind: "git.shin.koreaderRemoteTurner.previous") {
             ControlWidgetButton(action: PreviousPageIntent()) {
                 Label("Previous Page", systemImage: "chevron.backward")
+                    .controlWidgetActionHint("Turn the previous page")
             }
         }
         .displayName("Previous Page")

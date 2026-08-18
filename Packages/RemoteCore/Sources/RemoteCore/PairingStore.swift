@@ -74,6 +74,20 @@ public struct KeychainSecretStore: SecretStoring {
         query[kSecMatchLimit as String] = kSecMatchLimitOne
         var result: CFTypeRef?
         let status = SecItemCopyMatching(query as CFDictionary, &result)
+        if status == errSecItemNotFound, baseQuery[kSecAttrAccessGroup as String] != nil {
+            var legacyQuery = query
+            legacyQuery.removeValue(forKey: kSecAttrAccessGroup as String)
+            let legacyStatus = SecItemCopyMatching(legacyQuery as CFDictionary, &result)
+            if legacyStatus == errSecItemNotFound { return nil }
+            guard legacyStatus == errSecSuccess, let secret = result as? Data else {
+                throw StorageError.keychain(legacyStatus)
+            }
+            try save(secret)
+            legacyQuery.removeValue(forKey: kSecReturnData as String)
+            legacyQuery.removeValue(forKey: kSecMatchLimit as String)
+            SecItemDelete(legacyQuery as CFDictionary)
+            return secret
+        }
         if status == errSecItemNotFound { return nil }
         guard status == errSecSuccess else { throw StorageError.keychain(status) }
         return result as? Data
@@ -102,12 +116,18 @@ public struct KeychainSecretStore: SecretStoring {
     }
 
     private var baseQuery: [String: Any] {
-        [
+        var query: [String: Any] = [
             kSecClass as String: kSecClassGenericPassword,
             kSecAttrService as String: "git.shin.koreaderRemoteTurner",
             kSecAttrAccount as String: ProtocolConstants.secretAccount,
             kSecAttrSynchronizable as String: false,
         ]
+        if let accessGroup = Bundle.main.object(
+            forInfoDictionaryKey: "KOReaderKeychainAccessGroup"
+        ) as? String, !accessGroup.isEmpty {
+            query[kSecAttrAccessGroup as String] = accessGroup
+        }
+        return query
     }
 }
 #else

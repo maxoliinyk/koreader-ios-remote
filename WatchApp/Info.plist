@@ -2,7 +2,11 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-    <key>WKApplication</key>
+	<key>KOReaderKeychainAccessGroup</key>
+	<string>$(AppIdentifierPrefix)git.shin.koreaderRemoteTurner.watch</string>
+	<key>NSMotionUsageDescription</key>
+	<string>KOReader Remote Labs uses wrist motion to test experimental page-turn gestures.</string>
+	<key>WKApplication</key>
     <true/>
     <key>WKCompanionAppBundleIdentifier</key>
     <string>git.shin.koreaderRemoteTurner</string>

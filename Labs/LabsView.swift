@@ -1,60 +1,92 @@
 import SwiftUI
 
 struct LabsView: View {
-    @Environment(VolumeButtonExperiment.self) private var volume
+    @Environment(VolumeButtonExperiment.self) private var experiment
     @State private var privateSymbols: [PrivateSymbolStatus] = []
-    @AppStorage("labs.backgroundAudio") private var backgroundAudio = false
+    @State private var mediaRemoteResult = "Not invoked"
 
     var body: some View {
+        @Bindable var experiment = experiment
         NavigationStack {
             Form {
                 Section {
                     Label("Unsupported research build", systemImage: "exclamationmark.triangle.fill")
                         .foregroundStyle(.orange)
-                    Text("This app changes system audio state and probes private symbols. It is never included in the normal archive.")
+                    Text("This target owns the audio session and can call private UIKit and MediaRemote APIs. It is separate from the normal app.")
                 }
 
-                Section("Foreground Volume Buttons") {
-                    Toggle("Observe Volume Changes", isOn: Bindable(volume).isRunning)
-                        .onChange(of: volume.isRunning) { _, enabled in
-                            enabled ? volume.start(backgroundAudio: backgroundAudio) : volume.stop()
-                        }
-                    Toggle("Background Audio Category", isOn: $backgroundAudio)
-                        .onChange(of: backgroundAudio) { _, enabled in
-                            if volume.isRunning { volume.start(backgroundAudio: enabled) }
-                        }
-                    LabeledContent("System Volume", value: volume.outputVolume.formatted(.number.precision(.fractionLength(2))))
-                    LabeledContent("Last Change", value: volume.lastChange)
-                    Text("Volume buttons still change system volume. At 0% and 100%, another press may produce no observable value change. Audio-route changes and interruptions can reset the session.")
+                Section("Locked-Screen Session") {
+                    Button(experiment.isRunning ? "Stop Experiment" : "Start Experiment") {
+                        experiment.isRunning ? experiment.stop() : experiment.start()
+                    }
+                    .buttonStyle(.borderedProminent)
+                    LabeledContent("Status", value: experiment.isRunning ? "Active" : "Stopped")
+                    LabeledContent("Last Result", value: experiment.lastResult)
+                    Text("Starting plays an effectively inaudible loop and publishes a Now Playing session. Lock the iPhone, open Now Playing, then press its Next button.")
                         .font(.footnote)
                         .foregroundStyle(.secondary)
-                    SystemVolumeView()
-                        .frame(height: 1)
-                        .accessibilityHidden(true)
                 }
 
-                Section("Private MediaRemote Probe") {
-                    Button("Inspect Symbol Availability") {
-                        privateSymbols = PrivateFrameworkProbe.inspectMediaRemote()
+                Section("Now Playing Remote") {
+                    Picker("Buttons", selection: $experiment.nowPlayingStyle) {
+                        ForEach(NowPlayingButtonStyle.allCases) { style in
+                            Text(style.rawValue).tag(style)
+                        }
                     }
+                    HStack {
+                        Button("Previous", systemImage: "chevron.backward") {
+                            experiment.send(.previousPage, source: "Labs button")
+                        }
+                        Button("Next", systemImage: "chevron.forward") {
+                            experiment.send(.nextPage, source: "Labs button")
+                        }
+                    }
+                    .disabled(!experiment.isRunning)
+                    LabeledContent("Remote Commands", value: experiment.remoteCommandCount.formatted())
+                    Text("Previous and Next Track, or the 10-second backward and forward controls, map to the matching KOReader page action. The button style updates while the session is active.")
+                        .font(.footnote)
+                        .foregroundStyle(.secondary)
+                }
+
+                Section("Volume Buttons") {
+                    Picker("Capture Mode", selection: $experiment.volumeMode) {
+                        ForEach(VolumeCaptureMode.allCases) { mode in
+                            Text(mode.rawValue).tag(mode)
+                        }
+                    }
+                    Text(experiment.volumeMode.detail)
+                        .font(.footnote)
+                        .foregroundStyle(.secondary)
+                    LabeledContent("Volume Up", value: "Next Page")
+                    LabeledContent("Volume Down", value: "Previous Page")
+                    LabeledContent("Raw Capture", value: experiment.privateCaptureEnabled ? "Active" : "Off")
+                    LabeledContent("System Volume", value: experiment.outputVolume.formatted(.number.precision(.fractionLength(2))))
+                    LabeledContent("Events", value: experiment.volumeEventCount.formatted())
+                    LabeledContent("Last Input", value: experiment.lastInput)
+                }
+
+                Section("Private MediaRemote") {
+                    Button("Inspect Symbols") { privateSymbols = PrivateFrameworkProbe.inspectMediaRemote() }
+                    Button("Claim Now Playing") { mediaRemoteResult = PrivateFrameworkProbe.claimNowPlaying(true) }
+                        .disabled(!experiment.isRunning)
+                    LabeledContent("Invocation", value: mediaRemoteResult)
                     ForEach(privateSymbols) { item in
                         LabeledContent(item.name, value: item.available ? "Present" : "Missing")
                     }
-                    Text("The probe loads no private API into the public app and never invokes a private function.")
-                        .font(.footnote)
-                        .foregroundStyle(.secondary)
                 }
 
-                Section("watchOS Gesture Notes") {
-                    Label("Public: one primary Double Tap shortcut per scene", systemImage: "hand.tap")
-                    Label("No public distinct single-finger gesture action", systemImage: "questionmark.circle")
-                    Text("Runtime watchOS symbol research must run in a separately signed watch Labs target before any symbol is called.")
+                Section("Limits") {
+                    Text("Sideloading allows private calls but does not remove iOS sandboxing, background suspension, or entitlement checks. System-wide interception would require a jailbroken iPhone and a SpringBoard tweak.")
                         .font(.footnote)
-                        .foregroundStyle(.secondary)
                 }
             }
             .navigationTitle("Remote Labs")
         }
-        .onDisappear { volume.stop() }
+        .overlay(alignment: .bottomTrailing) {
+            SystemVolumeView(volumeView: experiment.systemVolumeView)
+                .frame(width: 1, height: 1)
+                .accessibilityHidden(true)
+        }
+        .onDisappear { experiment.stop() }
     }
 }
