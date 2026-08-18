@@ -1,3 +1,10 @@
+//
+//  WatchGestureExperiment.swift
+//  KOReaderRemote
+//
+//  Created by Max Oliinyk on 18.08.26.
+//
+
 #if DEBUG
 import CoreMotion
 import Observation

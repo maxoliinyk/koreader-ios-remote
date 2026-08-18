@@ -1,3 +1,10 @@
+//
+//  KOReaderControls.swift
+//  KOReaderRemote
+//
+//  Created by Max Oliinyk on 18.08.26.
+//
+
 import RemoteCore
 import SwiftUI
 import WidgetKit

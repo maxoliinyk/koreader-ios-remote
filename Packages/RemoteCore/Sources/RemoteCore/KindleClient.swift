@@ -1,3 +1,10 @@
+//
+//  KindleClient.swift
+//  KOReaderRemote
+//
+//  Created by Max Oliinyk on 18.08.26.
+//
+
 import Foundation
 #if canImport(FoundationNetworking)
 import FoundationNetworking

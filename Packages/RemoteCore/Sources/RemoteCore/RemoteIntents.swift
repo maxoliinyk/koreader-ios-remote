@@ -1,3 +1,10 @@
+//
+//  RemoteIntents.swift
+//  KOReaderRemote
+//
+//  Created by Max Oliinyk on 18.08.26.
+//
+
 #if canImport(AppIntents)
 import AppIntents
 import Foundation

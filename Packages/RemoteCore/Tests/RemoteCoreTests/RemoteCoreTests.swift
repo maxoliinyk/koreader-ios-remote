@@ -1,3 +1,10 @@
+//
+//  RemoteCoreTests.swift
+//  KOReaderRemote
+//
+//  Created by Max Oliinyk on 18.08.26.
+//
+
 import Foundation
 import Testing
 @testable import RemoteCore

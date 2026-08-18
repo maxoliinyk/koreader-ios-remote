@@ -1,23 +1,43 @@
+//
+//  SettingsView.swift
+//  KOReaderRemote
+//
+//  Created by Max Oliinyk on 18.08.26.
+//
+
 import RemoteCore
 import SwiftUI
 import UIKit
 
 struct SettingsView: View {
     @Environment(RemoteStore.self) private var store
+    @AppStorage(RemoteLayoutStyle.storageKey) private var remoteLayout = RemoteLayoutStyle.fullSplit
     @State private var confirmsForget = false
 
     var body: some View {
         Form {
+            Section {
+                Picker("Button Layout", selection: $remoteLayout) {
+                    ForEach(RemoteLayoutStyle.allCases) { style in
+                        Label {
+                            Text(style.title)
+                        } icon: {
+                            Image(systemName: style.symbol)
+                        }
+                        .tag(style)
+                    }
+                }
+            } header: {
+                Text("Remote Layout")
+            } footer: {
+                Text(remoteLayout.detail)
+            }
+
             if let endpoint = store.configuration?.endpoint {
-                Section("Paired KOReader") {
+                Section("KOReader Device") {
                     LabeledContent("Name", value: endpoint.name)
                     LabeledContent("Address", value: endpoint.host)
                     LabeledContent("Port", value: String(endpoint.port))
-
-                    Button("Test Connection", systemImage: "network") {
-                        Task { await store.testConnection() }
-                    }
-                    .disabled(store.isSending)
 
                     Button("Scan Again", systemImage: "qrcode.viewfinder") {
                         store.isPairingPresented = true
@@ -38,11 +58,19 @@ struct SettingsView: View {
             }
 
             Section("Connection") {
+                Button("Test Connection", systemImage: "network") {
+                    Task { await store.testConnection() }
+                }
+                .disabled(store.configuration == nil || store.isSending)
+
+                NavigationLink {
+                    LocalNetworkHelpView()
+                } label: {
+                    Label("Local Network Help", systemImage: "wifi")
+                }
+
                 LabeledContent("Protocol", value: "KOReader Remote v1")
                 LabeledContent("Default Port", value: "9090")
-                NavigationLink("Local Network Help") {
-                    LocalNetworkHelpView()
-                }
             }
 
             Section {
