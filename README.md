@@ -44,9 +44,42 @@ Open a book, open KOReader's top menu, then choose **Tools → Remote Turner**. 
 
 The listener runs only while KOReader is active. It closes during suspend or exit and starts again when KOReader resumes. Keep Wi-Fi enabled on the KOReader device.
 
-## Run the Apple app
+## Run the app
 
 Open `KOReaderiOSRemote.xcodeproj` in Xcode 26 or later. Select the **KORemote** scheme, not Labs, Controls, or Watch.
+
+### Install from source
+
+You need a Mac, an iPhone, an Apple Account, and [Xcode 26](https://apps.apple.com/app/xcode/id497799835) or later.
+
+Clone the project:
+
+```bash
+git clone https://github.com/maxoliinyk/koreader-ios-remote.git
+```
+
+Enter the project folder:
+
+```bash
+cd koreader-ios-remote
+```
+
+Open the project in Xcode:
+
+```bash
+open KOReaderiOSRemote.xcodeproj
+```
+
+Then:
+
+1. Connect and unlock the iPhone. Tap **Trust** if asked.
+2. In Xcode, sign in under **Xcode → Settings → Accounts**.
+3. Select the **KORemote** scheme, select the iPhone, and choose your team under **Signing & Capabilities**.
+4. Press **Run**. Enable Developer Mode on the iPhone if asked.
+
+The full KORemote target currently needs a paid Apple Developer team because its controls and Watch app use App Groups and shared Keychain access. A free-account target is not included yet.
+
+With a free Personal Team, supported apps expire after 7 days. To sign one again, reconnect the iPhone, reopen the project, and press **Run**. You do not need to clone it again. See Apple's [free-account limits](https://developer.apple.com/support/compare-memberships/).
 
 ### Simulator
 
