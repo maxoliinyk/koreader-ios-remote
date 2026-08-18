@@ -3,7 +3,7 @@ import UIKit
 import AVFoundation
 
 @main
-@objc class AppDelegate: FlutterAppDelegate {
+@objc class AppDelegate: FlutterAppDelegate, FlutterPluginRegistrant {
   private var eventSink: FlutterEventSink?
   private var volumeObservation: NSKeyValueObservation?
 
@@ -11,10 +11,16 @@ import AVFoundation
     _ application: UIApplication,
     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
   ) -> Bool {
-    GeneratedPluginRegistrant.register(with: self)
+    pluginRegistrant = self
+    return super.application(application, didFinishLaunchingWithOptions: launchOptions)
+  }
 
-    let controller = window?.rootViewController as! FlutterViewController
-    let messenger = controller.binaryMessenger
+  func register(with registry: FlutterPluginRegistry) {
+    GeneratedPluginRegistrant.register(with: registry)
+    guard let registrar = registry.registrar(forPlugin: "RemoteTurnerVolumePlugin") else {
+      return
+    }
+    let messenger = registrar.messenger()
 
     let methodChannel = FlutterMethodChannel(
       name: "git.shin.koreader_remote_turner/service",
@@ -38,8 +44,6 @@ import AVFoundation
       binaryMessenger: messenger
     )
     eventChannel.setStreamHandler(self)
-
-    return super.application(application, didFinishLaunchingWithOptions: launchOptions)
   }
 
   private func startVolumeMonitoring() {
