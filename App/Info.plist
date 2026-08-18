@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>CFBundleURLTypes</key>
+    <array>
+        <dict>
+            <key>CFBundleURLName</key>
+            <string>KOReader Remote Pairing</string>
+            <key>CFBundleURLSchemes</key>
+            <array>
+                <string>koreaderturner</string>
+            </array>
+        </dict>
+    </array>
+    <key>NSCameraUsageDescription</key>
+    <string>Scan the pairing code displayed by the KOReader plugin.</string>
+    <key>NSLocalNetworkUsageDescription</key>
+    <string>Send page actions directly to KOReader on your Kindle.</string>
+    <key>UIApplicationSupportsIndirectInputEvents</key>
+    <true/>
+    <key>UILaunchScreen</key>
+    <dict/>
+</dict>
+</plist>

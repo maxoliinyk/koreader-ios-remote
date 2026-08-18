@@ -1,9 +1,0 @@
-[Desktop Entry]
-Name=KOReader Remote Turner
-Comment=Remote control KOReader via volume buttons
-Exec=/usr/bin/koreader-remote-turner
-Icon=koreader-remote-turner
-Terminal=false
-Type=Application
-Categories=Utility;
-Keywords=koreader;ebook;remote;volume;page-turn

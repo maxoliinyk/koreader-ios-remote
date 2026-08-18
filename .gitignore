@@ -11,6 +11,8 @@
 .svn/
 .swiftpm/
 migrate_working_dir/
+*.xcuserstate
+**/xcuserdata/
 
 # IntelliJ related
 *.iml
@@ -48,9 +50,9 @@ app.*.map.json
 /dist/
 /node_modules/
 /package-lock.json
+/DerivedData/
 
 # Local Codex planning and handoff workspace
 /.agent/
-
 
 

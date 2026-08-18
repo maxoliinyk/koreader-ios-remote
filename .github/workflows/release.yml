@@ -1,161 +1,18 @@
-name: Release
+name: Release Plugin
 
 on:
   push:
-    branches: [main]
+    tags: ['v*']
 
 jobs:
-  check:
-    runs-on: ubuntu-latest
-    outputs:
-      version: ${{ steps.dry.outputs.version }}
-      should_release: ${{ steps.dry.outputs.should_release }}
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 25
-
-      - run: npm i
-
-      - name: Dry run
-        id: dry
-        run: |
-          OUTPUT=$(npx semantic-release --dry-run 2>&1 || true)
-          echo "$OUTPUT"
-          VERSION=$(echo "$OUTPUT" | grep -oP 'release version is \K\d+\.\d+\.\d+' || true)
-          if [ -n "$VERSION" ]; then
-            echo "should_release=true" >> "$GITHUB_OUTPUT"
-            echo "version=$VERSION" >> "$GITHUB_OUTPUT"
-          else
-            echo "should_release=false" >> "$GITHUB_OUTPUT"
-          fi
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
   build:
-    needs: check
-    if: needs.check.outputs.should_release == 'true'
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - os: ubuntu-latest
-            target: android
-            arch: universal
-          - os: ubuntu-latest
-            target: linux
-            arch: amd64
-          - os: ubuntu-24.04-arm
-            target: linux
-            arch: arm64
-          - os: macos-latest
-            target: macos
-            arch: arm64
-          - os: macos-latest
-            target: ios
-            arch: universal
-          - os: macos-latest
-            target: koplugin
-            arch: noarch
-          - os: windows-latest
-            target: windows
-            arch: amd64
-          - os: windows-11-arm
-            target: windows
-            arch: arm64
-
-    runs-on: ${{ matrix.os }}
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Setup Flutter SDK (arm64 Linux)
-        if: matrix.os == 'ubuntu-24.04-arm'
-        run: |
-          git clone --depth 1 -b 3.44.2 https://github.com/flutter/flutter.git /opt/flutter
-          /opt/flutter/bin/flutter --version
-          echo "/opt/flutter/bin" >> "$GITHUB_PATH"
-
-      - uses: flutter-actions/setup-flutter@v4
-        if: matrix.os != 'ubuntu-24.04-arm'
-        with:
-          channel: stable
-          version: 3.44.2
-
-      - run: flutter pub get
-
-      - name: Install Linux toolchain
-        if: matrix.target == 'linux'
-        run: sudo apt-get update && sudo apt-get install -y clang cmake ninja-build pkg-config libgtk-3-dev liblzma-dev
-
-      - name: Install Windows toolchain
-        if: matrix.target == 'windows'
-        run: choco install innosetup
-
-      - name: Install x64 JDK for JNI (ARM64 runner)
-        if: matrix.arch == 'arm64'
-        uses: actions/setup-java@v4
-        with:
-          distribution: 'temurin'
-          java-version: '21'
-          architecture: x64
-
-      - name: Install macOS toolchain
-        if: matrix.target == 'macos' || matrix.target == 'ios'
-        run: |
-          brew install --quiet ninja libimobiledevice || true
-
-      - name: Build
-        run: make ${{ matrix.target }} VERSION=${{ needs.check.outputs.version }} ARCH=${{ matrix.arch }}
-        env:
-          BUILD_NUMBER: ${{ github.run_number }}
-
-      - name: Sign APK
-        if: matrix.target == 'android'
-        uses: r0adkll/sign-android-release@v1
-        id: sign_apk
-        with:
-          releaseDirectory: build/app/outputs/flutter-apk
-          signingKeyBase64: ${{ secrets.KEYSTORE_CONTENT }}
-          alias: ${{ secrets.KEYSTORE_ALIAS }}
-          keyStorePassword: ${{ secrets.KEYSTORE_PASSWORD }}
-          keyPassword: ${{ secrets.KEYSTORE_PASSWORD }}
-        env:
-          BUILD_TOOLS_VERSION: "35.0.0"
-
-      - name: Copy signed APK to dist
-        if: matrix.target == 'android'
-        run: |
-          rm -f dist/*.apk
-          cp "${{ steps.sign_apk.outputs.signedReleaseFile }}" dist/
-
-      - uses: actions/upload-artifact@v4
-        with:
-          name: build-${{ matrix.target }}-${{ matrix.arch }}
-          path: dist/*
-
-  release:
-    needs: [check, build]
-    if: needs.check.outputs.should_release == 'true'
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - uses: actions/checkout@v4
+      - name: Package KOReader plugin
+        run: make koplugin VERSION="${GITHUB_REF_NAME#v}"
+      - uses: softprops/action-gh-release@v2
         with:
-          persist-credentials: false
-          fetch-depth: 0
-
-      - uses: actions/download-artifact@v4
-
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 25
-
-      - run: npm i
-
-      - name: Semantic release
-        run: npx semantic-release
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          files: dist/*.zip

@@ -1,0 +1,62 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "Kindle paired." : {
+      "localizations" : {
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "Kindleをペアリングしました。" } },
+        "vi" : { "stringUnit" : { "state" : "translated", "value" : "Đã ghép đôi Kindle." } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "Kindle 已配对。" } }
+      }
+    },
+    "Next" : {
+      "localizations" : {
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "次へ" } },
+        "vi" : { "stringUnit" : { "state" : "translated", "value" : "Trang sau" } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "下一页" } }
+      }
+    },
+    "Pair Kindle" : {
+      "localizations" : {
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "Kindleをペアリング" } },
+        "vi" : { "stringUnit" : { "state" : "translated", "value" : "Ghép đôi Kindle" } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "配对 Kindle" } }
+      }
+    },
+    "Previous" : {
+      "localizations" : {
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "前へ" } },
+        "vi" : { "stringUnit" : { "state" : "translated", "value" : "Trang trước" } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "上一页" } }
+      }
+    },
+    "Ready" : {
+      "localizations" : {
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "準備完了" } },
+        "vi" : { "stringUnit" : { "state" : "translated", "value" : "Sẵn sàng" } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "已就绪" } }
+      }
+    },
+    "Remote" : {
+      "localizations" : {
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "リモコン" } },
+        "vi" : { "stringUnit" : { "state" : "translated", "value" : "Điều khiển" } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "遥控器" } }
+      }
+    },
+    "Settings" : {
+      "localizations" : {
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "設定" } },
+        "vi" : { "stringUnit" : { "state" : "translated", "value" : "Cài đặt" } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "设置" } }
+      }
+    },
+    "Sleep Kindle" : {
+      "localizations" : {
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "Kindleをスリープ" } },
+        "vi" : { "stringUnit" : { "state" : "translated", "value" : "Cho Kindle ngủ" } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "让 Kindle 睡眠" } }
+      }
+    }
+  },
+  "version" : "1.0"
+}

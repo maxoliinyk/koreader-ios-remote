@@ -2,28 +2,31 @@ name: Check
 
 on:
   pull_request:
-    branches: [main]
   push:
     branches: [main]
   workflow_call:
 
 jobs:
-  dart:
-    runs-on: ubuntu-latest
+  apple:
+    runs-on: macos-26
     steps:
       - uses: actions/checkout@v4
-      - name: Setup Flutter SDK
-        uses: flutter-actions/setup-flutter@v4
-        with:
-          channel: stable
-          version: 3.44.2
-      - run: flutter pub get
-      - run: flutter analyze
-      - run: dart format --set-exit-if-changed lib/
+      - name: Test RemoteCore
+        run: swift test --package-path Packages/RemoteCore
+      - name: Build iOS app without signing
+        run: >-
+          xcodebuild -project KOReaderRemote.xcodeproj -scheme KOReaderRemote
+          -destination 'generic/platform=iOS Simulator'
+          CODE_SIGNING_ALLOWED=NO build
 
-  luacheck:
+  plugin:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - run: sudo apt-get update && sudo apt-get install -y lua-check
+      - run: sudo apt-get update && sudo apt-get install -y lua-check zip
       - run: luacheck remote_turner.koplugin/
+      - run: make koplugin VERSION=ci
+      - uses: actions/upload-artifact@v4
+        with:
+          name: remote-turner-plugin
+          path: dist/*.zip

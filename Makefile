@@ -1,61 +1,25 @@
-VERSION ?= $(shell git describe --tags --abbrev=0 2>/dev/null | sed 's/^v//' || echo "0.0.0")
-BUILD_NUMBER ?= $(shell git rev-list --count HEAD 2>/dev/null || echo "1")
-ARCH ?= $(shell uname -m | sed 's/x86_64/amd64/;s/aarch64/arm64/')
-FLUTTER_PLATFORM_amd64 := x64
-FLUTTER_PLATFORM_arm64 := arm64
-FLUTTER_PLATFORM = $(FLUTTER_PLATFORM_$(ARCH))
-LINUX_PLATFORM_amd64 := x64
-LINUX_PLATFORM_arm64 := arm64
-LINUX_PLATFORM = $(LINUX_PLATFORM_$(ARCH))
+VERSION ?= 2.0.0
 DIST_DIR ?= dist
 PLUGIN_DIR ?= remote_turner.koplugin
+DEVELOPER_DIR ?= /Applications/Xcode-27.0.0-beta.app/Contents/Developer
 
-.PHONY: all android ios windows macos linux koplugin clean release
+.PHONY: all build test koplugin clean
 
-all: android linux koplugin
+all: test build koplugin
 
-android:
-	mkdir -p $(DIST_DIR)
-	flutter build apk --release --build-name=$(VERSION) --build-number=$(BUILD_NUMBER)
-	cp build/app/outputs/flutter-apk/app-release.apk \
-		$(DIST_DIR)/koreader-remote-$(VERSION)-android.apk
+test:
+	DEVELOPER_DIR=$(DEVELOPER_DIR) xcrun swift test --package-path Packages/RemoteCore
 
-ios:
-	mkdir -p $(DIST_DIR) build/ios/ipa/Payload
-	flutter build ipa --no-codesign --build-name=$(VERSION) --build-number=$(BUILD_NUMBER)
-	cp -R build/ios/archive/Runner.xcarchive/Products/Applications/Runner.app build/ios/ipa/Payload/
-	cd build/ios/ipa && zip -r Runner.ipa Payload
-	cp build/ios/ipa/Runner.ipa \
-		$(DIST_DIR)/koreader-remote-$(VERSION)-ios.ipa
-
-windows:
-	mkdir -p $(DIST_DIR)
-	flutter build windows --release --build-name=$(VERSION) --build-number=$(BUILD_NUMBER)
-	iscc installers/windows/setup.iss \
-		/dMyAppVer=$(VERSION) \
-		/dMyAppArch=$(ARCH) \
-		/dMyAppPlatform=x64 \
-		/dOutputDir=$(abspath $(DIST_DIR))
-
-macos:
-	mkdir -p $(DIST_DIR)
-	flutter build macos --release --build-name=$(VERSION) --build-number=$(BUILD_NUMBER)
-	hdiutil create -srcFolder build/macos/Build/Products/Release/koreader_remote_turner.app \
-		-format UDZO -volname "KOReader Remote Turner" \
-		$(DIST_DIR)/koreader-remote-$(VERSION)-macos-$(ARCH).dmg
-
-linux:
-	mkdir -p $(DIST_DIR)
-	flutter build linux --release --build-name=$(VERSION) --build-number=$(BUILD_NUMBER)
-	bash scripts/build-deb.sh $(VERSION) $(ARCH) $(LINUX_PLATFORM)
+build:
+	DEVELOPER_DIR=$(DEVELOPER_DIR) xcodebuild \
+		-project KOReaderRemote.xcodeproj \
+		-scheme KOReaderRemote \
+		-destination 'generic/platform=iOS Simulator' \
+		CODE_SIGNING_ALLOWED=NO build
 
 koplugin:
 	mkdir -p $(DIST_DIR)
-	cd $(PLUGIN_DIR) && \
-		zip -r ../$(DIST_DIR)/remote_turner-$(VERSION).koplugin.zip .
-
-release:
-	npx semantic-release
+	cd $(PLUGIN_DIR) && zip -r ../$(DIST_DIR)/remote_turner-$(VERSION).koplugin.zip .
 
 clean:
-	rm -rf $(DIST_DIR) build/
+	rm -rf $(DIST_DIR) Packages/RemoteCore/.build
