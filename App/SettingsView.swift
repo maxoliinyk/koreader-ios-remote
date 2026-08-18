@@ -111,17 +111,23 @@ struct SettingsView: View {
 }
 
 private struct SystemControlsHelpView: View {
+    @Environment(SystemControlsStore.self) private var systemControls
+
     var body: some View {
-        List {
-            Section("Lock Screen") {
-                Text("Touch and hold the Lock Screen, choose Customize, select a control slot, then add KOReader Remote — Next Page.")
+        @Bindable var systemControls = systemControls
+        Form {
+            Section("Hardware Buttons") {
+                Toggle("Use Volume Buttons", isOn: $systemControls.usesVolumeButtons)
             }
-            Section("Control Center") {
-                Text("Open Control Center, touch and hold an empty area, choose Add a Control, then add Next Page from KOReader Remote.")
+
+            Section("Media") {
+                Toggle("Capture Media Controls", isOn: $systemControls.capturesMediaControls)
             }
-            Section("Action Button") {
-                Text("In iPhone Settings, open Action Button, choose Controls or Shortcut, then select KOReader Remote — Next Page.")
+
+            Section("Control Center & Action Button") {
+                Label("Next Page is available", systemImage: "forward.end.fill")
             }
+
             Section("Before locking") {
                 Label("Pair KOReader in this app", systemImage: "checkmark.circle")
                 Label("Allow Local Network access", systemImage: "checkmark.circle")

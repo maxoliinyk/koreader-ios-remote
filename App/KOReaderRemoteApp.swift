@@ -11,12 +11,17 @@ import SwiftUI
 struct KOReaderRemoteApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) private var appDelegate
     @State private var store = RemoteStore()
+    @State private var systemControls = SystemControlsStore()
 
     var body: some Scene {
         WindowGroup {
             RootView()
                 .environment(store)
-                .task { PhoneConnectivity.shared.activate() }
+                .environment(systemControls)
+                .task {
+                    PhoneConnectivity.shared.activate()
+                    systemControls.activate()
+                }
                 .onOpenURL { url in
                     store.pair(with: url)
                 }

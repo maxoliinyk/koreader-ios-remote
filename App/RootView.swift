@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct RootView: View {
+    @Environment(SystemControlsStore.self) private var systemControls
+
     var body: some View {
         TabView {
             Tab("Remote", systemImage: "book.pages") {
@@ -22,10 +24,16 @@ struct RootView: View {
                 }
             }
         }
+        .overlay(alignment: .bottomTrailing) {
+            SystemVolumeCaptureView(volumeView: systemControls.volumeView)
+                .frame(width: 1, height: 1)
+                .accessibilityHidden(true)
+        }
     }
 }
 
 #Preview {
     RootView()
         .environment(RemoteStore.preview())
+        .environment(SystemControlsStore.preview())
 }

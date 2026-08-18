@@ -89,8 +89,10 @@ The normal app includes native **Next Page** and **Previous Page** controls. The
 - Control Center: touch and hold an empty area, choose **Add a Control**, then add **Next Page**.
 - Action Button: open **Settings → Action Button**, choose Controls or Shortcut, then select **KOReader Remote — Next Page**.
 - Siri and Shortcuts: use the supplied Next Page or Previous Page action.
+- Volume buttons: open **Settings → System Controls** and enable **Use Volume Buttons**. Volume Up sends Next; Volume Down sends Previous. The app keeps system volume near 50% so both directions remain available.
+- Now Playing: enable **Capture Media Controls** on the same screen to use Previous and Next from the Lock Screen or connected media accessories.
 
-KOReader still needs to be active and reachable on the same network.
+Volume and media capture keep an effectively inaudible background-audio session active. They can interrupt other audio and use more battery. KOReader still needs to be active and reachable on the same network.
 
 ## Apple Watch
 
