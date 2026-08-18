@@ -120,7 +120,7 @@ final class VolumeButtonExperiment: NSObject {
     private func perform(_ action: RemoteAction, source: String) async {
         do {
             guard let configuration = try storage.load() else {
-                lastResult = "Pair the Kindle in the normal app first"
+                lastResult = "Pair KOReader in the normal app first"
                 UINotificationFeedbackGenerator().notificationOccurred(.error)
                 return
             }
