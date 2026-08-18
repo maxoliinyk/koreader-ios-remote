@@ -27,7 +27,15 @@ public struct PairingStore: @unchecked Sendable {
     private let endpointKey = "pairedKindleEndpoint"
 
     public init(defaults: UserDefaults? = nil, secrets: any SecretStoring = KeychainSecretStore()) {
-        self.defaults = defaults ?? UserDefaults(suiteName: ProtocolConstants.appGroup) ?? .standard
+        if let defaults {
+            self.defaults = defaults
+        } else if FileManager.default.containerURL(
+            forSecurityApplicationGroupIdentifier: ProtocolConstants.appGroup
+        ) != nil, let sharedDefaults = UserDefaults(suiteName: ProtocolConstants.appGroup) {
+            self.defaults = sharedDefaults
+        } else {
+            self.defaults = .standard
+        }
         self.secrets = secrets
     }
 

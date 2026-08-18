@@ -2,6 +2,10 @@ import Foundation
 import RemoteCore
 import WatchConnectivity
 
+private nonisolated struct WatchReply: @unchecked Sendable {
+    let send: ([String: Any]) -> Void
+}
+
 final class PhoneConnectivity: NSObject, WCSessionDelegate, @unchecked Sendable {
     static let shared = PhoneConnectivity()
 
@@ -35,33 +39,38 @@ final class PhoneConnectivity: NSObject, WCSessionDelegate, @unchecked Sendable 
         }
     }
 
-    func session(
+    nonisolated func session(
         _ session: WCSession,
         activationDidCompleteWith activationState: WCSessionActivationState,
         error: (any Error)?
     ) {}
 
-    func sessionDidBecomeInactive(_ session: WCSession) {}
+    nonisolated func sessionDidBecomeInactive(_ session: WCSession) {}
 
-    func sessionDidDeactivate(_ session: WCSession) {
+    nonisolated func sessionDidDeactivate(_ session: WCSession) {
         session.activate()
     }
 
-    func session(_ session: WCSession, didReceiveMessage message: [String: Any], replyHandler: @escaping ([String: Any]) -> Void) {
+    nonisolated func session(
+        _ session: WCSession,
+        didReceiveMessage message: [String: Any],
+        replyHandler: @escaping ([String: Any]) -> Void
+    ) {
         guard let value = message["action"] as? String, let action = RemoteAction(rawValue: value) else {
             replyHandler(["ok": false, "message": "Invalid action"])
             return
         }
-        Task {
+        let reply = WatchReply(send: replyHandler)
+        Task { @MainActor [weak self] in
             do {
-                guard let configuration = try storage.load() else {
-                    replyHandler(["ok": false, "message": "Kindle is not paired"])
+                guard let self, let configuration = try storage.load() else {
+                    reply.send(["ok": false, "message": "Kindle is not paired"])
                     return
                 }
                 _ = try await KindleClient().send(action, using: configuration)
-                replyHandler(["ok": true])
+                reply.send(["ok": true])
             } catch {
-                replyHandler(["ok": false, "message": error.localizedDescription])
+                reply.send(["ok": false, "message": error.localizedDescription])
             }
         }
     }

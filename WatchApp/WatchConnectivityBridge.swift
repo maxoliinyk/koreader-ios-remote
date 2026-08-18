@@ -19,6 +19,11 @@ enum WatchConnectivityError: Error, LocalizedError {
 }
 
 final class WatchConnectivityBridge: NSObject, WCSessionDelegate, @unchecked Sendable {
+    private enum PairingUpdate: Sendable {
+        case configuration(Data)
+        case forgotten
+    }
+
     static let shared = WatchConnectivityBridge()
 
     private let session: WCSession? = WCSession.isSupported() ? .default : nil
@@ -31,8 +36,9 @@ final class WatchConnectivityBridge: NSObject, WCSessionDelegate, @unchecked Sen
     func activate() {
         session?.delegate = self
         session?.activate()
-        if let context = session?.receivedApplicationContext, !context.isEmpty {
-            apply(context)
+        if let context = session?.receivedApplicationContext,
+           let update = Self.pairingUpdate(from: context) {
+            apply(update)
         }
     }
 
@@ -57,25 +63,37 @@ final class WatchConnectivityBridge: NSObject, WCSessionDelegate, @unchecked Sen
         }
     }
 
-    func session(
+    nonisolated func session(
         _ session: WCSession,
         activationDidCompleteWith activationState: WCSessionActivationState,
         error: (any Error)?
     ) {}
 
-    func session(_ session: WCSession, didReceiveApplicationContext applicationContext: [String: Any]) {
-        apply(applicationContext)
+    nonisolated func session(_ session: WCSession, didReceiveApplicationContext applicationContext: [String: Any]) {
+        guard let update = Self.pairingUpdate(from: applicationContext) else { return }
+        Task { @MainActor [weak self] in
+            self?.apply(update)
+        }
     }
 
-    private func apply(_ context: [String: Any]) {
+    nonisolated private static func pairingUpdate(from context: [String: Any]) -> PairingUpdate? {
+        if context["forgotten"] as? Bool == true {
+            return .forgotten
+        }
+        if let data = context["configuration"] as? Data {
+            return .configuration(data)
+        }
+        return nil
+    }
+
+    private func apply(_ update: PairingUpdate) {
         do {
-            if context["forgotten"] as? Bool == true {
+            switch update {
+            case .forgotten:
                 try storage.forget()
-            } else if let data = context["configuration"] as? Data {
+            case let .configuration(data):
                 let transfer = try JSONDecoder().decode(PairingTransfer.self, from: data)
                 try storage.save(transfer.configuration())
-            } else {
-                return
             }
             NotificationCenter.default.post(name: .watchPairingChanged, object: nil)
         } catch {

@@ -19,7 +19,7 @@ build:
 
 koplugin:
 	mkdir -p $(DIST_DIR)
-	cd $(PLUGIN_DIR) && zip -r ../$(DIST_DIR)/remote_turner-$(VERSION).koplugin.zip .
+	zip -r $(DIST_DIR)/remote_turner-$(VERSION).koplugin.zip $(PLUGIN_DIR)
 
 clean:
 	rm -rf $(DIST_DIR) Packages/RemoteCore/.build

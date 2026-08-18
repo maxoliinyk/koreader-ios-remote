@@ -12,7 +12,7 @@ struct SettingsView: View {
                 Section("Paired Kindle") {
                     LabeledContent("Name", value: endpoint.name)
                     LabeledContent("Address", value: endpoint.host)
-                    LabeledContent("Port", value: endpoint.port.formatted())
+                    LabeledContent("Port", value: String(endpoint.port))
 
                     Button("Test Connection", systemImage: "network") {
                         Task { await store.testConnection() }
