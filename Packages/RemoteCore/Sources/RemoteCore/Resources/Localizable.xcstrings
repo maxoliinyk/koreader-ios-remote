@@ -1,0 +1,27 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "Next Page" : {
+      "localizations" : {
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "次のページ" } },
+        "vi" : { "stringUnit" : { "state" : "translated", "value" : "Trang sau" } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "下一页" } }
+      }
+    },
+    "Previous Page" : {
+      "localizations" : {
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "前のページ" } },
+        "vi" : { "stringUnit" : { "state" : "translated", "value" : "Trang trước" } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "上一页" } }
+      }
+    },
+    "Sleep Kindle" : {
+      "localizations" : {
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "Kindleをスリープ" } },
+        "vi" : { "stringUnit" : { "state" : "translated", "value" : "Cho Kindle ngủ" } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "让 Kindle 睡眠" } }
+      }
+    }
+  },
+  "version" : "1.0"
+}

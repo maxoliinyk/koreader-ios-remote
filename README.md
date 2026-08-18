@@ -16,7 +16,11 @@ iPhone / Apple Watch / App Intent
 - KOReader plugin built on LuaSocket and KOReader's TCP-server integration.
 - Pairing through a KOReader QR code or manual host, port, and secret entry.
 - HMAC-SHA256 authentication and bounded nonce replay protection.
+- App Intents for Shortcuts, Siri, Action Button, Spotlight, and Control Center.
+- Apple Watch app with direct Wi-Fi requests, iPhone relay fallback, and Double Tap for Next Page.
 - English, Vietnamese, Japanese, and Simplified Chinese localization.
+
+Unsupported volume-button and private-API research lives only in the separately signed Labs target; see [LABS.md](LABS.md).
 
 ## Install the KOReader plugin
 

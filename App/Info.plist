@@ -17,8 +17,40 @@
     <string>Scan the pairing code displayed by the KOReader plugin.</string>
     <key>NSLocalNetworkUsageDescription</key>
     <string>Send page actions directly to KOReader on your Kindle.</string>
+    <key>UIApplicationShortcutItems</key>
+    <array>
+        <dict>
+            <key>UIApplicationShortcutItemIconType</key>
+            <string>UIApplicationShortcutIconTypePlay</string>
+            <key>UIApplicationShortcutItemTitle</key>
+            <string>Next Page</string>
+            <key>UIApplicationShortcutItemType</key>
+            <string>git.shin.koreaderRemoteTurner.next</string>
+        </dict>
+        <dict>
+            <key>UIApplicationShortcutItemIconType</key>
+            <string>UIApplicationShortcutIconTypeRewind</string>
+            <key>UIApplicationShortcutItemTitle</key>
+            <string>Previous Page</string>
+            <key>UIApplicationShortcutItemType</key>
+            <string>git.shin.koreaderRemoteTurner.previous</string>
+        </dict>
+    </array>
     <key>UIApplicationSupportsIndirectInputEvents</key>
     <true/>
+    <key>UISupportedInterfaceOrientations</key>
+    <array>
+        <string>UIInterfaceOrientationPortrait</string>
+        <string>UIInterfaceOrientationLandscapeLeft</string>
+        <string>UIInterfaceOrientationLandscapeRight</string>
+    </array>
+    <key>UISupportedInterfaceOrientations~ipad</key>
+    <array>
+        <string>UIInterfaceOrientationPortrait</string>
+        <string>UIInterfaceOrientationPortraitUpsideDown</string>
+        <string>UIInterfaceOrientationLandscapeLeft</string>
+        <string>UIInterfaceOrientationLandscapeRight</string>
+    </array>
     <key>UILaunchScreen</key>
     <dict/>
 </dict>

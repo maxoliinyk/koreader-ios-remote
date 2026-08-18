@@ -7,10 +7,59 @@
 
 /* Begin PBXBuildFile section */
 		A10000000000000000000001 /* RemoteCore in Frameworks */ = {isa = PBXBuildFile; productRef = A10000000000000000000002 /* RemoteCore */; };
+		A20000000000000000000001 /* RemoteCore in Frameworks */ = {isa = PBXBuildFile; productRef = A20000000000000000000002 /* RemoteCore */; };
+		A20000000000000000000003 /* KOReaderControls.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = A20000000000000000000004 /* KOReaderControls.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		A30000000000000000000001 /* RemoteCore in Frameworks */ = {isa = PBXBuildFile; productRef = A30000000000000000000002 /* RemoteCore */; };
+		A30000000000000000000003 /* KOReader Watch.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = A30000000000000000000004 /* KOReader Watch.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		A20000000000000000000005 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A1000000000000000000000C /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A20000000000000000000006;
+			remoteInfo = KOReaderControls;
+		};
+		A30000000000000000000005 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A1000000000000000000000C /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A30000000000000000000006;
+			remoteInfo = WatchRemote;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		A20000000000000000000007 /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				A20000000000000000000003 /* KOReaderControls.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A30000000000000000000007 /* Embed Watch Content */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "$(CONTENTS_FOLDER_PATH)/Watch";
+			dstSubfolderSpec = 16;
+			files = (
+				A30000000000000000000003 /* KOReader Watch.app in Embed Watch Content */,
+			);
+			name = "Embed Watch Content";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		A10000000000000000000003 /* KOReader Remote.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "KOReader Remote.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		A20000000000000000000004 /* KOReaderControls.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = KOReaderControls.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		A30000000000000000000004 /* KOReader Watch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "KOReader Watch.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		A40000000000000000000001 /* KOReader Remote Labs.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "KOReader Remote Labs.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -21,6 +70,27 @@
 			);
 			target = A10000000000000000000008 /* KOReaderRemote */;
 		};
+		A20000000000000000000008 /* Exceptions for "Controls" folder in "KOReaderControls" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = A20000000000000000000006 /* KOReaderControls */;
+		};
+		A30000000000000000000008 /* Exceptions for "WatchApp" folder in "WatchRemote" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = A30000000000000000000006 /* WatchRemote */;
+		};
+		A40000000000000000000002 /* Exceptions for "Labs" folder in "KOReaderRemoteLabs" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = A40000000000000000000003 /* KOReaderRemoteLabs */;
+		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -30,6 +100,30 @@
 				A10000000000000000000013 /* Exceptions for "App" folder in "KOReaderRemote" target */,
 			);
 			path = App;
+			sourceTree = "<group>";
+		};
+		A20000000000000000000009 /* Controls */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				A20000000000000000000008 /* Exceptions for "Controls" folder in "KOReaderControls" target */,
+			);
+			path = Controls;
+			sourceTree = "<group>";
+		};
+		A30000000000000000000009 /* WatchApp */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				A30000000000000000000008 /* Exceptions for "WatchApp" folder in "WatchRemote" target */,
+			);
+			path = WatchApp;
+			sourceTree = "<group>";
+		};
+		A40000000000000000000004 /* Labs */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				A40000000000000000000002 /* Exceptions for "Labs" folder in "KOReaderRemoteLabs" target */,
+			);
+			path = Labs;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -43,6 +137,28 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		A2000000000000000000000A /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A20000000000000000000001 /* RemoteCore in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A3000000000000000000000A /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A30000000000000000000001 /* RemoteCore in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A40000000000000000000005 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = ();
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -50,6 +166,9 @@
 			isa = PBXGroup;
 			children = (
 				A10000000000000000000004 /* App */,
+				A20000000000000000000009 /* Controls */,
+				A30000000000000000000009 /* WatchApp */,
+				A40000000000000000000004 /* Labs */,
 				A10000000000000000000007 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -58,6 +177,9 @@
 			isa = PBXGroup;
 			children = (
 				A10000000000000000000003 /* KOReader Remote.app */,
+				A20000000000000000000004 /* KOReaderControls.appex */,
+				A30000000000000000000004 /* KOReader Watch.app */,
+				A40000000000000000000001 /* KOReader Remote Labs.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -72,9 +194,14 @@
 				A1000000000000000000000A /* Sources */,
 				A10000000000000000000005 /* Frameworks */,
 				A1000000000000000000000B /* Resources */,
+				A20000000000000000000007 /* Embed App Extensions */,
+				A30000000000000000000007 /* Embed Watch Content */,
 			);
 			buildRules = ();
-			dependencies = ();
+			dependencies = (
+				A2000000000000000000000B /* PBXTargetDependency */,
+				A3000000000000000000000B /* PBXTargetDependency */,
+			);
 			fileSystemSynchronizedGroups = (
 				A10000000000000000000004 /* App */,
 			);
@@ -84,6 +211,67 @@
 			);
 			productName = KOReaderRemote;
 			productReference = A10000000000000000000003 /* KOReader Remote.app */;
+			productType = "com.apple.product-type.application";
+		};
+		A20000000000000000000006 /* KOReaderControls */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A2000000000000000000000C /* Build configuration list for PBXNativeTarget "KOReaderControls" */;
+			buildPhases = (
+				A2000000000000000000000D /* Sources */,
+				A2000000000000000000000A /* Frameworks */,
+				A2000000000000000000000E /* Resources */,
+			);
+			buildRules = ();
+			dependencies = ();
+			fileSystemSynchronizedGroups = (
+				A20000000000000000000009 /* Controls */,
+			);
+			name = KOReaderControls;
+			packageProductDependencies = (
+				A20000000000000000000002 /* RemoteCore */,
+			);
+			productName = KOReaderControls;
+			productReference = A20000000000000000000004 /* KOReaderControls.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
+		A30000000000000000000006 /* WatchRemote */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A3000000000000000000000C /* Build configuration list for PBXNativeTarget "WatchRemote" */;
+			buildPhases = (
+				A3000000000000000000000D /* Sources */,
+				A3000000000000000000000A /* Frameworks */,
+				A3000000000000000000000E /* Resources */,
+			);
+			buildRules = ();
+			dependencies = ();
+			fileSystemSynchronizedGroups = (
+				A30000000000000000000009 /* WatchApp */,
+			);
+			name = WatchRemote;
+			packageProductDependencies = (
+				A30000000000000000000002 /* RemoteCore */,
+			);
+			productName = WatchRemote;
+			productReference = A30000000000000000000004 /* KOReader Watch.app */;
+			productType = "com.apple.product-type.application";
+		};
+		A40000000000000000000003 /* KOReaderRemoteLabs */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A40000000000000000000006 /* Build configuration list for PBXNativeTarget "KOReaderRemoteLabs" */;
+			buildPhases = (
+				A40000000000000000000007 /* Sources */,
+				A40000000000000000000005 /* Frameworks */,
+				A40000000000000000000008 /* Resources */,
+			);
+			buildRules = ();
+			dependencies = ();
+			fileSystemSynchronizedGroups = (
+				A40000000000000000000004 /* Labs */,
+			);
+			name = KOReaderRemoteLabs;
+			packageProductDependencies = ();
+			productName = KOReaderRemoteLabs;
+			productReference = A40000000000000000000001 /* KOReader Remote Labs.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -97,6 +285,9 @@
 				LastUpgradeCheck = 2700;
 				TargetAttributes = {
 					A10000000000000000000008 = { CreatedOnToolsVersion = 27.0; };
+					A20000000000000000000006 = { CreatedOnToolsVersion = 27.0; };
+					A30000000000000000000006 = { CreatedOnToolsVersion = 27.0; };
+					A40000000000000000000003 = { CreatedOnToolsVersion = 27.0; };
 				};
 			};
 			buildConfigurationList = A1000000000000000000000D /* Build configuration list for PBXProject "KOReaderRemote" */;
@@ -120,12 +311,33 @@
 			projectRoot = "";
 			targets = (
 				A10000000000000000000008 /* KOReaderRemote */,
+				A20000000000000000000006 /* KOReaderControls */,
+				A30000000000000000000006 /* WatchRemote */,
+				A40000000000000000000003 /* KOReaderRemoteLabs */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
 		A1000000000000000000000B /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = ();
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A2000000000000000000000E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = ();
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A3000000000000000000000E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = ();
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A40000000000000000000008 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = ();
@@ -140,7 +352,38 @@
 			files = ();
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		A2000000000000000000000D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = ();
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A3000000000000000000000D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = ();
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A40000000000000000000007 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = ();
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		A2000000000000000000000B /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A20000000000000000000006 /* KOReaderControls */;
+			targetProxy = A20000000000000000000005 /* PBXContainerItemProxy */;
+		};
+		A3000000000000000000000B /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A30000000000000000000006 /* WatchRemote */;
+			targetProxy = A30000000000000000000005 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		A1000000000000000000000F /* Debug */ = {
@@ -249,6 +492,156 @@
 			};
 			name = Release;
 		};
+		A2000000000000000000000F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = Controls/KOReaderControls.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = F2Z5AUR56U;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Controls/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "KOReader Controls";
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				MARKETING_VERSION = 2.0.0;
+				PRODUCT_BUNDLE_IDENTIFIER = git.shin.koreaderRemoteTurner.Controls;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_STRICT_CONCURRENCY = complete;
+				SWIFT_VERSION = 6.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		A20000000000000000000010 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = Controls/KOReaderControls.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = F2Z5AUR56U;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Controls/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "KOReader Controls";
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				MARKETING_VERSION = 2.0.0;
+				PRODUCT_BUNDLE_IDENTIFIER = git.shin.koreaderRemoteTurner.Controls;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_STRICT_CONCURRENCY = complete;
+				SWIFT_VERSION = 6.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		A3000000000000000000000F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = WatchApp/WatchRemote.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = F2Z5AUR56U;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = WatchApp/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "KOReader Remote";
+				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = git.shin.koreaderRemoteTurner;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				MARKETING_VERSION = 2.0.0;
+				PRODUCT_BUNDLE_IDENTIFIER = git.shin.koreaderRemoteTurner.watchkitapp;
+				PRODUCT_NAME = "KOReader Watch";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_STRICT_CONCURRENCY = complete;
+				SWIFT_VERSION = 6.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 26.0;
+			};
+			name = Debug;
+		};
+		A30000000000000000000010 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = WatchApp/WatchRemote.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = F2Z5AUR56U;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = WatchApp/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "KOReader Remote";
+				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = git.shin.koreaderRemoteTurner;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				MARKETING_VERSION = 2.0.0;
+				PRODUCT_BUNDLE_IDENTIFIER = git.shin.koreaderRemoteTurner.watchkitapp;
+				PRODUCT_NAME = "KOReader Watch";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_STRICT_CONCURRENCY = complete;
+				SWIFT_VERSION = 6.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 26.0;
+			};
+			name = Release;
+		};
+		A40000000000000000000009 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = F2Z5AUR56U;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Labs/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "KOReader Remote Labs";
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				MARKETING_VERSION = 2.0.0;
+				PRODUCT_BUNDLE_IDENTIFIER = git.shin.koreaderRemoteTurner.Labs;
+				PRODUCT_NAME = "KOReader Remote Labs";
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_STRICT_CONCURRENCY = complete;
+				SWIFT_VERSION = 6.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		A4000000000000000000000A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = F2Z5AUR56U;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Labs/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "KOReader Remote Labs";
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				MARKETING_VERSION = 2.0.0;
+				PRODUCT_BUNDLE_IDENTIFIER = git.shin.koreaderRemoteTurner.Labs;
+				PRODUCT_NAME = "KOReader Remote Labs";
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_STRICT_CONCURRENCY = complete;
+				SWIFT_VERSION = 6.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -270,6 +663,33 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
+		A2000000000000000000000C /* Build configuration list for PBXNativeTarget "KOReaderControls" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A2000000000000000000000F /* Debug */,
+				A20000000000000000000010 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A3000000000000000000000C /* Build configuration list for PBXNativeTarget "WatchRemote" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A3000000000000000000000F /* Debug */,
+				A30000000000000000000010 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A40000000000000000000006 /* Build configuration list for PBXNativeTarget "KOReaderRemoteLabs" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A40000000000000000000009 /* Debug */,
+				A4000000000000000000000A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 /* End XCConfigurationList section */
 
 /* Begin XCLocalSwiftPackageReference section */
@@ -281,6 +701,16 @@
 
 /* Begin XCSwiftPackageProductDependency section */
 		A10000000000000000000002 /* RemoteCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A1000000000000000000000E /* XCLocalSwiftPackageReference "Packages/RemoteCore" */;
+			productName = RemoteCore;
+		};
+		A20000000000000000000002 /* RemoteCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A1000000000000000000000E /* XCLocalSwiftPackageReference "Packages/RemoteCore" */;
+			productName = RemoteCore;
+		};
+		A30000000000000000000002 /* RemoteCore */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = A1000000000000000000000E /* XCLocalSwiftPackageReference "Packages/RemoteCore" */;
 			productName = RemoteCore;

@@ -51,8 +51,8 @@ app.*.map.json
 /node_modules/
 /package-lock.json
 /DerivedData/
+/Packages/RemoteCore/build/
 
 # Local Codex planning and handoff workspace
 /.agent/
-
 

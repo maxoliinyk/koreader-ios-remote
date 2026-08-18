@@ -2,22 +2,22 @@ import Foundation
 import RemoteCore
 
 extension RemoteStore {
-    static func preview(paired: Bool = true) -> RemoteStore {
+    static func preview(paired: Bool = true, activity: Activity = .idle) -> RemoteStore {
         let suite = UserDefaults(suiteName: "KOReaderRemote.preview.\(UUID().uuidString)")!
         let store = RemoteStore(storage: PairingStore(defaults: suite, secrets: PreviewSecretStore()))
+        var configuration: PairingConfiguration?
         if paired {
-            store.pair(
-                name: "Bedroom Kindle",
-                host: "192.168.1.20",
-                port: 9090,
-                secret: Data(repeating: 1, count: 32).base64URLEncodedString
+            configuration = try? PairingConfiguration(
+                endpoint: KindleEndpoint(name: "Bedroom Kindle", host: "192.168.1.20"),
+                secret: Data(repeating: 1, count: 32)
             )
         }
+        store.setPreviewState(configuration: configuration, activity: activity)
         return store
     }
 }
 
-private final class PreviewSecretStore: SecretStoring, @unchecked Sendable {
+final class PreviewSecretStore: SecretStoring, @unchecked Sendable {
     private var value: Data?
     func load() throws -> Data? { value }
     func save(_ secret: Data) throws { value = secret }

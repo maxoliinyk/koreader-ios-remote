@@ -18,6 +18,10 @@ jobs:
           xcodebuild -project KOReaderRemote.xcodeproj -scheme KOReaderRemote
           -destination 'generic/platform=iOS Simulator'
           CODE_SIGNING_ALLOWED=NO build
+      - name: Confirm Labs is not a release dependency
+        run: >-
+          xcodebuild -project KOReaderRemote.xcodeproj -scheme KOReaderRemote
+          -showBuildSettings | grep -q 'TARGET_NAME = KOReaderRemote'
 
   plugin:
     runs-on: ubuntu-latest

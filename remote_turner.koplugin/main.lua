@@ -83,7 +83,8 @@ local function decode_base64url(value)
 end
 
 local function ensure_secret()
-    if settings.secret and #decode_base64url(settings.secret) == 32 then return true end
+    local decoded = settings.secret and decode_base64url(settings.secret)
+    if decoded and #decoded == 32 then return true end
     local bytes = random_bytes(32)
     if not bytes then return false end
     settings.secret = base64url(bytes)
@@ -257,7 +258,7 @@ function RemoteTurner:onRequest(data, client)
     return response
 end
 
-function RemoteTurner:showPairingCode()
+function RemoteTurner.showPairingCode()
     local uri = pairing_uri()
     if not uri then
         UIManager:show(InfoMessage:new { text = _("Could not determine this Kindle's Wi-Fi address.") })
@@ -270,7 +271,7 @@ function RemoteTurner:showPairingCode()
     })
 end
 
-function RemoteTurner:showManualDetails()
+function RemoteTurner.showManualDetails()
     local host = local_address() or _("Unavailable")
     ensure_secret()
     UIManager:show(InfoMessage:new {

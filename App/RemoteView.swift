@@ -120,3 +120,23 @@ struct RemoteView: View {
         }
     }
 }
+
+#Preview("Unpaired") {
+    NavigationStack { RemoteView() }
+        .environment(RemoteStore.preview(paired: false))
+}
+
+#Preview("Sending") {
+    NavigationStack { RemoteView() }
+        .environment(RemoteStore.preview(activity: .sending(.nextPage)))
+}
+
+#Preview("Success") {
+    NavigationStack { RemoteView() }
+        .environment(RemoteStore.preview(activity: .success("Next page sent.")))
+}
+
+#Preview("Failure") {
+    NavigationStack { RemoteView() }
+        .environment(RemoteStore.preview(activity: .failure("The Kindle could not be reached.")))
+}

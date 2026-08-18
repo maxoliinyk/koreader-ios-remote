@@ -26,7 +26,10 @@ function HTTPServer.waitEvent(server)
         if length then content_length = tonumber(length) end
     end
 
-    if content_length > 4096 then content_length = 4097 end
+    if content_length > 4096 then
+        local request = table.concat(lines, "\r\n") .. "\r\n\r\n" .. string.rep("x", 4097)
+        return server.receiveCallback(request, client)
+    end
     local body = ""
     if content_length > 0 then
         body = client:receive(content_length)

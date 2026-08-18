@@ -4,6 +4,7 @@ import PackageDescription
 
 let package = Package(
     name: "RemoteCore",
+    defaultLocalization: "en",
     platforms: [
         .iOS(.v26),
         .watchOS(.v26),
@@ -13,7 +14,7 @@ let package = Package(
         .library(name: "RemoteCore", targets: ["RemoteCore"]),
     ],
     targets: [
-        .target(name: "RemoteCore"),
+        .target(name: "RemoteCore", resources: [.process("Resources")]),
         .testTarget(name: "RemoteCoreTests", dependencies: ["RemoteCore"]),
     ],
     swiftLanguageModes: [.v6]

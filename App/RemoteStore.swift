@@ -41,6 +41,7 @@ final class RemoteStore {
             isPairingPresented = false
             activity = .success(String(localized: "Kindle paired."))
             Feedback.success()
+            Task { await testConnection() }
         } catch {
             fail(error)
         }
@@ -59,6 +60,7 @@ final class RemoteStore {
             isPairingPresented = false
             activity = .success(String(localized: "Kindle paired."))
             Feedback.success()
+            Task { await testConnection() }
         } catch {
             fail(error)
         }
@@ -103,6 +105,7 @@ final class RemoteStore {
             try storage.forget()
             configuration = nil
             activity = .idle
+            PhoneConnectivity.shared.sync(nil)
         } catch {
             fail(error)
         }
@@ -111,6 +114,7 @@ final class RemoteStore {
     private func save(_ value: PairingConfiguration) throws {
         try storage.save(value)
         configuration = value
+        PhoneConnectivity.shared.sync(value)
     }
 
     private func fail(_ error: Error) {
@@ -127,4 +131,11 @@ final class RemoteStore {
         case .sleep: String(localized: "Sleep sent.")
         }
     }
+
+#if DEBUG
+    func setPreviewState(configuration: PairingConfiguration?, activity: Activity) {
+        self.configuration = configuration
+        self.activity = activity
+    }
+#endif
 }
