@@ -1,6 +1,6 @@
 //
-//  WatchRemoteApp.swift
-//  KOReaderRemote
+//  KORemoteWatchApp.swift
+//  KORemote
 //
 //  Created by Max Oliinyk on 18.08.26.
 //
@@ -8,13 +8,13 @@
 import SwiftUI
 
 @main
-struct WatchRemoteApp: App {
-    @State private var store = WatchRemoteStore()
+struct KORemoteWatchApp: App {
+    @State private var store = KORemoteStore()
 
     var body: some Scene {
         WindowGroup {
             NavigationStack {
-                WatchRemoteView()
+                KORemoteView()
             }
             .environment(store)
             .task { store.activate() }

@@ -1,6 +1,6 @@
 //
 //  KindleClient.swift
-//  KOReaderRemote
+//  KORemote
 //
 //  Created by Max Oliinyk on 18.08.26.
 //

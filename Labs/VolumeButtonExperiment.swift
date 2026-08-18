@@ -1,6 +1,6 @@
 //
 //  VolumeButtonExperiment.swift
-//  KOReaderRemote
+//  KORemote
 //
 //  Created by Max Oliinyk on 18.08.26.
 //
@@ -332,7 +332,7 @@ final class VolumeButtonExperiment: NSObject {
 
     private func publishNowPlayingState() {
         var info: [String: Any] = [
-            MPMediaItemPropertyTitle: "KOReader Remote",
+            MPMediaItemPropertyTitle: "KORemote",
             MPMediaItemPropertyArtist: "Previous and Next turn KOReader pages",
             MPNowPlayingInfoPropertyPlaybackRate: 1.0,
         ]

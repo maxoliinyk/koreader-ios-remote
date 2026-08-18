@@ -1,6 +1,6 @@
 //
 //  AppShortcuts.swift
-//  KOReaderRemote
+//  KORemote
 //
 //  Created by Max Oliinyk on 18.08.26.
 //
@@ -8,7 +8,7 @@
 import AppIntents
 import RemoteCore
 
-struct KOReaderAppShortcuts: AppShortcutsProvider {
+struct KORemoteAppShortcuts: AppShortcutsProvider {
     static var appShortcuts: [AppShortcut] {
         AppShortcut(
             intent: NextPageIntent(),

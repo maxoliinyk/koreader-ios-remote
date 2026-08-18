@@ -1,6 +1,6 @@
-# KOReader Remote Labs
+# KOReader iOS Remote Labs
 
-`KOReader Remote Labs` is a separate iOS application with bundle identifier `com.maxoliinyk.koreaderremote.labs`. It is for sideloaded research only. The normal app does not import Labs code or link private frameworks.
+`KORemote Labs` is a separate iOS application with bundle identifier `com.maxoliinyk.koreaderremote.labs`. It is for sideloaded research only. The normal app does not import Labs code or link private frameworks.
 
 ## What works without Labs
 
@@ -10,12 +10,12 @@ The normal app also offers opt-in public volume observation and Now Playing cont
 
 ## iPhone experiments
 
-Start the `KOReaderRemoteLabs` scheme after pairing in the normal app. Use the same development team for both targets so they can use the shared App Group and Keychain group.
+Start the `KORemoteLabs` scheme after pairing in the normal app. Use the same development team for both targets so they can use the shared App Group and Keychain group.
 
 Tap **Start Experiment**. This does three things:
 
 1. Starts an effectively inaudible looping `AVAudioEngine` source with the audio background mode.
-2. Publishes KOReader Remote as the current Now Playing session.
+2. Publishes KORemote as the current Now Playing session.
 3. Registers bidirectional page actions with `MPRemoteCommandCenter`.
 
 Choose **Previous / Next** for track buttons or **10-Second Arrows** for skip buttons. Previous and Back 10 send Previous Page; Next and Forward 10 send Next Page. The mode can be changed while the session is running. Also try EarPods, Bluetooth remotes, car controls, and other media accessories.
@@ -51,7 +51,7 @@ The motion detector is intentionally labeled a heuristic because ordinary wrist 
 
 1. Pair and test KOReader in the normal app.
 2. Add **Next Page** to the Lock Screen and verify it while locked.
-3. Run `KOReaderRemoteLabs`, tap **Start Experiment**, then lock the phone.
+3. Run `KORemoteLabs`, tap **Start Experiment**, then lock the phone.
 4. Test both **Previous / Next** and **10-Second Arrows** in Now Playing.
 5. In **Raw Buttons**, test Volume Up and Volume Down while unlocked, locked, and at both volume limits.
 6. Test **Keep Centered** and confirm the volume returns to 50% after both buttons.

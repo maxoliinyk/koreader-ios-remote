@@ -1,4 +1,4 @@
-# KOReader Remote
+# KOReader iOS Remote
 
 A native iPhone and Apple Watch remote for KOReader. It sends authenticated page actions directly over your local Wi-Fi network. There is no cloud service or account.
 
@@ -46,7 +46,7 @@ The listener runs only while KOReader is active. It closes during suspend or exi
 
 ## Run the Apple app
 
-Open `KOReaderRemote.xcodeproj` in Xcode 26 or later. Select the **KOReaderRemote** scheme, not Labs, Controls, or Watch.
+Open `KOReaderiOSRemote.xcodeproj` in Xcode 26 or later. Select the **KORemote** scheme, not Labs, Controls, or Watch.
 
 ### Simulator
 
@@ -59,12 +59,12 @@ Let Xcode sign the simulator build normally. `CODE_SIGNING_ALLOWED=NO` is only f
 ### Physical iPhone
 
 1. Connect and unlock the iPhone. Enable Developer Mode if Xcode requests it.
-2. Select the `KOReaderRemote` target, open **Signing & Capabilities**, and choose your development team.
-3. Use the same team for `KOReaderControls`, `WatchRemote`, and `KOReaderRemoteLabs` when building those targets.
+2. Select the `KORemote` target, open **Signing & Capabilities**, and choose your development team.
+3. Use the same team for `KORemoteControls`, `KORemoteWatch`, and `KORemoteLabs` when building those targets.
 4. Select the iPhone and press Run.
 5. Accept Camera access when scanning and Local Network access when the app first tests KOReader.
 
-If Xcode still has an old paused process, stop it, remove KOReader Remote from the device or simulator, and run again. Launch the `KOReaderRemote` scheme rather than the SwiftUI Preview button.
+If Xcode still has an old paused process, stop it, remove KORemote from the device or simulator, and run again. Launch the `KORemote` scheme rather than the SwiftUI Preview button.
 
 ## Pair and use it
 
@@ -85,9 +85,9 @@ Some guest and mesh networks block communication between clients. If pairing suc
 
 The normal app includes native **Next Page** and **Previous Page** controls. They can run without opening the app after pairing and approving Local Network access once.
 
-- Lock Screen: touch and hold the Lock Screen, choose **Customize**, select a control slot, then add **KOReader Remote — Next Page**.
+- Lock Screen: touch and hold the Lock Screen, choose **Customize**, select a control slot, then add **KORemote — Next Page**.
 - Control Center: touch and hold an empty area, choose **Add a Control**, then add **Next Page**.
-- Action Button: open **Settings → Action Button**, choose Controls or Shortcut, then select **KOReader Remote — Next Page**.
+- Action Button: open **Settings → Action Button**, choose Controls or Shortcut, then select **KORemote — Next Page**.
 - Siri and Shortcuts: use the supplied Next Page or Previous Page action.
 - Volume buttons: open **Settings → System Controls** and enable **Use Volume Buttons**. Volume Up sends Next; Volume Down sends Previous. The app keeps system volume near 50% so both directions remain available.
 - Now Playing: enable **Capture Media Controls** on the same screen to use Previous and Next from the Lock Screen or connected media accessories.
@@ -96,7 +96,7 @@ Volume and media capture keep an effectively inaudible background-audio session 
 
 ## Apple Watch
 
-Pair KOReader in the iPhone app first. Install or run the `WatchRemote` companion through Xcode, then open KOReader Remote on the watch. It tries the KOReader device directly over Wi-Fi and falls back through the paired iPhone.
+Pair KOReader in the iPhone app first. Install or run the `KORemoteWatch` companion through Xcode, then open KORemote on the watch. It tries the KOReader device directly over Wi-Fi and falls back through the paired iPhone.
 
 The Next button is the watch scene's primary hand-gesture action, so supported watches can use Double Tap while the app is visible. Debug builds also contain Gesture Lab, an experimental Core Motion impulse detector that requires physical-watch calibration.
 
@@ -110,7 +110,7 @@ The project uses one reverse-domain identifier family:
 - Labs: `com.maxoliinyk.koreaderremote.labs`
 - Shared App Group: `group.com.maxoliinyk.koreaderremote`
 
-Changing from an older build installs a new app identity. Pair KOReader again and re-add Lock Screen, Control Center, Action Button, and Shortcut actions.
+These identifiers intentionally remain stable across the KORemote rename, preserving pairing data and existing system controls for current users.
 
 ## Troubleshooting
 
@@ -126,7 +126,7 @@ Changing from an older build installs a new app identity. Pair KOReader again an
 ```bash
 xcrun swift test --package-path Packages/RemoteCore
 
-xcodebuild -project KOReaderRemote.xcodeproj -scheme KOReaderRemote \
+xcodebuild -project KOReaderiOSRemote.xcodeproj -scheme KORemote \
   -destination 'generic/platform=iOS Simulator' \
   CODE_SIGNING_ALLOWED=NO build
 ```

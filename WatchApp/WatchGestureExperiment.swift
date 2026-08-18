@@ -1,6 +1,6 @@
 //
 //  WatchGestureExperiment.swift
-//  KOReaderRemote
+//  KORemote
 //
 //  Created by Max Oliinyk on 18.08.26.
 //
@@ -75,7 +75,7 @@ final class WatchGestureExperiment {
 }
 
 struct WatchGestureLabView: View {
-    @Environment(WatchRemoteStore.self) private var store
+    @Environment(KORemoteStore.self) private var store
     @State private var experiment = WatchGestureExperiment()
 
     var body: some View {

@@ -1,6 +1,6 @@
 //
 //  SystemControlsStore.swift
-//  KOReaderRemote
+//  KORemote
 //
 //  Created by Max Oliinyk on 18.08.26.
 //
@@ -177,7 +177,7 @@ final class SystemControlsStore {
         register(center.nextTrackCommand, action: .nextPage)
 
         MPNowPlayingInfoCenter.default().nowPlayingInfo = [
-            MPMediaItemPropertyTitle: "KOReader Remote",
+            MPMediaItemPropertyTitle: "KORemote",
             MPMediaItemPropertyArtist: "Previous and Next turn pages",
             MPNowPlayingInfoPropertyPlaybackRate: 1.0,
             MPNowPlayingInfoPropertyPlaybackQueueCount: 3,

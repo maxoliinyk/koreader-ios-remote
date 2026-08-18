@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "A10000000000000000000008"
-               BuildableName = "KOReaderRemote.app"
-               BlueprintName = "KOReaderRemote"
-               ReferencedContainer = "container:KOReaderRemote.xcodeproj">
+               BuildableName = "KORemote.app"
+               BlueprintName = "KORemote"
+               ReferencedContainer = "container:KOReaderiOSRemote.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -45,9 +45,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "A10000000000000000000008"
-            BuildableName = "KOReaderRemote.app"
-            BlueprintName = "KOReaderRemote"
-            ReferencedContainer = "container:KOReaderRemote.xcodeproj">
+            BuildableName = "KORemote.app"
+            BlueprintName = "KORemote"
+            ReferencedContainer = "container:KOReaderiOSRemote.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -62,9 +62,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "A10000000000000000000008"
-            BuildableName = "KOReaderRemote.app"
-            BlueprintName = "KOReaderRemote"
-            ReferencedContainer = "container:KOReaderRemote.xcodeproj">
+            BuildableName = "KORemote.app"
+            BlueprintName = "KORemote"
+            ReferencedContainer = "container:KOReaderiOSRemote.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

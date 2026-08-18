@@ -1,6 +1,6 @@
 //
-//  WatchRemoteStore.swift
-//  KOReaderRemote
+//  KORemoteStore.swift
+//  KORemote
 //
 //  Created by Max Oliinyk on 18.08.26.
 //
@@ -12,7 +12,7 @@ import WatchKit
 
 @MainActor
 @Observable
-final class WatchRemoteStore {
+final class KORemoteStore {
     enum State: Equatable {
         case ready
         case sending

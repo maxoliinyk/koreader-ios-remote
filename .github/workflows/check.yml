@@ -15,13 +15,13 @@ jobs:
         run: swift test --package-path Packages/RemoteCore
       - name: Build iOS app without signing
         run: >-
-          xcodebuild -project KOReaderRemote.xcodeproj -scheme KOReaderRemote
+          xcodebuild -project KOReaderiOSRemote.xcodeproj -scheme KORemote
           -destination 'generic/platform=iOS Simulator'
           CODE_SIGNING_ALLOWED=NO build
       - name: Confirm Labs is not a release dependency
         run: >-
-          xcodebuild -project KOReaderRemote.xcodeproj -scheme KOReaderRemote
-          -showBuildSettings | grep -q 'TARGET_NAME = KOReaderRemote'
+          xcodebuild -project KOReaderiOSRemote.xcodeproj -scheme KORemote
+          -showBuildSettings | grep -q 'TARGET_NAME = KORemote'
 
   plugin:
     runs-on: ubuntu-latest

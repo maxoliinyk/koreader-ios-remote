@@ -10,8 +10,8 @@ test:
 
 build:
 	xcodebuild \
-		-project KOReaderRemote.xcodeproj \
-		-scheme KOReaderRemote \
+		-project KOReaderiOSRemote.xcodeproj \
+		-scheme KORemote \
 		-destination 'generic/platform=iOS Simulator' \
 		CODE_SIGNING_ALLOWED=NO build
 

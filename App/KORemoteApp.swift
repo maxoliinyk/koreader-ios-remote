@@ -1,6 +1,6 @@
 //
-//  KOReaderRemoteApp.swift
-//  KOReaderRemote
+//  KORemoteApp.swift
+//  KORemote
 //
 //  Created by Max Oliinyk on 18.08.26.
 //
@@ -8,7 +8,7 @@
 import SwiftUI
 
 @main
-struct KOReaderRemoteApp: App {
+struct KORemoteApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) private var appDelegate
     @State private var store = RemoteStore()
     @State private var systemControls = SystemControlsStore()

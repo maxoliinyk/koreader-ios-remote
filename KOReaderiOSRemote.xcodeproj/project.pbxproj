@@ -9,9 +9,9 @@
 /* Begin PBXBuildFile section */
 		A10000000000000000000001 /* RemoteCore in Frameworks */ = {isa = PBXBuildFile; productRef = A10000000000000000000002 /* RemoteCore */; };
 		A20000000000000000000001 /* RemoteCore in Frameworks */ = {isa = PBXBuildFile; productRef = A20000000000000000000002 /* RemoteCore */; };
-		A20000000000000000000003 /* KOReaderControls.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = A20000000000000000000004 /* KOReaderControls.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		A20000000000000000000003 /* KORemoteControls.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = A20000000000000000000004 /* KORemoteControls.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		A30000000000000000000001 /* RemoteCore in Frameworks */ = {isa = PBXBuildFile; productRef = A30000000000000000000002 /* RemoteCore */; };
-		A30000000000000000000003 /* KOReader Watch.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = A30000000000000000000004 /* KOReader Watch.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		A30000000000000000000003 /* KORemoteWatch.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = A30000000000000000000004 /* KORemoteWatch.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		A4000000000000000000000B /* RemoteCore in Frameworks */ = {isa = PBXBuildFile; productRef = A4000000000000000000000C /* RemoteCore */; };
 /* End PBXBuildFile section */
 
@@ -21,14 +21,14 @@
 			containerPortal = A1000000000000000000000C /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = A20000000000000000000006;
-			remoteInfo = KOReaderControls;
+			remoteInfo = KORemoteControls;
 		};
 		A30000000000000000000005 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = A1000000000000000000000C /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = A30000000000000000000006;
-			remoteInfo = WatchRemote;
+			remoteInfo = KORemoteWatch;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -39,7 +39,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
-				A20000000000000000000003 /* KOReaderControls.appex in Embed App Extensions */,
+				A20000000000000000000003 /* KORemoteControls.appex in Embed App Extensions */,
 			);
 			name = "Embed App Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -50,7 +50,7 @@
 			dstPath = "$(CONTENTS_FOLDER_PATH)/Watch";
 			dstSubfolderSpec = 16;
 			files = (
-				A30000000000000000000003 /* KOReader Watch.app in Embed Watch Content */,
+				A30000000000000000000003 /* KORemoteWatch.app in Embed Watch Content */,
 			);
 			name = "Embed Watch Content";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -58,40 +58,40 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		A10000000000000000000003 /* KOReaderRemote.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = KOReaderRemote.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		A20000000000000000000004 /* KOReaderControls.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = KOReaderControls.appex; sourceTree = BUILT_PRODUCTS_DIR; };
-		A30000000000000000000004 /* KOReader Watch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "KOReader Watch.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		A40000000000000000000001 /* KOReader Remote Labs.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "KOReader Remote Labs.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		A10000000000000000000003 /* KORemote.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = KORemote.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		A20000000000000000000004 /* KORemoteControls.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = KORemoteControls.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		A30000000000000000000004 /* KORemoteWatch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = KORemoteWatch.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		A40000000000000000000001 /* KORemoteLabs.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = KORemoteLabs.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		A10000000000000000000013 /* Exceptions for "App" folder in "KOReaderRemote" target */ = {
+		A10000000000000000000013 /* Exceptions for "App" folder in "KORemote" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
 			);
-			target = A10000000000000000000008 /* KOReaderRemote */;
+			target = A10000000000000000000008 /* KORemote */;
 		};
-		A20000000000000000000008 /* Exceptions for "Controls" folder in "KOReaderControls" target */ = {
+		A20000000000000000000008 /* Exceptions for "Controls" folder in "KORemoteControls" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
 			);
-			target = A20000000000000000000006 /* KOReaderControls */;
+			target = A20000000000000000000006 /* KORemoteControls */;
 		};
-		A30000000000000000000008 /* Exceptions for "WatchApp" folder in "WatchRemote" target */ = {
+		A30000000000000000000008 /* Exceptions for "WatchApp" folder in "KORemoteWatch" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
 			);
-			target = A30000000000000000000006 /* WatchRemote */;
+			target = A30000000000000000000006 /* KORemoteWatch */;
 		};
-		A40000000000000000000002 /* Exceptions for "Labs" folder in "KOReaderRemoteLabs" target */ = {
+		A40000000000000000000002 /* Exceptions for "Labs" folder in "KORemoteLabs" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
 			);
-			target = A40000000000000000000003 /* KOReaderRemoteLabs */;
+			target = A40000000000000000000003 /* KORemoteLabs */;
 		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
@@ -99,7 +99,7 @@
 		A10000000000000000000004 /* App */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
-				A10000000000000000000013 /* Exceptions for "App" folder in "KOReaderRemote" target */,
+				A10000000000000000000013 /* Exceptions for "App" folder in "KORemote" target */,
 			);
 			path = App;
 			sourceTree = "<group>";
@@ -107,7 +107,7 @@
 		A20000000000000000000009 /* Controls */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
-				A20000000000000000000008 /* Exceptions for "Controls" folder in "KOReaderControls" target */,
+				A20000000000000000000008 /* Exceptions for "Controls" folder in "KORemoteControls" target */,
 			);
 			path = Controls;
 			sourceTree = "<group>";
@@ -115,7 +115,7 @@
 		A30000000000000000000009 /* WatchApp */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
-				A30000000000000000000008 /* Exceptions for "WatchApp" folder in "WatchRemote" target */,
+				A30000000000000000000008 /* Exceptions for "WatchApp" folder in "KORemoteWatch" target */,
 			);
 			path = WatchApp;
 			sourceTree = "<group>";
@@ -123,7 +123,7 @@
 		A40000000000000000000004 /* Labs */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
-				A40000000000000000000002 /* Exceptions for "Labs" folder in "KOReaderRemoteLabs" target */,
+				A40000000000000000000002 /* Exceptions for "Labs" folder in "KORemoteLabs" target */,
 			);
 			path = Labs;
 			sourceTree = "<group>";
@@ -180,10 +180,10 @@
 		A10000000000000000000007 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				A10000000000000000000003 /* KOReaderRemote.app */,
-				A20000000000000000000004 /* KOReaderControls.appex */,
-				A30000000000000000000004 /* KOReader Watch.app */,
-				A40000000000000000000001 /* KOReader Remote Labs.app */,
+				A10000000000000000000003 /* KORemote.app */,
+				A20000000000000000000004 /* KORemoteControls.appex */,
+				A30000000000000000000004 /* KORemoteWatch.app */,
+				A40000000000000000000001 /* KORemoteLabs.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -191,9 +191,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		A10000000000000000000008 /* KOReaderRemote */ = {
+		A10000000000000000000008 /* KORemote */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = A10000000000000000000009 /* Build configuration list for PBXNativeTarget "KOReaderRemote" */;
+			buildConfigurationList = A10000000000000000000009 /* Build configuration list for PBXNativeTarget "KORemote" */;
 			buildPhases = (
 				A1000000000000000000000A /* Sources */,
 				A10000000000000000000005 /* Frameworks */,
@@ -210,17 +210,17 @@
 			fileSystemSynchronizedGroups = (
 				A10000000000000000000004 /* App */,
 			);
-			name = KOReaderRemote;
+			name = KORemote;
 			packageProductDependencies = (
 				A10000000000000000000002 /* RemoteCore */,
 			);
-			productName = KOReaderRemote;
-			productReference = A10000000000000000000003 /* KOReaderRemote.app */;
+			productName = KORemote;
+			productReference = A10000000000000000000003 /* KORemote.app */;
 			productType = "com.apple.product-type.application";
 		};
-		A20000000000000000000006 /* KOReaderControls */ = {
+		A20000000000000000000006 /* KORemoteControls */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = A2000000000000000000000C /* Build configuration list for PBXNativeTarget "KOReaderControls" */;
+			buildConfigurationList = A2000000000000000000000C /* Build configuration list for PBXNativeTarget "KORemoteControls" */;
 			buildPhases = (
 				A2000000000000000000000D /* Sources */,
 				A2000000000000000000000A /* Frameworks */,
@@ -233,17 +233,17 @@
 			fileSystemSynchronizedGroups = (
 				A20000000000000000000009 /* Controls */,
 			);
-			name = KOReaderControls;
+			name = KORemoteControls;
 			packageProductDependencies = (
 				A20000000000000000000002 /* RemoteCore */,
 			);
-			productName = KOReaderControls;
-			productReference = A20000000000000000000004 /* KOReaderControls.appex */;
+			productName = KORemoteControls;
+			productReference = A20000000000000000000004 /* KORemoteControls.appex */;
 			productType = "com.apple.product-type.app-extension";
 		};
-		A30000000000000000000006 /* WatchRemote */ = {
+		A30000000000000000000006 /* KORemoteWatch */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = A3000000000000000000000C /* Build configuration list for PBXNativeTarget "WatchRemote" */;
+			buildConfigurationList = A3000000000000000000000C /* Build configuration list for PBXNativeTarget "KORemoteWatch" */;
 			buildPhases = (
 				A3000000000000000000000D /* Sources */,
 				A3000000000000000000000A /* Frameworks */,
@@ -256,17 +256,17 @@
 			fileSystemSynchronizedGroups = (
 				A30000000000000000000009 /* WatchApp */,
 			);
-			name = WatchRemote;
+			name = KORemoteWatch;
 			packageProductDependencies = (
 				A30000000000000000000002 /* RemoteCore */,
 			);
-			productName = WatchRemote;
-			productReference = A30000000000000000000004 /* KOReader Watch.app */;
+			productName = KORemoteWatch;
+			productReference = A30000000000000000000004 /* KORemoteWatch.app */;
 			productType = "com.apple.product-type.application";
 		};
-		A40000000000000000000003 /* KOReaderRemoteLabs */ = {
+		A40000000000000000000003 /* KORemoteLabs */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = A40000000000000000000006 /* Build configuration list for PBXNativeTarget "KOReaderRemoteLabs" */;
+			buildConfigurationList = A40000000000000000000006 /* Build configuration list for PBXNativeTarget "KORemoteLabs" */;
 			buildPhases = (
 				A40000000000000000000007 /* Sources */,
 				A40000000000000000000005 /* Frameworks */,
@@ -279,12 +279,12 @@
 			fileSystemSynchronizedGroups = (
 				A40000000000000000000004 /* Labs */,
 			);
-			name = KOReaderRemoteLabs;
+			name = KORemoteLabs;
 			packageProductDependencies = (
 				A4000000000000000000000C /* RemoteCore */,
 			);
-			productName = KOReaderRemoteLabs;
-			productReference = A40000000000000000000001 /* KOReader Remote Labs.app */;
+			productName = KORemoteLabs;
+			productReference = A40000000000000000000001 /* KORemoteLabs.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -311,7 +311,7 @@
 					};
 				};
 			};
-			buildConfigurationList = A1000000000000000000000D /* Build configuration list for PBXProject "KOReaderRemote" */;
+			buildConfigurationList = A1000000000000000000000D /* Build configuration list for PBXProject "KOReaderiOSRemote" */;
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -331,10 +331,10 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				A10000000000000000000008 /* KOReaderRemote */,
-				A20000000000000000000006 /* KOReaderControls */,
-				A30000000000000000000006 /* WatchRemote */,
-				A40000000000000000000003 /* KOReaderRemoteLabs */,
+				A10000000000000000000008 /* KORemote */,
+				A20000000000000000000006 /* KORemoteControls */,
+				A30000000000000000000006 /* KORemoteWatch */,
+				A40000000000000000000003 /* KORemoteLabs */,
 			);
 		};
 /* End PBXProject section */
@@ -404,12 +404,12 @@
 /* Begin PBXTargetDependency section */
 		A2000000000000000000000B /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = A20000000000000000000006 /* KOReaderControls */;
+			target = A20000000000000000000006 /* KORemoteControls */;
 			targetProxy = A20000000000000000000005 /* PBXContainerItemProxy */;
 		};
 		A3000000000000000000000B /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = A30000000000000000000006 /* WatchRemote */;
+			target = A30000000000000000000006 /* KORemoteWatch */;
 			targetProxy = A30000000000000000000005 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -472,14 +472,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = App/KOReaderRemote.entitlements;
+				CODE_SIGN_ENTITLEMENTS = App/KORemote.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = F2Z5AUR56U;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = App/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "KOReader Remote";
+				INFOPLIST_KEY_CFBundleDisplayName = KORemote;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				MARKETING_VERSION = 2.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.maxoliinyk.koreaderremote;
@@ -499,14 +499,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = App/KOReaderRemote.entitlements;
+				CODE_SIGN_ENTITLEMENTS = App/KORemote.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = F2Z5AUR56U;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = App/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "KOReader Remote";
+				INFOPLIST_KEY_CFBundleDisplayName = KORemote;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				MARKETING_VERSION = 2.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.maxoliinyk.koreaderremote;
@@ -524,13 +524,13 @@
 		A2000000000000000000000F /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_ENTITLEMENTS = Controls/KOReaderControls.entitlements;
+				CODE_SIGN_ENTITLEMENTS = Controls/KORemoteControls.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = F2Z5AUR56U;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Controls/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "KOReader Controls";
+				INFOPLIST_KEY_CFBundleDisplayName = "KORemote Controls";
 				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
 				MARKETING_VERSION = 2.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.maxoliinyk.koreaderremote.controls;
@@ -547,13 +547,13 @@
 		A20000000000000000000010 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_ENTITLEMENTS = Controls/KOReaderControls.entitlements;
+				CODE_SIGN_ENTITLEMENTS = Controls/KORemoteControls.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = F2Z5AUR56U;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Controls/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "KOReader Controls";
+				INFOPLIST_KEY_CFBundleDisplayName = "KORemote Controls";
 				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
 				MARKETING_VERSION = 2.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.maxoliinyk.koreaderremote.controls;
@@ -572,13 +572,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = WatchApp/WatchRemote.entitlements;
+				CODE_SIGN_ENTITLEMENTS = WatchApp/KORemoteWatch.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = F2Z5AUR56U;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = WatchApp/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "KOReader Remote";
+				INFOPLIST_KEY_CFBundleDisplayName = KORemote;
 				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = com.maxoliinyk.koreaderremote;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -586,7 +586,7 @@
 				);
 				MARKETING_VERSION = 2.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.maxoliinyk.koreaderremote.watch;
-				PRODUCT_NAME = "KOReader Watch";
+				PRODUCT_NAME = KORemoteWatch;
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
@@ -603,13 +603,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = WatchApp/WatchRemote.entitlements;
+				CODE_SIGN_ENTITLEMENTS = WatchApp/KORemoteWatch.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = F2Z5AUR56U;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = WatchApp/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "KOReader Remote";
+				INFOPLIST_KEY_CFBundleDisplayName = KORemote;
 				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = com.maxoliinyk.koreaderremote;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -617,7 +617,7 @@
 				);
 				MARKETING_VERSION = 2.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.maxoliinyk.koreaderremote.watch;
-				PRODUCT_NAME = "KOReader Watch";
+				PRODUCT_NAME = KORemoteWatch;
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
@@ -634,18 +634,18 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = Labs/Labs.entitlements;
+				CODE_SIGN_ENTITLEMENTS = Labs/KORemoteLabs.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = F2Z5AUR56U;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Labs/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "KOReader Remote Labs";
+				INFOPLIST_KEY_CFBundleDisplayName = "KORemote Labs";
 				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
 				MARKETING_VERSION = 2.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.maxoliinyk.koreaderremote.labs;
-				PRODUCT_NAME = "KOReader Remote Labs";
+				PRODUCT_NAME = KORemoteLabs;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
 				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
 				SWIFT_STRICT_CONCURRENCY = complete;
@@ -659,18 +659,18 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = Labs/Labs.entitlements;
+				CODE_SIGN_ENTITLEMENTS = Labs/KORemoteLabs.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = F2Z5AUR56U;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Labs/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "KOReader Remote Labs";
+				INFOPLIST_KEY_CFBundleDisplayName = "KORemote Labs";
 				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
 				MARKETING_VERSION = 2.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.maxoliinyk.koreaderremote.labs;
-				PRODUCT_NAME = "KOReader Remote Labs";
+				PRODUCT_NAME = KORemoteLabs;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
 				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
 				SWIFT_STRICT_CONCURRENCY = complete;
@@ -682,7 +682,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		A10000000000000000000009 /* Build configuration list for PBXNativeTarget "KOReaderRemote" */ = {
+		A10000000000000000000009 /* Build configuration list for PBXNativeTarget "KORemote" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				A10000000000000000000011 /* Debug */,
@@ -691,7 +691,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		A1000000000000000000000D /* Build configuration list for PBXProject "KOReaderRemote" */ = {
+		A1000000000000000000000D /* Build configuration list for PBXProject "KOReaderiOSRemote" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				A1000000000000000000000F /* Debug */,
@@ -700,7 +700,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		A2000000000000000000000C /* Build configuration list for PBXNativeTarget "KOReaderControls" */ = {
+		A2000000000000000000000C /* Build configuration list for PBXNativeTarget "KORemoteControls" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				A2000000000000000000000F /* Debug */,
@@ -709,7 +709,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		A3000000000000000000000C /* Build configuration list for PBXNativeTarget "WatchRemote" */ = {
+		A3000000000000000000000C /* Build configuration list for PBXNativeTarget "KORemoteWatch" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				A3000000000000000000000F /* Debug */,
@@ -718,7 +718,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		A40000000000000000000006 /* Build configuration list for PBXNativeTarget "KOReaderRemoteLabs" */ = {
+		A40000000000000000000006 /* Build configuration list for PBXNativeTarget "KORemoteLabs" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				A40000000000000000000009 /* Debug */,

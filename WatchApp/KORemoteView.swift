@@ -1,6 +1,6 @@
 //
-//  WatchRemoteView.swift
-//  KOReaderRemote
+//  KORemoteView.swift
+//  KORemote
 //
 //  Created by Max Oliinyk on 18.08.26.
 //
@@ -8,8 +8,8 @@
 import RemoteCore
 import SwiftUI
 
-struct WatchRemoteView: View {
-    @Environment(WatchRemoteStore.self) private var store
+struct KORemoteView: View {
+    @Environment(KORemoteStore.self) private var store
     @State private var confirmsSleep = false
 
     var body: some View {

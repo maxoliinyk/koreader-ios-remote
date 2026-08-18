@@ -1,6 +1,6 @@
 //
-//  KOReaderControls.swift
-//  KOReaderRemote
+//  KORemoteControls.swift
+//  KORemote
 //
 //  Created by Max Oliinyk on 18.08.26.
 //
@@ -10,7 +10,7 @@ import SwiftUI
 import WidgetKit
 
 @main
-struct KOReaderControls: WidgetBundle {
+struct KORemoteControls: WidgetBundle {
     var body: some Widget {
         NextPageControl()
         PreviousPageControl()

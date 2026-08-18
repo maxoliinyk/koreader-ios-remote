@@ -1,6 +1,6 @@
 //
 //  SettingsView.swift
-//  KOReaderRemote
+//  KORemote
 //
 //  Created by Max Oliinyk on 18.08.26.
 //
@@ -69,7 +69,7 @@ struct SettingsView: View {
                     Label("Local Network Help", systemImage: "wifi")
                 }
 
-                LabeledContent("Protocol", value: "KOReader Remote v1")
+                LabeledContent("Protocol", value: "KORemote v1")
                 LabeledContent("Default Port", value: "9090")
             }
 
@@ -93,7 +93,7 @@ struct SettingsView: View {
             }
 
             Section("About") {
-                Link("Source Code", destination: URL(string: "https://github.com/maxoliinyk/koreader_remote_turner")!)
+                Link("Source Code", destination: URL(string: "https://github.com/maxoliinyk/koreader-ios-remote")!)
                 Link("AGPL-3.0 License", destination: URL(string: "https://www.gnu.org/licenses/agpl-3.0.html")!)
             }
         }

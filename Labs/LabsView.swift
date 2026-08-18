@@ -1,6 +1,6 @@
 //
 //  LabsView.swift
-//  KOReaderRemote
+//  KORemote
 //
 //  Created by Max Oliinyk on 18.08.26.
 //
@@ -87,7 +87,7 @@ struct LabsView: View {
                         .font(.footnote)
                 }
             }
-            .navigationTitle("Remote Labs")
+            .navigationTitle("KORemote Labs")
         }
         .overlay(alignment: .bottomTrailing) {
             SystemVolumeView(volumeView: experiment.systemVolumeView)

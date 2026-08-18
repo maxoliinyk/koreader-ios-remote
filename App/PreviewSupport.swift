@@ -1,6 +1,6 @@
 //
 //  PreviewSupport.swift
-//  KOReaderRemote
+//  KORemote
 //
 //  Created by Max Oliinyk on 18.08.26.
 //
@@ -10,7 +10,7 @@ import RemoteCore
 
 extension RemoteStore {
     static func preview(paired: Bool = true, activity: Activity = .idle) -> RemoteStore {
-        let suite = UserDefaults(suiteName: "KOReaderRemote.preview.\(UUID().uuidString)")!
+        let suite = UserDefaults(suiteName: "KOReaderiOSRemote.preview.\(UUID().uuidString)")!
         let store = RemoteStore(storage: PairingStore(defaults: suite, secrets: PreviewSecretStore()))
         var configuration: PairingConfiguration?
         if paired {

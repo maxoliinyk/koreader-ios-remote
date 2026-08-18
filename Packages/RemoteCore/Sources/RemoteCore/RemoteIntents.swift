@@ -1,6 +1,6 @@
 //
 //  RemoteIntents.swift
-//  KOReaderRemote
+//  KORemote
 //
 //  Created by Max Oliinyk on 18.08.26.
 //
@@ -30,7 +30,7 @@ public enum RemoteIntentError: Error, CustomLocalizedStringResourceConvertible {
     public var localizedStringResource: LocalizedStringResource {
         switch self {
         case .unpaired:
-            "Open KOReader Remote and pair a KOReader device first."
+            "Open KORemote and pair a KOReader device first."
         case let .client(error):
             LocalizedStringResource(stringLiteral: error.localizedDescription)
         }

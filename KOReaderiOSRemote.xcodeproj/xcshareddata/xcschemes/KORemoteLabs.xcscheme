@@ -15,22 +15,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "A30000000000000000000006"
-               BuildableName = "KOReader Watch.app"
-               ReferencedContainer = "container:KOReaderRemote.xcodeproj">
-            </BuildableReference>
-         </BuildActionEntry>
-         <BuildActionEntry
-            buildForTesting = "YES"
-            buildForRunning = "YES"
-            buildForProfiling = "YES"
-            buildForArchiving = "YES"
-            buildForAnalyzing = "YES">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "A10000000000000000000008"
-               BuildableName = "KOReaderRemote.app"
-               ReferencedContainer = "container:KOReaderRemote.xcodeproj">
+               BlueprintIdentifier = "A40000000000000000000003"
+               BuildableName = "KORemoteLabs.app"
+               ReferencedContainer = "container:KOReaderiOSRemote.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -57,9 +44,9 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "A30000000000000000000006"
-            BuildableName = "KOReader Watch.app"
-            ReferencedContainer = "container:KOReaderRemote.xcodeproj">
+            BlueprintIdentifier = "A40000000000000000000003"
+            BuildableName = "KORemoteLabs.app"
+            ReferencedContainer = "container:KOReaderiOSRemote.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -73,9 +60,9 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "A30000000000000000000006"
-            BuildableName = "KOReader Watch.app"
-            ReferencedContainer = "container:KOReaderRemote.xcodeproj">
+            BlueprintIdentifier = "A40000000000000000000003"
+            BuildableName = "KORemoteLabs.app"
+            ReferencedContainer = "container:KOReaderiOSRemote.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

@@ -1,4 +1,4 @@
-# KOReader Remote protocol v1
+# KORemote protocol v1
 
 ## Transport
 

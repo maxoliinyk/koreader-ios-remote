@@ -1,6 +1,6 @@
 //
 //  PairingPayload.swift
-//  KOReaderRemote
+//  KORemote
 //
 //  Created by Max Oliinyk on 18.08.26.
 //
@@ -66,7 +66,7 @@ public enum PairingError: Error, Equatable, LocalizedError, Sendable {
 
     public var errorDescription: String? {
         switch self {
-        case .invalidURL: "This is not a KOReader Remote pairing code."
+        case .invalidURL: "This is not a KORemote pairing code."
         case .missingField: "The pairing code is incomplete."
         case let .unsupportedVersion(version): "Protocol version \(version) is not supported."
         case .invalidDeviceName: "Enter a valid KOReader device name."
