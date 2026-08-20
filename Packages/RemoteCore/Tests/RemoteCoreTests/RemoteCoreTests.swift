@@ -61,6 +61,29 @@ struct RequestSignerTests {
     }
 }
 
+@Suite("Volume button actions")
+struct VolumeButtonActionTests {
+    @Test func mapsVolumeIncreaseToNextPage() {
+        #expect(VolumeButtonAction.remoteAction(from: 0.5, to: 0.5625) == .nextPage)
+    }
+
+    @Test func mapsVolumeDecreaseToPreviousPage() {
+        #expect(VolumeButtonAction.remoteAction(from: 0.5, to: 0.4375) == .previousPage)
+    }
+
+    @Test func ignoresRecenterAndNoise() {
+        #expect(VolumeButtonAction.remoteAction(from: 0.4375, to: 0.5, ignoring: 0.5) == nil)
+        #expect(VolumeButtonAction.remoteAction(from: 0.5, to: 0.505) == nil)
+    }
+
+    @Test func handlesVolumeBoundaries() {
+        #expect(VolumeButtonAction.remoteAction(from: 0, to: 0.0625) == .nextPage)
+        #expect(VolumeButtonAction.remoteAction(from: 1, to: 0.9375) == .previousPage)
+        #expect(VolumeButtonAction.remoteAction(from: 0, to: 0) == nil)
+        #expect(VolumeButtonAction.remoteAction(from: 1, to: 1) == nil)
+    }
+}
+
 @Suite("Storage")
 struct PairingStoreTests {
     @Test func roundTripsAndForgetsConfiguration() throws {
@@ -98,6 +121,48 @@ struct KindleClientTests {
         }
     }
 
+    @Test func sendsAuthenticatedActionContract() async throws {
+        let recorder = RequestRecorder()
+        let pairing = try configuration
+        let client = makeClient { request in
+            recorder.record(request)
+            let response = HTTPURLResponse(
+                url: try #require(request.url),
+                statusCode: 200,
+                httpVersion: nil,
+                headerFields: nil
+            )!
+            return (response, Data(#"{"ok":true}"#.utf8))
+        }
+
+        _ = try await client.send(.previousPage, using: pairing)
+
+        let request = try #require(recorder.request)
+        #expect(request.httpMethod == "POST")
+        #expect(request.url?.absoluteString == "http://kindle.local:9090/v1/action")
+        #expect(request.value(forHTTPHeaderField: "Content-Type") == "application/json")
+        #expect(request.value(forHTTPHeaderField: "Accept") == "application/json")
+
+        let body = try #require(request.httpBody)
+        let signed = try JSONDecoder().decode(CapturedSignedRequest.self, from: body)
+        #expect(signed.version == ProtocolConstants.version)
+        #expect(signed.action == RemoteAction.previousPage.rawValue)
+        #expect(!signed.nonce.isEmpty)
+        #expect(signed.mac == RequestSigner.mac(
+            version: signed.version,
+            action: signed.action,
+            nonce: signed.nonce,
+            secret: pairing.secret
+        ))
+    }
+
+    @Test func rejectsMalformedSuccessPayload() async {
+        let client = makeClient(status: 200, body: #"{"ok":false}"#)
+        await #expect(throws: KindleClientError.invalidResponse) {
+            try await client.ping(using: configuration)
+        }
+    }
+
     private var configuration: PairingConfiguration {
         get throws {
             try PairingConfiguration(
@@ -108,13 +173,52 @@ struct KindleClientTests {
     }
 
     private func makeClient(status: Int, body: String) -> KindleClient {
-        let config = URLSessionConfiguration.ephemeral
-        config.protocolClasses = [StubURLProtocol.self]
-        StubURLProtocol.handler = { request in
+        makeClient { request in
             let response = HTTPURLResponse(url: request.url!, statusCode: status, httpVersion: nil, headerFields: nil)!
             return (response, Data(body.utf8))
         }
+    }
+
+    private func makeClient(
+        handler: @escaping (URLRequest) throws -> (HTTPURLResponse, Data)
+    ) -> KindleClient {
+        let config = URLSessionConfiguration.ephemeral
+        config.protocolClasses = [StubURLProtocol.self]
+        StubURLProtocol.handler = handler
         return KindleClient(session: URLSession(configuration: config))
+    }
+}
+
+private struct CapturedSignedRequest: Decodable {
+    let version: Int
+    let action: String
+    let nonce: String
+    let mac: String
+}
+
+private final class RequestRecorder: @unchecked Sendable {
+    private let lock = NSLock()
+    private var storedRequest: URLRequest?
+
+    var request: URLRequest? {
+        lock.withLock { storedRequest }
+    }
+
+    func record(_ request: URLRequest) {
+        var captured = request
+        if captured.httpBody == nil, let stream = captured.httpBodyStream {
+            stream.open()
+            defer { stream.close() }
+            var data = Data()
+            var buffer = [UInt8](repeating: 0, count: 1_024)
+            while stream.hasBytesAvailable {
+                let count = stream.read(&buffer, maxLength: buffer.count)
+                guard count > 0 else { break }
+                data.append(buffer, count: count)
+            }
+            captured.httpBody = data
+        }
+        lock.withLock { storedRequest = captured }
     }
 }
 

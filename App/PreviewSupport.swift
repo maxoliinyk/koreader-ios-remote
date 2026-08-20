@@ -8,6 +8,7 @@
 import Foundation
 import RemoteCore
 
+#if DEBUG
 extension RemoteStore {
     static func preview(paired: Bool = true, activity: Activity = .idle) -> RemoteStore {
         let suite = UserDefaults(suiteName: "KOReaderiOSRemote.preview.\(UUID().uuidString)")!
@@ -30,3 +31,4 @@ final class PreviewSecretStore: SecretStoring, @unchecked Sendable {
     func save(_ secret: Data) throws { value = secret }
     func delete() throws { value = nil }
 }
+#endif

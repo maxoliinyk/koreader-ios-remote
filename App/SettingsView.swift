@@ -93,6 +93,7 @@ struct SettingsView: View {
             }
 
             Section("About") {
+                LabeledContent("Distribution", value: DistributionProfile.current.title)
                 Link("Source Code", destination: URL(string: "https://github.com/maxoliinyk/koreader-ios-remote")!)
                 Link("AGPL-3.0 License", destination: URL(string: "https://www.gnu.org/licenses/agpl-3.0.html")!)
             }
@@ -118,10 +119,29 @@ private struct SystemControlsHelpView: View {
         Form {
             Section("Hardware Buttons") {
                 Toggle("Use Volume Buttons", isOn: $systemControls.usesVolumeButtons)
+                Text(volumeButtonDetail)
+                    .font(.footnote)
+                    .foregroundStyle(.secondary)
             }
 
-            Section("Media") {
-                Toggle("Capture Media Controls", isOn: $systemControls.capturesMediaControls)
+#if DEBUG && targetEnvironment(simulator)
+            Section("Simulator Volume Test") {
+                Button("Simulate Volume Up", systemImage: "speaker.plus") {
+                    Task { await systemControls.simulateVolumeAction(.nextPage) }
+                }
+                Button("Simulate Volume Down", systemImage: "speaker.minus") {
+                    Task { await systemControls.simulateVolumeAction(.previousPage) }
+                }
+                Text("Simulator's toolbar volume controls do not reliably change AVAudioSession outputVolume. These buttons exercise the remaining page-action path.")
+                    .font(.footnote)
+                    .foregroundStyle(.secondary)
+            }
+#endif
+
+            if DistributionProfile.current.supportsMediaControls {
+                Section("Media") {
+                    Toggle("Capture Media Controls", isOn: $systemControls.capturesMediaControls)
+                }
             }
 
             Section("Control Center & Action Button") {
@@ -133,8 +153,33 @@ private struct SystemControlsHelpView: View {
                 Label("Allow Local Network access", systemImage: "checkmark.circle")
                 Label("Keep KOReader awake on the same Wi‑Fi", systemImage: "checkmark.circle")
             }
+
+            Section("Included in this build") {
+                Label(
+                    DistributionProfile.current.includesWatchCompanion
+                        ? "Apple Watch companion"
+                        : "Apple Watch companion not included",
+                    systemImage: DistributionProfile.current.includesWatchCompanion
+                        ? "applewatch"
+                        : "applewatch.slash"
+                )
+                Label(
+                    DistributionProfile.current.includesControlCenterWidgets
+                        ? "Control Center widgets"
+                        : "Control Center widgets not included",
+                    systemImage: "switch.2"
+                )
+            }
         }
         .navigationTitle("System Controls")
+    }
+
+    private var volumeButtonDetail: String {
+        if DistributionProfile.current.keepsVolumeCaptureWhileInactive {
+            "This sideload build keeps a quiet audio session active so volume buttons can turn pages while the app is locked."
+        } else {
+            "This full build observes volume changes only while KORemote is in the foreground."
+        }
     }
 }
 

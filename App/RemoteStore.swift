@@ -27,6 +27,9 @@ final class RemoteStore {
     private let client: KindleClient
     private let storage: PairingStore
     private let logger = Logger(subsystem: "com.maxoliinyk.koreaderremote", category: "remote")
+#if DEBUG && targetEnvironment(simulator)
+    private var didRunSimulatorPairing = false
+#endif
 
     init(client: KindleClient = KindleClient(), storage: PairingStore = PairingStore()) {
         self.client = client
@@ -117,6 +120,18 @@ final class RemoteStore {
             fail(error)
         }
     }
+
+#if DEBUG && targetEnvironment(simulator)
+    func runSimulatorPairingIfRequested() {
+        guard
+            !didRunSimulatorPairing,
+            let value = ProcessInfo.processInfo.environment["KOREMOTE_SIMULATOR_PAIRING_URL"],
+            let url = URL(string: value)
+        else { return }
+        didRunSimulatorPairing = true
+        pair(with: url)
+    }
+#endif
 
     private func save(_ value: PairingConfiguration) throws {
         try storage.save(value)

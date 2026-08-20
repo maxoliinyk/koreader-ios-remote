@@ -19,6 +19,11 @@
     <string>Scan the pairing code displayed by the KOReader plugin.</string>
     <key>NSLocalNetworkUsageDescription</key>
     <string>Send page actions directly to a KOReader device on your local network.</string>
+    <key>NSAppTransportSecurity</key>
+    <dict>
+        <key>NSAllowsLocalNetworking</key>
+        <true/>
+    </dict>
     <key>UIApplicationShortcutItems</key>
     <array>
         <dict>
@@ -40,10 +45,6 @@
     </array>
     <key>UIApplicationSupportsIndirectInputEvents</key>
     <true/>
-    <key>UIBackgroundModes</key>
-    <array>
-        <string>audio</string>
-    </array>
     <key>UISupportedInterfaceOrientations</key>
     <array>
         <string>UIInterfaceOrientationPortrait</string>

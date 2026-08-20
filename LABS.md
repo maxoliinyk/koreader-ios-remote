@@ -68,6 +68,6 @@ The motion detector is intentionally labeled a heuristic because ordinary wrist 
 
 Sideloading allows private API calls; it does not disable the iOS sandbox, background suspension, code-signing entitlements, or SpringBoard ownership of hardware events. Truly system-wide volume interception would require a jailbroken iPhone and a SpringBoard tweak.
 
-The background-audio experiment takes ownership of Now Playing, can interrupt other audio, uses extra battery, and may be stopped by calls, Siri, route changes, Low Power Mode, or future OS behavior. Never include the Labs target in an App Store archive.
+The background-audio experiment takes ownership of Now Playing, can interrupt other audio, uses extra battery, and may be stopped by calls, Siri, route changes, Low Power Mode, or future OS behavior. Never include the Labs target in a public release archive.
 
 References: [Apple App Intent authentication](https://developer.apple.com/documentation/appintents/appintent/authenticationpolicy), [Apple controls](https://developer.apple.com/documentation/widgetkit/creating-controls-to-perform-actions-across-the-system), [Apple Double Tap guidance](https://developer.apple.com/documentation/watchos-apps/enabling-double-tap), and the reverse-engineered [MediaRemote header](https://github.com/theos/headers/blob/master/MediaRemote/MediaRemote.h).

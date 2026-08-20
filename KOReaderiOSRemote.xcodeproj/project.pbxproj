@@ -13,6 +13,11 @@
 		A30000000000000000000001 /* RemoteCore in Frameworks */ = {isa = PBXBuildFile; productRef = A30000000000000000000002 /* RemoteCore */; };
 		A30000000000000000000003 /* KORemoteWatch.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = A30000000000000000000004 /* KORemoteWatch.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		A4000000000000000000000B /* RemoteCore in Frameworks */ = {isa = PBXBuildFile; productRef = A4000000000000000000000C /* RemoteCore */; };
+		B10000000000000000000001 /* RemoteCore in Frameworks */ = {isa = PBXBuildFile; productRef = B10000000000000000000002 /* RemoteCore */; };
+		F10000000000000000000001 /* RemoteCore in Frameworks */ = {isa = PBXBuildFile; productRef = F10000000000000000000002 /* RemoteCore */; };
+		F20000000000000000000001 /* RemoteCore in Frameworks */ = {isa = PBXBuildFile; productRef = F20000000000000000000002 /* RemoteCore */; };
+		F2000000000000000000000D /* KORemoteWatchFree.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = F30000000000000000000003 /* KORemoteWatchFree.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		F30000000000000000000001 /* RemoteCore in Frameworks */ = {isa = PBXBuildFile; productRef = F30000000000000000000002 /* RemoteCore */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -29,6 +34,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = A30000000000000000000006;
 			remoteInfo = KORemoteWatch;
+		};
+		F2000000000000000000000F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A1000000000000000000000C /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = F30000000000000000000006;
+			remoteInfo = KORemoteWatchFree;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -55,6 +67,17 @@
 			name = "Embed Watch Content";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		F2000000000000000000000C /* Embed Watch Content */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "$(CONTENTS_FOLDER_PATH)/Watch";
+			dstSubfolderSpec = 16;
+			files = (
+				F2000000000000000000000D /* KORemoteWatchFree.app in Embed Watch Content */,
+			);
+			name = "Embed Watch Content";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
@@ -62,12 +85,17 @@
 		A20000000000000000000004 /* KORemoteControls.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = KORemoteControls.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		A30000000000000000000004 /* KORemoteWatch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = KORemoteWatch.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A40000000000000000000001 /* KORemoteLabs.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = KORemoteLabs.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		B10000000000000000000003 /* KORemoteAltStore.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = KORemoteAltStore.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		F10000000000000000000003 /* KORemoteFree.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = KORemoteFree.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		F20000000000000000000003 /* KORemoteFreeWatch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = KORemoteFreeWatch.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		F30000000000000000000003 /* KORemoteWatchFree.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = KORemoteWatchFree.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
 		A10000000000000000000013 /* Exceptions for "App" folder in "KORemote" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
+				Info-Sideload.plist,
 				Info.plist,
 			);
 			target = A10000000000000000000008 /* KORemote */;
@@ -82,6 +110,7 @@
 		A30000000000000000000008 /* Exceptions for "WatchApp" folder in "KORemoteWatch" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
+				Info-Free.plist,
 				Info.plist,
 			);
 			target = A30000000000000000000006 /* KORemoteWatch */;
@@ -93,6 +122,38 @@
 			);
 			target = A40000000000000000000003 /* KORemoteLabs */;
 		};
+		B10000000000000000000004 /* Exceptions for "App" folder in "KORemoteAltStore" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info-Sideload.plist,
+				Info.plist,
+			);
+			target = B10000000000000000000006 /* KORemoteAltStore */;
+		};
+		F10000000000000000000004 /* Exceptions for "App" folder in "KORemoteFree" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info-Sideload.plist,
+				Info.plist,
+			);
+			target = F10000000000000000000006 /* KORemoteFree */;
+		};
+		F20000000000000000000004 /* Exceptions for "App" folder in "KORemoteFreeWatch" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info-Sideload.plist,
+				Info.plist,
+			);
+			target = F20000000000000000000006 /* KORemoteFreeWatch */;
+		};
+		F30000000000000000000004 /* Exceptions for "WatchApp" folder in "KORemoteWatchFree" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info-Free.plist,
+				Info.plist,
+			);
+			target = F30000000000000000000006 /* KORemoteWatchFree */;
+		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -100,6 +161,9 @@
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
 				A10000000000000000000013 /* Exceptions for "App" folder in "KORemote" target */,
+				B10000000000000000000004 /* Exceptions for "App" folder in "KORemoteAltStore" target */,
+				F10000000000000000000004 /* Exceptions for "App" folder in "KORemoteFree" target */,
+				F20000000000000000000004 /* Exceptions for "App" folder in "KORemoteFreeWatch" target */,
 			);
 			path = App;
 			sourceTree = "<group>";
@@ -116,6 +180,7 @@
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
 				A30000000000000000000008 /* Exceptions for "WatchApp" folder in "KORemoteWatch" target */,
+				F30000000000000000000004 /* Exceptions for "WatchApp" folder in "KORemoteWatchFree" target */,
 			);
 			path = WatchApp;
 			sourceTree = "<group>";
@@ -163,6 +228,38 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		B10000000000000000000005 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B10000000000000000000001 /* RemoteCore in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F10000000000000000000005 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F10000000000000000000001 /* RemoteCore in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F20000000000000000000005 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F20000000000000000000001 /* RemoteCore in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F30000000000000000000005 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F30000000000000000000001 /* RemoteCore in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -184,6 +281,10 @@
 				A20000000000000000000004 /* KORemoteControls.appex */,
 				A30000000000000000000004 /* KORemoteWatch.app */,
 				A40000000000000000000001 /* KORemoteLabs.app */,
+				B10000000000000000000003 /* KORemoteAltStore.app */,
+				F10000000000000000000003 /* KORemoteFree.app */,
+				F20000000000000000000003 /* KORemoteFreeWatch.app */,
+				F30000000000000000000003 /* KORemoteWatchFree.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -287,6 +388,100 @@
 			productReference = A40000000000000000000001 /* KORemoteLabs.app */;
 			productType = "com.apple.product-type.application";
 		};
+		B10000000000000000000006 /* KORemoteAltStore */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B10000000000000000000009 /* Build configuration list for PBXNativeTarget "KORemoteAltStore" */;
+			buildPhases = (
+				B10000000000000000000007 /* Sources */,
+				B10000000000000000000005 /* Frameworks */,
+				B10000000000000000000008 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				A10000000000000000000004 /* App */,
+			);
+			name = KORemoteAltStore;
+			packageProductDependencies = (
+				B10000000000000000000002 /* RemoteCore */,
+			);
+			productName = KORemoteAltStore;
+			productReference = B10000000000000000000003 /* KORemoteAltStore.app */;
+			productType = "com.apple.product-type.application";
+		};
+		F10000000000000000000006 /* KORemoteFree */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F10000000000000000000009 /* Build configuration list for PBXNativeTarget "KORemoteFree" */;
+			buildPhases = (
+				F10000000000000000000007 /* Sources */,
+				F10000000000000000000005 /* Frameworks */,
+				F10000000000000000000008 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				A10000000000000000000004 /* App */,
+			);
+			name = KORemoteFree;
+			packageProductDependencies = (
+				F10000000000000000000002 /* RemoteCore */,
+			);
+			productName = KORemoteFree;
+			productReference = F10000000000000000000003 /* KORemoteFree.app */;
+			productType = "com.apple.product-type.application";
+		};
+		F20000000000000000000006 /* KORemoteFreeWatch */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F20000000000000000000009 /* Build configuration list for PBXNativeTarget "KORemoteFreeWatch" */;
+			buildPhases = (
+				F20000000000000000000007 /* Sources */,
+				F20000000000000000000005 /* Frameworks */,
+				F20000000000000000000008 /* Resources */,
+				F2000000000000000000000C /* Embed Watch Content */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				F2000000000000000000000E /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				A10000000000000000000004 /* App */,
+			);
+			name = KORemoteFreeWatch;
+			packageProductDependencies = (
+				F20000000000000000000002 /* RemoteCore */,
+			);
+			productName = KORemoteFreeWatch;
+			productReference = F20000000000000000000003 /* KORemoteFreeWatch.app */;
+			productType = "com.apple.product-type.application";
+		};
+		F30000000000000000000006 /* KORemoteWatchFree */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F30000000000000000000009 /* Build configuration list for PBXNativeTarget "KORemoteWatchFree" */;
+			buildPhases = (
+				F30000000000000000000007 /* Sources */,
+				F30000000000000000000005 /* Frameworks */,
+				F30000000000000000000008 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				A30000000000000000000009 /* WatchApp */,
+			);
+			name = KORemoteWatchFree;
+			packageProductDependencies = (
+				F30000000000000000000002 /* RemoteCore */,
+			);
+			productName = KORemoteWatchFree;
+			productReference = F30000000000000000000003 /* KORemoteWatchFree.app */;
+			productType = "com.apple.product-type.application";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -307,6 +502,18 @@
 						CreatedOnToolsVersion = 27.0;
 					};
 					A40000000000000000000003 = {
+						CreatedOnToolsVersion = 27.0;
+					};
+					B10000000000000000000006 = {
+						CreatedOnToolsVersion = 27.0;
+					};
+					F10000000000000000000006 = {
+						CreatedOnToolsVersion = 27.0;
+					};
+					F20000000000000000000006 = {
+						CreatedOnToolsVersion = 27.0;
+					};
+					F30000000000000000000006 = {
 						CreatedOnToolsVersion = 27.0;
 					};
 				};
@@ -335,6 +542,10 @@
 				A20000000000000000000006 /* KORemoteControls */,
 				A30000000000000000000006 /* KORemoteWatch */,
 				A40000000000000000000003 /* KORemoteLabs */,
+				B10000000000000000000006 /* KORemoteAltStore */,
+				F10000000000000000000006 /* KORemoteFree */,
+				F20000000000000000000006 /* KORemoteFreeWatch */,
+				F30000000000000000000006 /* KORemoteWatchFree */,
 			);
 		};
 /* End PBXProject section */
@@ -362,6 +573,34 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		A40000000000000000000008 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B10000000000000000000008 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F10000000000000000000008 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F20000000000000000000008 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F30000000000000000000008 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -399,6 +638,34 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		B10000000000000000000007 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F10000000000000000000007 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F20000000000000000000007 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F30000000000000000000007 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -411,6 +678,11 @@
 			isa = PBXTargetDependency;
 			target = A30000000000000000000006 /* KORemoteWatch */;
 			targetProxy = A30000000000000000000005 /* PBXContainerItemProxy */;
+		};
+		F2000000000000000000000E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = F30000000000000000000006 /* KORemoteWatchFree */;
+			targetProxy = F2000000000000000000000F /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -485,6 +757,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.maxoliinyk.koreaderremote;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) KOREMOTE_FULL KOREMOTE_HAS_WATCH KOREMOTE_HAS_CONTROLS";
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
 				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -512,6 +785,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.maxoliinyk.koreaderremote;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) KOREMOTE_FULL KOREMOTE_HAS_WATCH KOREMOTE_HAS_CONTROLS";
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
 				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -646,6 +920,7 @@
 				MARKETING_VERSION = 2.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.maxoliinyk.koreaderremote.labs;
 				PRODUCT_NAME = KORemoteLabs;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) KOREMOTE_LABS";
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
 				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
 				SWIFT_STRICT_CONCURRENCY = complete;
@@ -671,11 +946,228 @@
 				MARKETING_VERSION = 2.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.maxoliinyk.koreaderremote.labs;
 				PRODUCT_NAME = KORemoteLabs;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) KOREMOTE_LABS";
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
 				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
 				SWIFT_STRICT_CONCURRENCY = complete;
 				SWIFT_VERSION = 6.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		B1000000000000000000000A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "App/Info-Sideload.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "KORemote AltStore";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
+				MARKETING_VERSION = 2.0.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.maxoliinyk.koreaderremote.altstore;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) KOREMOTE_ALTSTORE";
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_STRICT_CONCURRENCY = complete;
+				SWIFT_VERSION = 6.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		B1000000000000000000000B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "App/Info-Sideload.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "KORemote AltStore";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
+				MARKETING_VERSION = 2.0.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.maxoliinyk.koreaderremote.altstore;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) KOREMOTE_ALTSTORE";
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_STRICT_CONCURRENCY = complete;
+				SWIFT_VERSION = 6.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		F1000000000000000000000A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "App/Info-Sideload.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "KORemote Free";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
+				MARKETING_VERSION = 2.0.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.maxoliinyk.koreaderremote.free;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) KOREMOTE_FREE";
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_STRICT_CONCURRENCY = complete;
+				SWIFT_VERSION = 6.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		F1000000000000000000000B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "App/Info-Sideload.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "KORemote Free";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
+				MARKETING_VERSION = 2.0.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.maxoliinyk.koreaderremote.free;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) KOREMOTE_FREE";
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_STRICT_CONCURRENCY = complete;
+				SWIFT_VERSION = 6.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		F2000000000000000000000A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "App/Info-Sideload.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "KORemote Free Watch";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
+				MARKETING_VERSION = 2.0.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.maxoliinyk.koreaderremote.freewatch;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) KOREMOTE_FREE KOREMOTE_HAS_WATCH";
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_STRICT_CONCURRENCY = complete;
+				SWIFT_VERSION = 6.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		F2000000000000000000000B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "App/Info-Sideload.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "KORemote Free Watch";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
+				MARKETING_VERSION = 2.0.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.maxoliinyk.koreaderremote.freewatch;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) KOREMOTE_FREE KOREMOTE_HAS_WATCH";
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_STRICT_CONCURRENCY = complete;
+				SWIFT_VERSION = 6.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		F3000000000000000000000A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "WatchApp/Info-Free.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = KORemote;
+				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = com.maxoliinyk.koreaderremote.freewatch;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 2.0.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.maxoliinyk.koreaderremote.freewatch.watch;
+				PRODUCT_NAME = KORemoteWatchFree;
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) KOREMOTE_FREE";
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_STRICT_CONCURRENCY = complete;
+				SWIFT_VERSION = 6.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 26.0;
+			};
+			name = Debug;
+		};
+		F3000000000000000000000B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "WatchApp/Info-Free.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = KORemote;
+				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = com.maxoliinyk.koreaderremote.freewatch;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 2.0.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.maxoliinyk.koreaderremote.freewatch.watch;
+				PRODUCT_NAME = KORemoteWatchFree;
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) KOREMOTE_FREE";
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_STRICT_CONCURRENCY = complete;
+				SWIFT_VERSION = 6.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 26.0;
 			};
 			name = Release;
 		};
@@ -727,6 +1219,42 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
+		B10000000000000000000009 /* Build configuration list for PBXNativeTarget "KORemoteAltStore" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B1000000000000000000000A /* Debug */,
+				B1000000000000000000000B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		F10000000000000000000009 /* Build configuration list for PBXNativeTarget "KORemoteFree" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F1000000000000000000000A /* Debug */,
+				F1000000000000000000000B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		F20000000000000000000009 /* Build configuration list for PBXNativeTarget "KORemoteFreeWatch" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F2000000000000000000000A /* Debug */,
+				F2000000000000000000000B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		F30000000000000000000009 /* Build configuration list for PBXNativeTarget "KORemoteWatchFree" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F3000000000000000000000A /* Debug */,
+				F3000000000000000000000B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 /* End XCConfigurationList section */
 
 /* Begin XCLocalSwiftPackageReference section */
@@ -753,6 +1281,26 @@
 			productName = RemoteCore;
 		};
 		A4000000000000000000000C /* RemoteCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A1000000000000000000000E /* XCLocalSwiftPackageReference "Packages/RemoteCore" */;
+			productName = RemoteCore;
+		};
+		B10000000000000000000002 /* RemoteCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A1000000000000000000000E /* XCLocalSwiftPackageReference "Packages/RemoteCore" */;
+			productName = RemoteCore;
+		};
+		F10000000000000000000002 /* RemoteCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A1000000000000000000000E /* XCLocalSwiftPackageReference "Packages/RemoteCore" */;
+			productName = RemoteCore;
+		};
+		F20000000000000000000002 /* RemoteCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A1000000000000000000000E /* XCLocalSwiftPackageReference "Packages/RemoteCore" */;
+			productName = RemoteCore;
+		};
+		F30000000000000000000002 /* RemoteCore */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = A1000000000000000000000E /* XCLocalSwiftPackageReference "Packages/RemoteCore" */;
 			productName = RemoteCore;

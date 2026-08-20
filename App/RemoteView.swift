@@ -248,6 +248,7 @@ private struct ActivityStatusView: View {
     }
 }
 
+#if DEBUG
 @MainActor
 private struct RemotePreview: View {
     let layout: RemoteLayoutStyle
@@ -289,3 +290,4 @@ private struct RemotePreview: View {
         activity: .failure("The KOReader device could not be reached on the local network.")
     )
 }
+#endif

@@ -1,0 +1,28 @@
+name: Build AltStore Classic IPA
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: Artifact version label
+        required: false
+        default: dev
+
+jobs:
+  ipa:
+    runs-on: macos-26
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build and validate unsigned IPA
+        env:
+          ARTIFACT_VERSION: ${{ inputs.version }}
+        run: ./scripts/build-altstore-ipa.sh "$ARTIFACT_VERSION"
+      - name: Record checksum
+        run: shasum -a 256 dist/*.ipa | tee dist/SHA256SUMS
+      - uses: actions/upload-artifact@v4
+        with:
+          name: KORemote-AltStore-unsigned
+          path: |
+            dist/*.ipa
+            dist/SHA256SUMS
+          if-no-files-found: error

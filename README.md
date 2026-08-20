@@ -46,7 +46,13 @@ The listener runs only while KOReader is active. It closes during suspend or exi
 
 ## Run the app
 
-Open `KOReaderiOSRemote.xcodeproj` in Xcode 26 or later. Select the **KORemote** scheme, not Labs, Controls, or Watch.
+Open `KOReaderiOSRemote.xcodeproj` in Xcode 26 or later. Select the scheme for the intended distribution route:
+
+- **KORemoteFull**: full feature set with Controls and Watch; release-channel suitability is not established.
+- **KORemoteFree**: app-only free Personal Team build.
+- **KORemoteFreeWatch**: experimental free Personal Team build with Watch.
+- **KORemoteAltStore**: app-only AltStore Classic build.
+- **KORemoteLabs**: unsupported sideload research only.
 
 ### Install from source
 
@@ -74,10 +80,10 @@ Then:
 
 1. Connect and unlock the iPhone. Tap **Trust** if asked.
 2. In Xcode, sign in under **Xcode → Settings → Accounts**.
-3. Select the **KORemote** scheme, select the iPhone, and choose your team under **Signing & Capabilities**.
+3. Select **KORemoteFree**, select the iPhone, and choose your Personal Team under **Signing & Capabilities**.
 4. Press **Run**. Enable Developer Mode on the iPhone if asked.
 
-The full KORemote target currently needs a paid Apple Developer team because its controls and Watch app use App Groups and shared Keychain access. A free-account target is not included yet.
+The full target uses App Groups and shared Keychain access for its Controls and Watch app. `KORemoteFree` removes those capabilities and stores pairing data inside the app, so each user can attempt signing it with a free Personal Team.
 
 With a free Personal Team, supported apps expire after 7 days. To sign one again, reconnect the iPhone, reopen the project, and press **Run**. You do not need to clone it again. See Apple's [free-account limits](https://developer.apple.com/support/compare-memberships/).
 
@@ -123,13 +129,13 @@ The normal app includes native **Next Page** and **Previous Page** controls. The
 - Action Button: open **Settings → Action Button**, choose Controls or Shortcut, then select **KORemote — Next Page**.
 - Siri and Shortcuts: use the supplied Next Page or Previous Page action.
 - Volume buttons: open **Settings → System Controls** and enable **Use Volume Buttons**. Volume Up sends Next; Volume Down sends Previous. The app keeps system volume near 50% so both directions remain available.
-- Now Playing: enable **Capture Media Controls** on the same screen to use Previous and Next from the Lock Screen or connected media accessories.
+- Now Playing: Personal Team and AltStore builds can enable **Capture Media Controls** for the Lock Screen or connected media accessories.
 
-Volume and media capture keep an effectively inaudible background-audio session active. They can interrupt other audio and use more battery. KOReader still needs to be active and reachable on the same network.
+The full build observes volume only while KORemote is in the foreground and does not declare background audio. Personal Team and AltStore builds retain an effectively inaudible background-audio session for locked-screen volume/media capture; it can interrupt other audio and use more battery. KOReader still needs to be active and reachable on the same network.
 
 ## Apple Watch
 
-Pair KOReader in the iPhone app first. Install or run the `KORemoteWatch` companion through Xcode, then open KORemote on the watch. It tries the KOReader device directly over Wi-Fi and falls back through the paired iPhone.
+Pair KOReader in the iPhone app first. The full build includes `KORemoteWatch`. `KORemoteFreeWatch` includes an entitlement-free experimental companion that receives pairing through WatchConnectivity. AltStore Classic and the app-only `KORemoteFree` route do not include Watch. The watch tries KOReader directly over Wi-Fi and falls back through the paired iPhone.
 
 The Next button is the watch scene's primary hand-gesture action, so supported watches can use Double Tap while the app is visible. Debug builds also contain Gesture Lab, an experimental Core Motion impulse detector that requires physical-watch calibration.
 
@@ -141,6 +147,10 @@ The project uses one reverse-domain identifier family:
 - Controls: `com.maxoliinyk.koreaderremote.controls`
 - Watch: `com.maxoliinyk.koreaderremote.watch`
 - Labs: `com.maxoliinyk.koreaderremote.labs`
+- Personal Team app: `com.maxoliinyk.koreaderremote.free`
+- Personal Team + Watch app: `com.maxoliinyk.koreaderremote.freewatch`
+- Entitlement-free Watch: `com.maxoliinyk.koreaderremote.freewatch.watch`
+- AltStore Classic app: `com.maxoliinyk.koreaderremote.altstore`
 - Shared App Group: `group.com.maxoliinyk.koreaderremote`
 
 These identifiers intentionally remain stable across the KORemote rename, preserving pairing data and existing system controls for current users.
@@ -159,12 +169,10 @@ These identifiers intentionally remain stable across the KORemote rename, preser
 ```bash
 xcrun swift test --package-path Packages/RemoteCore
 
-xcodebuild -project KOReaderiOSRemote.xcodeproj -scheme KORemote \
-  -destination 'generic/platform=iOS Simulator' \
-  CODE_SIGNING_ALLOWED=NO build
+make check-distributions
 ```
 
-The request format and authentication details are documented in [CONNECTION.md](CONNECTION.md). Unsupported experiments stay isolated in the Labs target; see [LABS.md](LABS.md).
+The request format and authentication details are documented in [CONNECTION.md](CONNECTION.md). Install routes and their exact losses are in [DISTRIBUTION.md](DISTRIBUTION.md). Unsupported experiments stay isolated in the Labs target; see [LABS.md](LABS.md).
 
 ## License
 

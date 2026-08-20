@@ -40,16 +40,24 @@ final class SystemControlsStore {
     @ObservationIgnored private let audioPlayer = AVAudioPlayerNode()
     @ObservationIgnored private let client = KindleClient()
     @ObservationIgnored private let storage = PairingStore()
+    @ObservationIgnored private let profile: DistributionProfile
     @ObservationIgnored private var hasActivated = false
+    @ObservationIgnored private var isAppActive = true
     @ObservationIgnored private var isSessionRunning = false
     @ObservationIgnored private var volumeObservation: NSKeyValueObservation?
     @ObservationIgnored private var remoteCommandTokens: [(MPRemoteCommand, Any)] = []
     @ObservationIgnored private var expectedVolume: Float?
+#if DEBUG && targetEnvironment(simulator)
+    @ObservationIgnored private var didRunSimulatorVolumeAction = false
+#endif
 
-    init(defaults: UserDefaults = .standard) {
+    init(defaults: UserDefaults = .standard, profile: DistributionProfile = .current) {
         self.defaults = defaults
+        self.profile = profile
         usesVolumeButtons = defaults.bool(forKey: Keys.usesVolumeButtons)
-        capturesMediaControls = defaults.bool(forKey: Keys.capturesMediaControls)
+        capturesMediaControls = profile.supportsMediaControls
+            ? defaults.bool(forKey: Keys.capturesMediaControls)
+            : false
     }
 
     func activate() {
@@ -57,17 +65,26 @@ final class SystemControlsStore {
         reconcile()
     }
 
+    func scenePhaseChanged(to phase: ScenePhase) {
+        isAppActive = phase == .active
+        reconcile()
+    }
+
     private func reconcile() {
         guard hasActivated else { return }
 
-        if usesVolumeButtons || capturesMediaControls {
+        let shouldCaptureVolume = usesVolumeButtons
+            && (isAppActive || profile.keepsVolumeCaptureWhileInactive)
+        let shouldCaptureMedia = capturesMediaControls && profile.supportsMediaControls
+
+        if shouldCaptureVolume || shouldCaptureMedia {
             startSessionIfNeeded()
         }
 
-        usesVolumeButtons ? installVolumeCapture() : removeVolumeCapture()
-        capturesMediaControls ? installMediaControls() : removeMediaControls()
+        shouldCaptureVolume ? installVolumeCapture() : removeVolumeCapture()
+        shouldCaptureMedia ? installMediaControls() : removeMediaControls()
 
-        if !usesVolumeButtons, !capturesMediaControls {
+        if !shouldCaptureVolume, !shouldCaptureMedia {
             stopSession()
         }
     }
@@ -77,9 +94,15 @@ final class SystemControlsStore {
 
         do {
             let session = AVAudioSession.sharedInstance()
-            try session.setCategory(.playback, mode: .default)
+            if profile.keepsVolumeCaptureWhileInactive {
+                try session.setCategory(.playback, mode: .default)
+            } else {
+                try session.setCategory(.ambient, mode: .default, options: .mixWithOthers)
+            }
             try session.setActive(true)
-            try startAudioEngine()
+            if profile.keepsVolumeCaptureWhileInactive {
+                try startAudioEngine()
+            }
             isSessionRunning = true
         } catch {
             stopSession()
@@ -128,13 +151,16 @@ final class SystemControlsStore {
             let newValue = change.newValue ?? oldValue
             Task { @MainActor in
                 guard let self else { return }
-                if let expectedVolume = self.expectedVolume, abs(newValue - expectedVolume) < 0.01 {
+                let expectedVolume = self.expectedVolume
+                if let expectedVolume, abs(newValue - expectedVolume) < 0.01 {
                     self.expectedVolume = nil
                     return
                 }
-                guard newValue != oldValue else { return }
-
-                let action: RemoteAction = newValue > oldValue ? .nextPage : .previousPage
+                guard let action = VolumeButtonAction.remoteAction(
+                    from: oldValue,
+                    to: newValue,
+                    ignoring: expectedVolume
+                ) else { return }
                 self.recenterVolume()
                 await self.send(action)
             }
@@ -219,6 +245,22 @@ final class SystemControlsStore {
             Feedback.error()
         }
     }
+
+#if DEBUG && targetEnvironment(simulator)
+    func runSimulatorVolumeActionIfRequested() async {
+        guard
+            !didRunSimulatorVolumeAction,
+            let value = ProcessInfo.processInfo.environment["KOREMOTE_SIMULATOR_VOLUME_ACTION"],
+            let action = RemoteAction(rawValue: value)
+        else { return }
+        didRunSimulatorVolumeAction = true
+        await send(action)
+    }
+
+    func simulateVolumeAction(_ action: RemoteAction) async {
+        await send(action)
+    }
+#endif
 }
 
 private extension SystemControlsStore {

@@ -1,7 +1,7 @@
 VERSION ?= 2.0.0
 DIST_DIR ?= dist
 PLUGIN_DIR ?= remote_turner.koplugin
-.PHONY: all build test koplugin clean
+.PHONY: all build check-distributions ipa-altstore smoke-simulator test koplugin clean
 
 all: test build koplugin
 
@@ -11,9 +11,18 @@ test:
 build:
 	xcodebuild \
 		-project KOReaderiOSRemote.xcodeproj \
-		-scheme KORemote \
+		-scheme KORemoteFull \
 		-destination 'generic/platform=iOS Simulator' \
 		CODE_SIGNING_ALLOWED=NO build
+
+check-distributions:
+	./scripts/check-distributions.sh
+
+ipa-altstore:
+	./scripts/build-altstore-ipa.sh $(VERSION)
+
+smoke-simulator:
+	./scripts/smoke-simulator.sh
 
 koplugin:
 	mkdir -p $(DIST_DIR)

@@ -11,17 +11,13 @@ jobs:
     runs-on: macos-26
     steps:
       - uses: actions/checkout@v4
-      - name: Test RemoteCore
-        run: swift test --package-path Packages/RemoteCore
-      - name: Build iOS app without signing
-        run: >-
-          xcodebuild -project KOReaderiOSRemote.xcodeproj -scheme KORemote
-          -destination 'generic/platform=iOS Simulator'
-          CODE_SIGNING_ALLOWED=NO build
-      - name: Confirm Labs is not a release dependency
-        run: >-
-          xcodebuild -project KOReaderiOSRemote.xcodeproj -scheme KORemote
-          -showBuildSettings | grep -q 'TARGET_NAME = KORemote'
+      - name: Test every distribution configuration
+        run: ./scripts/check-distributions.sh
+      - name: Launch every iPhone configuration
+        env:
+          INTERACTIVE_SIMULATOR: 0
+          SKIP_WATCH: 1
+        run: ./scripts/smoke-simulator.sh
 
   plugin:
     runs-on: ubuntu-latest

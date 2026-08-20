@@ -32,8 +32,10 @@ struct RootView: View {
     }
 }
 
+#if DEBUG
 #Preview {
     RootView()
         .environment(RemoteStore.preview())
         .environment(SystemControlsStore.preview())
 }
+#endif

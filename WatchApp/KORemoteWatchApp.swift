@@ -17,7 +17,12 @@ struct KORemoteWatchApp: App {
                 KORemoteView()
             }
             .environment(store)
-            .task { store.activate() }
+            .task {
+                store.activate()
+#if DEBUG && targetEnvironment(simulator)
+                await store.runSimulatorActionIfRequested()
+#endif
+            }
         }
     }
 }

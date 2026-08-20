@@ -27,6 +27,9 @@ final class KORemoteStore {
     private let client = KindleClient()
     private let connectivity = WatchConnectivityBridge.shared
     private var observer: NSObjectProtocol?
+#if DEBUG && targetEnvironment(simulator)
+    private var didRunSimulatorAction = false
+#endif
 
     init() {
         reload()
@@ -66,6 +69,37 @@ final class KORemoteStore {
             }
         }
     }
+
+#if DEBUG && targetEnvironment(simulator)
+    func runSimulatorActionIfRequested() async {
+        guard
+            !didRunSimulatorAction,
+            let value = ProcessInfo.processInfo.environment["KOREMOTE_SIMULATOR_WATCH_ACTION"],
+            let action = RemoteAction(rawValue: value)
+        else { return }
+        didRunSimulatorAction = true
+
+        // Give WatchConnectivity a short opportunity to deliver the real context.
+        for _ in 0..<30 {
+            reload()
+            if configuration != nil { break }
+            try? await Task.sleep(for: .milliseconds(100))
+        }
+
+        // WatchConnectivity delivery is unreliable in Simulator. Seed the same
+        // local mock pairing so the Watch request path remains testable there.
+        if configuration == nil,
+           let value = ProcessInfo.processInfo.environment["KOREMOTE_SIMULATOR_WATCH_PAIRING_URL"],
+           let url = URL(string: value),
+           let pairing = try? PairingPayload(url: url).configuration {
+            try? storage.save(pairing)
+            reload()
+        }
+
+        guard configuration != nil else { return }
+        await send(action)
+    }
+#endif
 
     private func reload() {
         configuration = try? storage.load()
