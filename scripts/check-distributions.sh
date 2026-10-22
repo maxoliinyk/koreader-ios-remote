@@ -10,36 +10,16 @@ trap 'rm -rf "$CHECK_DIR"' EXIT HUP INT TERM
 build_scheme() {
     scheme=$1
     platform=$2
-    log="$CHECK_DIR/$scheme.log"
-    derived_data="$CHECK_DIR/$scheme-derived-data"
+    configuration=${3:-Debug}
+    log="$CHECK_DIR/$scheme-$configuration.log"
 
-    echo "Building $scheme for $platform"
+    echo "Building $scheme $configuration for $platform"
     if ! xcodebuild \
         -project "$REPO_DIR/KOReaderiOSRemote.xcodeproj" \
         -scheme "$scheme" \
-        -configuration Debug \
+        -configuration "$configuration" \
         -destination "generic/platform=$platform" \
-        -derivedDataPath "$derived_data" \
-        CODE_SIGNING_ALLOWED=NO \
-        build >"$log" 2>&1; then
-        tail -n 80 "$log"
-        return 1
-    fi
-}
-
-build_release_scheme() {
-    scheme=$1
-    platform=$2
-    log="$CHECK_DIR/$scheme-release.log"
-    derived_data="$CHECK_DIR/$scheme-release-derived-data"
-
-    echo "Building $scheme Release for $platform"
-    if ! xcodebuild \
-        -project "$REPO_DIR/KOReaderiOSRemote.xcodeproj" \
-        -scheme "$scheme" \
-        -configuration Release \
-        -destination "generic/platform=$platform" \
-        -derivedDataPath "$derived_data" \
+        -derivedDataPath "$CHECK_DIR/DerivedData" \
         CODE_SIGNING_ALLOWED=NO \
         CODE_SIGNING_REQUIRED=NO \
         CODE_SIGN_IDENTITY= \
@@ -59,23 +39,23 @@ build_scheme KORemoteAltStore "iOS Simulator"
 build_scheme KORemoteLabs "iOS Simulator"
 build_scheme KORemoteWatchFree "watchOS Simulator"
 
-build_release_scheme KORemoteFull iOS
-build_release_scheme KORemoteFree iOS
-build_release_scheme KORemoteFreeWatch iOS
-build_release_scheme KORemoteAltStore iOS
-build_release_scheme KORemoteLabs iOS
-build_release_scheme KORemoteWatchFree watchOS
+build_scheme KORemoteFull iOS Release
+build_scheme KORemoteFree iOS Release
+build_scheme KORemoteFreeWatch iOS Release
+build_scheme KORemoteAltStore iOS Release
+build_scheme KORemoteLabs iOS Release
+build_scheme KORemoteWatchFree watchOS Release
 
-full_app="$CHECK_DIR/KORemoteFull-derived-data/Build/Products/Debug-iphonesimulator/KORemote.app"
-free_app="$CHECK_DIR/KORemoteFree-derived-data/Build/Products/Debug-iphonesimulator/KORemoteFree.app"
-free_watch_app="$CHECK_DIR/KORemoteFreeWatch-derived-data/Build/Products/Debug-iphonesimulator/KORemoteFreeWatch.app"
-altstore_app="$CHECK_DIR/KORemoteAltStore-derived-data/Build/Products/Debug-iphonesimulator/KORemoteAltStore.app"
-labs_app="$CHECK_DIR/KORemoteLabs-derived-data/Build/Products/Debug-iphonesimulator/KORemoteLabs.app"
-full_release_app="$CHECK_DIR/KORemoteFull-release-derived-data/Build/Products/Release-iphoneos/KORemote.app"
-free_release_app="$CHECK_DIR/KORemoteFree-release-derived-data/Build/Products/Release-iphoneos/KORemoteFree.app"
-free_watch_release_app="$CHECK_DIR/KORemoteFreeWatch-release-derived-data/Build/Products/Release-iphoneos/KORemoteFreeWatch.app"
-altstore_release_app="$CHECK_DIR/KORemoteAltStore-release-derived-data/Build/Products/Release-iphoneos/KORemoteAltStore.app"
-labs_release_app="$CHECK_DIR/KORemoteLabs-release-derived-data/Build/Products/Release-iphoneos/KORemoteLabs.app"
+full_app="$CHECK_DIR/DerivedData/Build/Products/Debug-iphonesimulator/KORemote.app"
+free_app="$CHECK_DIR/DerivedData/Build/Products/Debug-iphonesimulator/KORemoteFree.app"
+free_watch_app="$CHECK_DIR/DerivedData/Build/Products/Debug-iphonesimulator/KORemoteFreeWatch.app"
+altstore_app="$CHECK_DIR/DerivedData/Build/Products/Debug-iphonesimulator/KORemoteAltStore.app"
+labs_app="$CHECK_DIR/DerivedData/Build/Products/Debug-iphonesimulator/KORemoteLabs.app"
+full_release_app="$CHECK_DIR/DerivedData/Build/Products/Release-iphoneos/KORemote.app"
+free_release_app="$CHECK_DIR/DerivedData/Build/Products/Release-iphoneos/KORemoteFree.app"
+free_watch_release_app="$CHECK_DIR/DerivedData/Build/Products/Release-iphoneos/KORemoteFreeWatch.app"
+altstore_release_app="$CHECK_DIR/DerivedData/Build/Products/Release-iphoneos/KORemoteAltStore.app"
+labs_release_app="$CHECK_DIR/DerivedData/Build/Products/Release-iphoneos/KORemoteLabs.app"
 
 test -d "$full_app/PlugIns/KORemoteControls.appex"
 test -d "$full_app/Watch/KORemoteWatch.app"

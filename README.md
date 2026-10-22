@@ -8,14 +8,16 @@ The plugin is developed and tested on a jailbroken Kindle. Other KOReader device
 
 - A network-connected device running KOReader
 - An iPhone running iOS 26 or later
-- Xcode 26 or later
+- For source installation: a Mac with Xcode 26 or later
 - Both devices on the same Wi-Fi network
 
 The simulator is useful for interface testing but cannot scan a pairing QR code. Use manual pairing there.
 
 ## Install the KOReader plugin
 
-Build the plugin archive from the repository root:
+Open [Releases](https://github.com/maxoliinyk/koreader-ios-remote/releases) and download `remote_turner-<version>.koplugin.zip` from **Assets**. This is the plugin download; the IPA is the iPhone app. No Xcode is needed to install the plugin.
+
+If no release is available yet, use GitHub's **Code → Download ZIP**, extract it, and copy the `remote_turner.koplugin` folder from inside the source archive. Or build the plugin archive from a checkout:
 
 ```bash
 make koplugin VERSION=dev
@@ -42,7 +44,9 @@ Open a book, open KOReader's top menu, then choose **Tools → Remote Turner**. 
 - change the port;
 - generate a new pairing secret.
 
-The listener runs only while KOReader is active. It closes during suspend or exit and starts again when KOReader resumes. Keep Wi-Fi enabled on the KOReader device.
+The listener runs only while KOReader is active. It closes during suspend or exit and starts again when KOReader resumes. Keep Wi-Fi enabled on the KOReader device. The plugin does not wake a suspended device; wake it using its hardware button before reconnecting.
+
+To update, stop Remote Turner, exit KOReader, replace the plugin folder, and restart KOReader. Pairing settings are stored separately and normally survive an update. To remove it, stop the listener first, exit KOReader, delete `remote_turner.koplugin`, and restart. Stopping the listener removes the Kindle firewall rules it added.
 
 ## Run the app
 
@@ -53,6 +57,15 @@ Open `KOReaderiOSRemote.xcodeproj` in Xcode 26 or later. Select the scheme for t
 - **KORemoteFreeWatch**: experimental free Personal Team build with Watch.
 - **KORemoteAltStore**: app-only AltStore Classic build.
 - **KORemoteLabs**: unsupported sideload research only.
+
+### Install an IPA with AltStore Classic
+
+1. Follow the official [AltStore Classic setup guide](https://faq.altstore.io/altstore-classic/your-altstore) for your computer and iPhone.
+2. Download `KORemoteAltStore-<version>-unsigned.ipa` from a [release](https://github.com/maxoliinyk/koreader-ios-remote/releases), when available. Save the IPA in Files; do not extract it.
+3. In AltStore Classic, open **My Apps → +** and select the IPA. AltStore signs it using your Apple Account.
+4. Open KORemote, pair KOReader, and allow Local Network access. Keep the app refreshed in AltStore before its signature expires.
+
+This route includes the iPhone app and Shortcuts, volume, and media controls. It does not include the Apple Watch app or Control Center extension. For details, checksums, and building an IPA yourself, see [DISTRIBUTION.md](DISTRIBUTION.md).
 
 ### Install from source
 
@@ -98,8 +111,8 @@ Let Xcode sign the simulator build normally. `CODE_SIGNING_ALLOWED=NO` is only f
 ### Physical iPhone
 
 1. Connect and unlock the iPhone. Enable Developer Mode if Xcode requests it.
-2. Select the `KORemote` target, open **Signing & Capabilities**, and choose your development team.
-3. Use the same team for `KORemoteControls`, `KORemoteWatch`, and `KORemoteLabs` when building those targets.
+2. Select `KORemoteFree` for a free Apple Account, open **Signing & Capabilities**, and choose your Personal Team.
+3. For the full build, use `KORemoteFull` and select a team that supports App Groups for `KORemote`, `KORemoteControls`, and `KORemoteWatch`. Labs is a separate experiment.
 4. Select the iPhone and press Run.
 5. Accept Camera access when scanning and Local Network access when the app first tests KOReader.
 
@@ -122,11 +135,11 @@ Some guest and mesh networks block communication between clients. If pairing suc
 
 ## Use it while the iPhone is locked
 
-The normal app includes native **Next Page** and **Previous Page** controls. They can run without opening the app after pairing and approving Local Network access once.
+The full build includes native **Next Page** and **Previous Page** controls for the Lock Screen and Control Center. All app configurations include Siri and Shortcuts actions. They can run without opening the app after pairing and approving Local Network access once.
 
-- Lock Screen: touch and hold the Lock Screen, choose **Customize**, select a control slot, then add **KORemote — Next Page**.
-- Control Center: touch and hold an empty area, choose **Add a Control**, then add **Next Page**.
-- Action Button: open **Settings → Action Button**, choose Controls or Shortcut, then select **KORemote — Next Page**.
+- Full build — Lock Screen: touch and hold the Lock Screen, choose **Customize**, select a control slot, then add **KORemote — Next Page**.
+- Full build — Control Center: touch and hold an empty area, choose **Add a Control**, then add **Next Page**.
+- Action Button: open **Settings → Action Button**, choose Controls (full build) or Shortcut, then select **KORemote — Next Page**.
 - Siri and Shortcuts: use the supplied Next Page or Previous Page action.
 - Volume buttons: open **Settings → System Controls** and enable **Use Volume Buttons**. Volume Up sends Next; Volume Down sends Previous. The app keeps system volume near 50% so both directions remain available.
 - Now Playing: Personal Team and AltStore builds can enable **Capture Media Controls** for the Lock Screen or connected media accessories.
@@ -135,7 +148,7 @@ The full build observes volume only while KORemote is in the foreground and does
 
 ## Apple Watch
 
-Pair KOReader in the iPhone app first. The full build includes `KORemoteWatch`. `KORemoteFreeWatch` includes an entitlement-free experimental companion that receives pairing through WatchConnectivity. AltStore Classic and the app-only `KORemoteFree` route do not include Watch. The watch tries KOReader directly over Wi-Fi and falls back through the paired iPhone.
+Pair KOReader in the iPhone app first. The full build includes `KORemoteWatch`. `KORemoteFreeWatch` includes an entitlement-free experimental companion that receives pairing through WatchConnectivity. AltStore Classic and the app-only `KORemoteFree` route do not include Watch. The watch tries KOReader directly over Wi-Fi and falls back through the paired iPhone when a direct connection cannot be established. It does not automatically resend after a timeout or interrupted response, because the first action may already have reached KOReader.
 
 The Next button is the watch scene's primary hand-gesture action, so supported watches can use Double Tap while the app is visible. Debug builds also contain Gesture Lab, an experimental Core Motion impulse detector that requires physical-watch calibration.
 
@@ -169,11 +182,15 @@ These identifiers intentionally remain stable across the KORemote rename, preser
 ```bash
 xcrun swift test --package-path Packages/RemoteCore
 
+make test-plugin
+
 make check-distributions
 ```
 
-The request format and authentication details are documented in [CONNECTION.md](CONNECTION.md). Install routes and their exact losses are in [DISTRIBUTION.md](DISTRIBUTION.md). Unsupported experiments stay isolated in the Labs target; see [LABS.md](LABS.md).
+The request format and authentication details are documented in [CONNECTION.md](CONNECTION.md). Install routes and their exact losses are in [DISTRIBUTION.md](DISTRIBUTION.md). Plugin checks need Lua (5.1 on KOReader), Python 3, and optionally `luacheck`; the app has no third-party package dependencies.
+
+Unsupported experiments stay isolated in the Labs target; see [LABS.md](LABS.md).
 
 ## License
 
-Copyright and attribution from the original project are retained. The project is available under the [AGPL-3.0 license](LICENSE).
+Based on [Remote Turner by tachibana-shin](https://github.com/tachibana-shin/koreader_remote_turner). Copyright and attribution from the original project are retained. The project is available under the [AGPL-3.0 license](LICENSE).

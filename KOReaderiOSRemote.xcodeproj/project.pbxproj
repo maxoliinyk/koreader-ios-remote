@@ -747,7 +747,6 @@
 				CODE_SIGN_ENTITLEMENTS = App/KORemote.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = F2Z5AUR56U;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = App/Info.plist;
@@ -775,7 +774,6 @@
 				CODE_SIGN_ENTITLEMENTS = App/KORemote.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = F2Z5AUR56U;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = App/Info.plist;
@@ -801,7 +799,6 @@
 				CODE_SIGN_ENTITLEMENTS = Controls/KORemoteControls.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = F2Z5AUR56U;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Controls/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "KORemote Controls";
@@ -824,7 +821,6 @@
 				CODE_SIGN_ENTITLEMENTS = Controls/KORemoteControls.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = F2Z5AUR56U;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Controls/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "KORemote Controls";
@@ -849,7 +845,6 @@
 				CODE_SIGN_ENTITLEMENTS = WatchApp/KORemoteWatch.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = F2Z5AUR56U;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = WatchApp/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = KORemote;
@@ -880,7 +875,6 @@
 				CODE_SIGN_ENTITLEMENTS = WatchApp/KORemoteWatch.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = F2Z5AUR56U;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = WatchApp/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = KORemote;
@@ -911,7 +905,6 @@
 				CODE_SIGN_ENTITLEMENTS = Labs/KORemoteLabs.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = F2Z5AUR56U;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Labs/Info.plist;
@@ -937,7 +930,6 @@
 				CODE_SIGN_ENTITLEMENTS = Labs/KORemoteLabs.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = F2Z5AUR56U;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Labs/Info.plist;

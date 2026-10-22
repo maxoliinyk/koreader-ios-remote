@@ -49,9 +49,9 @@ Build it with:
 make ipa-altstore VERSION=2.0.0
 ```
 
-The resulting `dist/KORemoteAltStore-2.0.0-unsigned.ipa` is not installable by itself. In AltStore Classic, use **My Apps → +** and select the IPA. The user still needs AltStore/AltServer, their own Apple Account, periodic refreshes, and available app/App-ID slots. Apple Watch installation is not documented by AltStore Classic, so it is intentionally absent from this IPA.
+The resulting `dist/KORemoteAltStore-2.0.0-unsigned.ipa` is not installable by itself. Install [AltStore Classic](https://faq.altstore.io/altstore-classic/your-altstore) first. Save the IPA in Files, then use **My Apps → +** and select it. Follow the official setup for AltStore/AltServer, use your own Apple Account, refresh the app before expiry, and keep app/App-ID slots available. See the official [App ID limits](https://faq.altstore.io/altstore-classic/app-ids). Apple Watch installation is not documented by AltStore Classic, so it is intentionally absent from this IPA.
 
-The manual GitHub workflow **Build AltStore Classic IPA** builds the same unsigned artifact and publishes a SHA-256 checksum. A GitHub runner cannot create a transferable Personal Team signature.
+Tagged GitHub releases package the plugin, build the unsigned IPA, and publish `SHA256SUMS`. The manual **Build AltStore Classic IPA** workflow also provides an Actions artifact and checksum for testing before a release. A GitHub runner cannot create a transferable Personal Team signature.
 
 ### `KORemoteLabs`
 
@@ -80,6 +80,31 @@ Watch:  com.maxoliinyk.koreaderremote.freewatch.watch
 ```
 
 If either identifier is changed, update the Watch companion identifier too.
+
+## Downloads and updates
+
+Release assets live on the [Releases page](https://github.com/maxoliinyk/koreader-ios-remote/releases). The plugin ZIP and IPA are separate downloads. GitHub's automatically generated source ZIP is a source checkout, not an installable iPhone app.
+
+To check a download on macOS, put it beside `SHA256SUMS` and compare its digest:
+
+```bash
+shasum -a 256 remote_turner-*.koplugin.zip
+shasum -a 256 KORemoteAltStore-*-unsigned.ipa
+```
+
+Use the corresponding line in `SHA256SUMS`. On Linux, use `sha256sum`. A matching checksum verifies the download matches the release asset; it is not a signing certificate.
+
+For app updates, install over the existing app using the same route, Apple Account/team, and bundle identifier. Deleting the app or switching distribution products may require pairing again. Source users pull the new code and run from Xcode again; AltStore users import the new IPA and continue refreshing it.
+
+## Creating a release
+
+1. Update every target's `MARKETING_VERSION` and the plugin's `_meta.lua` version together. Keep protocol version 1 unless the wire format changes.
+2. Run `make test-plugin`, `luacheck remote_turner.koplugin/ tests/`, and `make check-distributions`.
+3. Verify plugin installation, pairing, next/previous/sleep, and wake/reconnect on a real KOReader device. Verify the intended signing route and hardware controls on an iPhone; include a real Watch for Watch releases.
+4. Push an explicitly chosen `vX.Y.Z` tag when ready to publish. The **Release** workflow validates matching versions, runs protocol tests, builds both downloads, and attaches checksums. It publishes only after both artifacts succeed; Labs is excluded from the IPA.
+5. Review the generated release notes and record the device/OS/KOReader versions actually tested. Label untested routes clearly.
+
+No signing certificate or Apple Account credential belongs in the repository or release assets. The IPA is intentionally unsigned; each user signs their own copy.
 
 ## Automated verification
 

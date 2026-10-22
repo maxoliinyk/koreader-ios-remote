@@ -4,9 +4,9 @@
 
 ## What works without Labs
 
-The best locked-iPhone route is already public API: add the app's **Next Page** control to the Lock Screen, Control Center, or Action Button. Its App Intent is allowed while locked and sends the request without launching the main interface.
+The full build provides a public API route while locked: add the app's **Next Page** control to the Lock Screen, Control Center, or Action Button. Its App Intent is allowed while locked and sends the request without launching the main interface.
 
-The normal app also offers opt-in public volume observation and Now Playing controls under **Settings → System Controls**. Labs keeps the raw private volume-button hook, alternate media layouts, and private MediaRemote probes isolated from the normal target.
+All configurations offer opt-in public volume observation; Personal Team and AltStore configurations also offer Now Playing controls under **Settings → System Controls**. Labs keeps the raw private volume-button hook, alternate media layouts, and private MediaRemote probes isolated from the normal target.
 
 ## iPhone experiments
 
