@@ -9,7 +9,7 @@ trap 'rm -rf "$BUILD_DIR"' EXIT HUP INT TERM
 
 VERSION=${1:-dev}
 case "$VERSION" in
-    *[!A-Za-z0-9._-]*)
+    ""|-*|*[!A-Za-z0-9._-]*)
         echo "Version label may contain only letters, digits, dots, underscores, and hyphens" >&2
         exit 2
         ;;

@@ -6,6 +6,13 @@ on:
     branches: [main]
   workflow_call:
 
+permissions:
+  contents: read
+
+concurrency:
+  group: check-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   apple:
     runs-on: macos-26
@@ -23,8 +30,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - run: sudo apt-get update && sudo apt-get install -y lua-check zip
-      - run: luacheck remote_turner.koplugin/
+      - run: sudo apt-get update && sudo apt-get install -y lua5.1 lua-check
+      - run: luacheck remote_turner.koplugin/ tests/
+      - run: make test-plugin LUA=lua5.1
       - run: make koplugin VERSION=ci
       - uses: actions/upload-artifact@v4
         with:

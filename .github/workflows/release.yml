@@ -1,18 +1,81 @@
-name: Release Plugin
+name: Release
 
 on:
   push:
     tags: ['v*']
 
+permissions:
+  contents: read
+
 jobs:
-  build:
+  plugin:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check release version
+        env:
+          RELEASE_TAG: ${{ github.ref_name }}
+        run: |
+          python3 - <<'PY'
+          import os, re
+          from pathlib import Path
+          version = os.environ['RELEASE_TAG'].removeprefix('v')
+          assert re.fullmatch(r'\d+\.\d+\.\d+', version), 'Use a vX.Y.Z release tag'
+          plugin = Path('remote_turner.koplugin/_meta.lua').read_text()
+          project = Path('KOReaderiOSRemote.xcodeproj/project.pbxproj').read_text()
+          assert re.search(r'version = "([^"]+)"', plugin).group(1) == version, 'Update the plugin version'
+          assert set(re.findall(r'MARKETING_VERSION = ([^;]+);', project)) == {version}, 'Update all app versions'
+          PY
+      - run: sudo apt-get update && sudo apt-get install -y lua5.1 lua-check
+      - run: luacheck remote_turner.koplugin/ tests/
+      - run: make test-plugin LUA=lua5.1
+      - name: Package plugin
+        env:
+          RELEASE_TAG: ${{ github.ref_name }}
+        run: python3 scripts/package-plugin.py "${RELEASE_TAG#v}"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: plugin
+          path: dist/*.zip
+          if-no-files-found: error
+
+  ipa:
+    runs-on: macos-26
+    steps:
+      - uses: actions/checkout@v4
+      - run: xcrun swift test --package-path Packages/RemoteCore
+      - name: Build unsigned AltStore Classic IPA
+        env:
+          RELEASE_TAG: ${{ github.ref_name }}
+        run: ./scripts/build-altstore-ipa.sh "${RELEASE_TAG#v}"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ipa
+          path: dist/*.ipa
+          if-no-files-found: error
+
+  publish:
+    needs: [plugin, ipa]
     runs-on: ubuntu-latest
     permissions:
       contents: write
     steps:
-      - uses: actions/checkout@v4
-      - name: Package KOReader plugin
-        run: make koplugin VERSION="${GITHUB_REF_NAME#v}"
+      - uses: actions/download-artifact@v4
+        with:
+          path: dist
+          merge-multiple: true
+      - name: Record checksums
+        working-directory: dist
+        run: sha256sum *.zip *.ipa > SHA256SUMS
       - uses: softprops/action-gh-release@v2
         with:
-          files: dist/*.zip
+          generate_release_notes: true
+          body: |
+            Install the KOReader plugin from remote_turner-*.koplugin.zip.
+            The unsigned IPA must be signed by AltStore Classic before installation.
+            See the README and DISTRIBUTION.md at this tag for setup and limitations.
+          files: |
+            dist/*.zip
+            dist/*.ipa
+            dist/SHA256SUMS
+          fail_on_unmatched_files: true

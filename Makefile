@@ -1,9 +1,9 @@
 VERSION ?= 2.0.0
 DIST_DIR ?= dist
-PLUGIN_DIR ?= remote_turner.koplugin
-.PHONY: all build check-distributions ipa-altstore smoke-simulator test koplugin clean
+LUA ?= lua
+.PHONY: all build check-distributions ipa-altstore smoke-simulator test test-plugin koplugin clean
 
-all: test build koplugin
+all: test test-plugin build koplugin
 
 test:
 	xcrun swift test --package-path Packages/RemoteCore
@@ -24,9 +24,13 @@ ipa-altstore:
 smoke-simulator:
 	./scripts/smoke-simulator.sh
 
+test-plugin:
+	$(LUA) tests/httpserver_spec.lua
+	$(LUA) tests/plugin_spec.lua
+	python3 -m unittest discover -s tests
+
 koplugin:
-	mkdir -p $(DIST_DIR)
-	zip -r $(DIST_DIR)/remote_turner-$(VERSION).koplugin.zip $(PLUGIN_DIR)
+	python3 scripts/package-plugin.py "$(VERSION)" --output "$(DIST_DIR)"
 
 clean:
 	rm -rf $(DIST_DIR) Packages/RemoteCore/.build

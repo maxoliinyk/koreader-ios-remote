@@ -8,6 +8,9 @@ on:
         required: false
         default: dev
 
+permissions:
+  contents: read
+
 jobs:
   ipa:
     runs-on: macos-26
