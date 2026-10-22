@@ -66,8 +66,8 @@ public struct PairingStore: @unchecked Sendable {
     }
 
     public func forget() throws {
-        defaults.removeObject(forKey: endpointKey)
         try secrets.delete()
+        defaults.removeObject(forKey: endpointKey)
     }
 }
 

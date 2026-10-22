@@ -35,7 +35,7 @@ public enum KindleClientError: Error, Equatable, LocalizedError, Sendable {
     case invalidResponse
     case authenticationFailed
     case replayRejected
-    case portConflict
+    case deliveryUncertain
     case server(status: Int, message: String?)
 
     public var errorDescription: String? {
@@ -47,7 +47,7 @@ public enum KindleClientError: Error, Equatable, LocalizedError, Sendable {
         case .invalidResponse: "KOReader returned an unreadable response."
         case .authenticationFailed: "The pairing secret no longer matches. Scan a new code from KOReader."
         case .replayRejected: "KOReader rejected a repeated request. Try again."
-        case .portConflict: "KOReader could not use the configured listener port."
+        case .deliveryUncertain: "The connection closed before KOReader confirmed the action. Check the page before trying again."
         case let .server(status, message): message ?? "KOReader returned error \(status)."
         }
     }
@@ -80,6 +80,7 @@ public actor KindleClient {
     }
 
     private func perform(action: String, path: String, using configuration: PairingConfiguration) async throws -> ActionResponse {
+        try Task.checkCancellation()
         let nonce = RequestSigner.nonce()
         let signed = SignedRequest(
             version: configuration.endpoint.protocolVersion,
@@ -119,14 +120,19 @@ public actor KindleClient {
                 return payload
             case 401: throw KindleClientError.authenticationFailed
             case 409: throw KindleClientError.replayRejected
-            case 423: throw KindleClientError.portConflict
             default: throw KindleClientError.server(status: http.statusCode, message: payload?.message)
             }
+        } catch is CancellationError {
+            throw CancellationError()
         } catch let error as KindleClientError {
             throw error
         } catch let error as URLError {
             switch error.code {
-            case .notConnectedToInternet, .networkConnectionLost, .cannotConnectToHost, .cannotFindHost:
+            case .cancelled:
+                throw CancellationError()
+            case .networkConnectionLost:
+                throw KindleClientError.deliveryUncertain
+            case .notConnectedToInternet, .cannotConnectToHost, .cannotFindHost:
                 throw KindleClientError.unreachable
             case .timedOut:
                 throw KindleClientError.timedOut

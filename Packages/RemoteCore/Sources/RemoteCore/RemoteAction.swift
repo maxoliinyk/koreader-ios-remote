@@ -6,6 +6,11 @@
 //
 
 import Foundation
+#if canImport(Darwin)
+import Darwin
+#else
+import Glibc
+#endif
 
 public enum RemoteAction: String, Codable, CaseIterable, Sendable {
     case nextPage = "next"
@@ -52,7 +57,7 @@ public struct KindleEndpoint: Codable, Equatable, Sendable {
         let endpoint = try validated()
         var components = URLComponents()
         components.scheme = "http"
-        components.host = endpoint.host
+        components.host = endpoint.host.contains(":") ? "[\(endpoint.host)]" : endpoint.host
         components.port = endpoint.port
         components.path = path
         guard let url = components.url else { throw PairingError.invalidHost }
@@ -75,12 +80,21 @@ enum HostValidator {
         }
 
         if host.contains(":") {
-            return host.range(of: "^[0-9A-Fa-f:]+$", options: .regularExpression) != nil
+            var address = in6_addr()
+            return host.withCString { inet_pton(AF_INET6, $0, &address) } == 1
         }
 
-        return host.range(
-            of: "^[A-Za-z0-9](?:[A-Za-z0-9.-]{0,251}[A-Za-z0-9])?$",
-            options: .regularExpression
-        ) != nil
+        if host.allSatisfy({ $0.isNumber || $0 == "." }) {
+            var address = in_addr()
+            return host.withCString { inet_pton(AF_INET, $0, &address) } == 1
+        }
+
+        let labels = host.split(separator: ".", omittingEmptySubsequences: false)
+        return labels.allSatisfy { label in
+            !label.isEmpty && label.count <= 63 && label.range(
+                of: "^[A-Za-z0-9](?:[A-Za-z0-9-]*[A-Za-z0-9])?$",
+                options: .regularExpression
+            ) != nil
+        }
     }
 }

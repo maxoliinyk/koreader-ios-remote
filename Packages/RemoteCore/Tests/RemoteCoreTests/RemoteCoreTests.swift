@@ -11,6 +11,18 @@ import Testing
 
 @Suite("Pairing payload")
 struct PairingPayloadTests {
+    @Test(arguments: ["::::", "2001:db8:::1", "999.1.2.3", "kindle..local", "-kindle.local", "kindle-.local"])
+    func rejectsMalformedHosts(_ host: String) {
+        #expect(throws: PairingError.invalidHost) {
+            try KindleEndpoint(name: "Kindle", host: host).validated()
+        }
+    }
+
+    @Test func buildsIPv6URL() throws {
+        let url = try KindleEndpoint(name: "Kindle", host: "2001:db8::1").url(path: "/v1/ping")
+        #expect(url.absoluteString == "http://[2001:db8::1]:9090/v1/ping")
+    }
+
     @Test func parsesValidURL() throws {
         let secret = Data(repeating: 7, count: 32)
         let encodedName = "Bedroom Kindle".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
@@ -46,19 +58,7 @@ struct RequestSignerTests {
         #expect(RequestSigner.mac(version: 1, action: "next", nonce: "abc", secret: secret) == "7701c4d52c73919a5fd21f721faf0dfce517ce2186b9a4c14f880f45a357dbf4")
     }
 
-    @Test func boundedReplayGuardRejectsDuplicatesAndEvictsOldValues() {
-        var guardState = ReplayGuard(capacity: 2)
-        let first = guardState.insert("one")
-        let duplicate = guardState.insert("one")
-        let second = guardState.insert("two")
-        let third = guardState.insert("three")
-        let evicted = guardState.insert("one")
-        #expect(first)
-        #expect(!duplicate)
-        #expect(second)
-        #expect(third)
-        #expect(evicted)
-    }
+
 }
 
 @Suite("Volume button actions")
@@ -86,6 +86,20 @@ struct VolumeButtonActionTests {
 
 @Suite("Storage")
 struct PairingStoreTests {
+    @Test func preservesPairingWhenSecretDeletionFails() throws {
+        let suiteName = "RemoteCoreTests.\(UUID().uuidString)"
+        let defaults = try #require(UserDefaults(suiteName: suiteName))
+        defer { defaults.removePersistentDomain(forName: suiteName) }
+        let store = PairingStore(defaults: defaults, secrets: FailingDeleteSecretStore())
+        let expected = try PairingConfiguration(
+            endpoint: KindleEndpoint(name: "Kindle", host: "kindle.local"),
+            secret: Data(repeating: 4, count: 32)
+        )
+        try store.save(expected)
+        #expect(throws: StorageError.keychain(-1)) { try store.forget() }
+        #expect(try store.load() == expected)
+    }
+
     @Test func roundTripsAndForgetsConfiguration() throws {
         let suiteName = "RemoteCoreTests.\(UUID().uuidString)"
         let defaults = try #require(UserDefaults(suiteName: suiteName))
@@ -107,13 +121,27 @@ struct PairingStoreTests {
 
 @Suite("Client responses", .serialized)
 struct KindleClientTests {
+    @Test func distinguishesUncertainDelivery() async {
+        let client = makeClient { _ in throw URLError(.networkConnectionLost) }
+        await #expect(throws: KindleClientError.deliveryUncertain) {
+            try await client.send(.nextPage, using: configuration)
+        }
+    }
+
+    @Test func preservesCancellation() async {
+        let client = makeClient { _ in throw URLError(.cancelled) }
+        await #expect(throws: CancellationError.self) {
+            try await client.ping(using: configuration)
+        }
+    }
+
     @Test func decodesSuccessfulResponse() async throws {
         let client = makeClient(status: 200, body: #"{"ok":true,"message":"ready"}"#)
         let response = try await client.ping(using: configuration)
         #expect(response == ActionResponse(ok: true, message: "ready"))
     }
 
-    @Test(arguments: [(401, KindleClientError.authenticationFailed), (409, .replayRejected), (423, .portConflict)])
+    @Test(arguments: [(401, KindleClientError.authenticationFailed), (409, .replayRejected)])
     func mapsStatusErrors(_ status: Int, _ expected: KindleClientError) async {
         let client = makeClient(status: status, body: #"{"ok":false,"message":"no"}"#)
         await #expect(throws: expected) {
@@ -249,4 +277,10 @@ private final class StubURLProtocol: URLProtocol, @unchecked Sendable {
     }
 
     override func stopLoading() {}
+}
+
+private struct FailingDeleteSecretStore: SecretStoring {
+    func load() throws -> Data? { Data(repeating: 4, count: 32) }
+    func save(_ secret: Data) throws {}
+    func delete() throws { throw StorageError.keychain(-1) }
 }

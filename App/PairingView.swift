@@ -9,6 +9,7 @@ import RemoteCore
 import SwiftUI
 
 struct PairingView: View {
+    @Environment(RemoteStore.self) private var store
     @Environment(\.dismiss) private var dismiss
     @State private var mode = Mode.scan
 
@@ -28,11 +29,20 @@ struct PairingView: View {
                 .pickerStyle(.segmented)
                 .padding(.horizontal)
 
+                if case let .failure(message) = store.activity {
+                    Label(message, systemImage: "exclamationmark.triangle")
+                        .font(.callout)
+                        .foregroundStyle(.red)
+                        .padding(.horizontal)
+                        .accessibilityAddTraits(.updatesFrequently)
+                }
+
                 switch mode {
                 case .scan: ScannerPane()
                 case .manual: ManualPairingForm()
                 }
             }
+            .onAppear { store.clearPairingError() }
             .navigationTitle("Pair KOReader")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
@@ -50,8 +60,9 @@ private struct ScannerPane: View {
     var body: some View {
         if PairingScannerView.isSupported {
             PairingScannerView { value in
-                guard let url = URL(string: value) else { return }
+                guard let url = URL(string: value) else { return false }
                 store.pair(with: url)
+                return !store.isPairingPresented
             }
             .clipShape(.rect(cornerRadius: 16))
             .padding([.horizontal, .bottom])
@@ -84,6 +95,7 @@ private struct ManualPairingForm: View {
         Form {
             Section("KOReader Device") {
                 TextField("Name", text: $name)
+                    .autocorrectionDisabled()
                 TextField("IP address or hostname", text: $host)
                     .textInputAutocapitalization(.never)
                     .autocorrectionDisabled()
@@ -103,9 +115,18 @@ private struct ManualPairingForm: View {
             }
 
             Button("Save and Pair") {
-                store.pair(name: name, host: host, port: Int(port) ?? 0, secret: secret)
+                store.pair(
+                    name: name,
+                    host: host,
+                    port: Int(port.trimmingCharacters(in: .whitespacesAndNewlines)) ?? 0,
+                    secret: secret
+                )
             }
-            .disabled(name.isEmpty || host.isEmpty || secret.isEmpty)
+            .disabled(
+                name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+                    || host.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+                    || secret.isEmpty
+            )
         }
     }
 }

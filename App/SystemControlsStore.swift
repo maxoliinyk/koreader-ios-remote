@@ -100,10 +100,10 @@ final class SystemControlsStore {
                 try session.setCategory(.ambient, mode: .default, options: .mixWithOthers)
             }
             try session.setActive(true)
+            isSessionRunning = true
             if profile.keepsVolumeCaptureWhileInactive {
                 try startAudioEngine()
             }
-            isSessionRunning = true
         } catch {
             stopSession()
             Feedback.error()
@@ -111,6 +111,7 @@ final class SystemControlsStore {
     }
 
     private func stopSession() {
+        guard isSessionRunning else { return }
         removeVolumeCapture()
         removeMediaControls()
         audioPlayer.stop()
@@ -168,6 +169,7 @@ final class SystemControlsStore {
 
         Task {
             try? await Task.sleep(for: .milliseconds(250))
+            guard isSessionRunning, volumeObservation != nil else { return }
             recenterVolume()
         }
     }

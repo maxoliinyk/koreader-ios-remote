@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct RootView: View {
+    @Environment(RemoteStore.self) private var store
     @Environment(SystemControlsStore.self) private var systemControls
 
     var body: some View {
@@ -23,6 +24,9 @@ struct RootView: View {
                     SettingsView()
                 }
             }
+        }
+        .sheet(isPresented: Bindable(store).isPairingPresented) {
+            PairingView()
         }
         .overlay(alignment: .bottomTrailing) {
             SystemVolumeCaptureView(volumeView: systemControls.volumeView)

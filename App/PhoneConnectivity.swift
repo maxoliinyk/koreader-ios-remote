@@ -18,6 +18,7 @@ final class PhoneConnectivity: NSObject, WCSessionDelegate, @unchecked Sendable 
 
     private let session: WCSession? = WCSession.isSupported() ? .default : nil
     private let storage = PairingStore()
+    private let client = KindleClient()
 
     private override init() {
         super.init()
@@ -26,13 +27,10 @@ final class PhoneConnectivity: NSObject, WCSessionDelegate, @unchecked Sendable 
     func activate() {
         session?.delegate = self
         session?.activate()
-        if let configuration = try? storage.load() {
-            sync(configuration)
-        }
     }
 
     func sync(_ configuration: PairingConfiguration?) {
-        guard let session else { return }
+        guard let session, session.activationState == .activated, session.isWatchAppInstalled else { return }
         do {
             let context: [String: Any]
             if let configuration {
@@ -50,7 +48,22 @@ final class PhoneConnectivity: NSObject, WCSessionDelegate, @unchecked Sendable 
         _ session: WCSession,
         activationDidCompleteWith activationState: WCSessionActivationState,
         error: (any Error)?
-    ) {}
+    ) {
+        guard activationState == .activated else { return }
+        Task { @MainActor [weak self] in self?.syncCurrentPairing() }
+    }
+
+    nonisolated func sessionWatchStateDidChange(_ session: WCSession) {
+        Task { @MainActor [weak self] in self?.syncCurrentPairing() }
+    }
+
+    private func syncCurrentPairing() {
+        do {
+            sync(try storage.load())
+        } catch {
+            // Retry after the next activation without replacing the Watch pairing.
+        }
+    }
 
     nonisolated func sessionDidBecomeInactive(_ session: WCSession) {}
 
@@ -74,7 +87,7 @@ final class PhoneConnectivity: NSObject, WCSessionDelegate, @unchecked Sendable 
                     reply.send(["ok": false, "message": "KOReader is not paired"])
                     return
                 }
-                _ = try await KindleClient().send(action, using: configuration)
+                _ = try await client.send(action, using: configuration)
                 reply.send(["ok": true])
             } catch {
                 reply.send(["ok": false, "message": error.localizedDescription])

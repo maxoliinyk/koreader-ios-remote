@@ -48,7 +48,8 @@ final class KORemoteStore {
     }
 
     func send(_ action: RemoteAction) async {
-        guard let configuration, state != .sending else {
+        guard state != .sending else { return }
+        guard let configuration else {
             state = .failure(String(localized: "Pair KOReader on your iPhone first."))
             WKInterfaceDevice.current().play(.failure)
             return
@@ -59,7 +60,7 @@ final class KORemoteStore {
             _ = try await client.send(action, using: configuration)
             succeed()
             return
-        } catch {
+        } catch let error as KindleClientError where error == .unreachable {
             do {
                 try await connectivity.relay(action)
                 succeed()
@@ -67,6 +68,9 @@ final class KORemoteStore {
                 state = .failure(error.localizedDescription)
                 WKInterfaceDevice.current().play(.failure)
             }
+        } catch {
+            state = .failure(error.localizedDescription)
+            WKInterfaceDevice.current().play(.failure)
         }
     }
 

@@ -14,7 +14,7 @@ struct PairingScannerView: UIViewControllerRepresentable {
         DataScannerViewController.isSupported && DataScannerViewController.isAvailable
     }
 
-    let onCode: (String) -> Void
+    let onCode: (String) -> Bool
 
     func makeCoordinator() -> Coordinator {
         Coordinator(onCode: onCode)
@@ -45,10 +45,10 @@ struct PairingScannerView: UIViewControllerRepresentable {
 
     @MainActor
     final class Coordinator: NSObject, DataScannerViewControllerDelegate {
-        private let onCode: (String) -> Void
+        private let onCode: (String) -> Bool
         private var delivered = false
 
-        init(onCode: @escaping (String) -> Void) {
+        init(onCode: @escaping (String) -> Bool) {
             self.onCode = onCode
         }
 
@@ -56,8 +56,8 @@ struct PairingScannerView: UIViewControllerRepresentable {
             guard !delivered else { return }
             for item in addedItems {
                 guard case let .barcode(barcode) = item, let value = barcode.payloadStringValue else { continue }
+                guard onCode(value) else { continue }
                 delivered = true
-                onCode(value)
                 dataScanner.stopScanning()
                 return
             }

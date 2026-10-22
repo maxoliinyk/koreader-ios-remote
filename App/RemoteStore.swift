@@ -24,6 +24,7 @@ final class RemoteStore {
     private(set) var activity: Activity = .idle
     var isPairingPresented = false
 
+    private var pairingRevision = UUID()
     private let client: KindleClient
     private let storage: PairingStore
     private let logger = Logger(subsystem: "com.maxoliinyk.koreaderremote", category: "remote")
@@ -45,13 +46,13 @@ final class RemoteStore {
         if case .sending = activity { true } else { false }
     }
 
+    func clearPairingError() {
+        if case .failure = activity { activity = .idle }
+    }
+
     func pair(with url: URL) {
         do {
-            try save(PairingPayload(url: url).configuration)
-            isPairingPresented = false
-            activity = .success(String(localized: "KOReader paired."))
-            Feedback.success()
-            Task { await testConnection() }
+            try completePairing(PairingPayload(url: url).configuration)
         } catch {
             fail(error)
         }
@@ -66,11 +67,7 @@ final class RemoteStore {
                 endpoint: KindleEndpoint(name: name, host: host, port: port),
                 secret: secretData
             )
-            try save(value)
-            isPairingPresented = false
-            activity = .success(String(localized: "KOReader paired."))
-            Feedback.success()
-            Task { await testConnection() }
+            try completePairing(value)
         } catch {
             fail(error)
         }
@@ -82,13 +79,16 @@ final class RemoteStore {
             return
         }
         guard !isSending else { return }
+        let revision = pairingRevision
         activity = .sending(action)
 
         do {
             _ = try await client.send(action, using: configuration)
+            guard revision == pairingRevision else { return }
             activity = .success(successMessage(for: action))
             Feedback.success()
         } catch {
+            guard revision == pairingRevision else { return }
             fail(error)
         }
     }
@@ -99,13 +99,16 @@ final class RemoteStore {
             return
         }
         guard !isSending else { return }
+        let revision = pairingRevision
         activity = .sending(.nextPage)
 
         do {
             _ = try await client.ping(using: configuration)
+            guard revision == pairingRevision else { return }
             activity = .success(String(localized: "KOReader is ready."))
             Feedback.success()
         } catch {
+            guard revision == pairingRevision else { return }
             fail(error)
         }
     }
@@ -113,6 +116,7 @@ final class RemoteStore {
     func forget() {
         do {
             try storage.forget()
+            pairingRevision = UUID()
             configuration = nil
             activity = .idle
             PhoneConnectivity.shared.sync(nil)
@@ -133,15 +137,20 @@ final class RemoteStore {
     }
 #endif
 
-    private func save(_ value: PairingConfiguration) throws {
+    private func completePairing(_ value: PairingConfiguration) throws {
         try storage.save(value)
+        pairingRevision = UUID()
         configuration = value
         PhoneConnectivity.shared.sync(value)
+        isPairingPresented = false
+        activity = .success(String(localized: "KOReader paired."))
+        Feedback.success()
+        Task { await testConnection() }
     }
 
     private func fail(_ error: Error) {
         let message = (error as? LocalizedError)?.errorDescription ?? String(localized: "Something went wrong.")
-        logger.error("Remote operation failed: \(message, privacy: .public)")
+        logger.error("Remote operation failed: \(message, privacy: .private)")
         activity = .failure(message)
         Feedback.error()
     }

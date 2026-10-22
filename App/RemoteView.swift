@@ -34,9 +34,6 @@ struct RemoteView: View {
                 remoteToolbar
             }
         }
-        .sheet(isPresented: Bindable(store).isPairingPresented) {
-            PairingView()
-        }
         .confirmationDialog("Sleep KOReader device?", isPresented: $confirmsSleep, titleVisibility: .visible) {
             Button("Sleep Device", role: .destructive) {
                 Task { await store.send(.sleep) }
@@ -52,6 +49,9 @@ struct RemoteView: View {
             Label("Pair your KOReader device", systemImage: "rectangle.connected.to.line.below")
         } description: {
             Text("Open KOReader, show the Remote Turner pairing code, then scan it here.")
+            if case let .failure(message) = store.activity {
+                Text(message).foregroundStyle(.red)
+            }
         } actions: {
             Button("Pair KOReader") {
                 store.isPairingPresented = true
@@ -153,8 +153,8 @@ private struct DeviceStatusHeader: View {
 
     var body: some View {
         HStack(spacing: 10) {
-            Image(systemName: "checkmark.circle.fill")
-                .foregroundStyle(.green)
+            Image(systemName: "link")
+                .foregroundStyle(.secondary)
 
             Text(endpoint.name)
                 .font(.headline)
@@ -162,12 +162,12 @@ private struct DeviceStatusHeader: View {
 
             Spacer(minLength: 8)
 
-            Text("Ready")
+            Text("Paired")
                 .font(.subheadline)
                 .foregroundStyle(.secondary)
         }
         .accessibilityElement(children: .combine)
-        .accessibilityLabel("\(endpoint.name), ready")
+        .accessibilityLabel("\(endpoint.name), paired")
     }
 }
 

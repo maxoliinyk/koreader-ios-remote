@@ -26,6 +26,7 @@ struct KORemoteView: View {
                         .labelStyle(.iconOnly)
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
                 }
+                .disabled(store.state == .sending)
                 .buttonStyle(.borderedProminent)
                 .handGestureShortcut(.primaryAction)
                 .accessibilityLabel("Next Page")

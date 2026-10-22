@@ -53,7 +53,7 @@ struct SettingsView: View {
                         store.isPairingPresented = true
                     }
                 } footer: {
-                    Text("Pairing stores the KOReader device address in shared settings and the secret in Keychain.")
+                    Text("Pairing stores the KOReader device address on this device and the secret in Keychain.")
                 }
             }
 
@@ -82,7 +82,9 @@ struct SettingsView: View {
             } header: {
                 Text("Use While Locked")
             } footer: {
-                Text("Next Page can run from the Lock Screen, Control Center, Action Button, Siri, or Shortcuts without opening the app.")
+                Text(DistributionProfile.current.includesControlCenterWidgets
+                    ? "Next Page can run from the Lock Screen, Control Center, Action Button, Siri, or Shortcuts."
+                    : "Use Next Page with Siri, Shortcuts, or an Action Button shortcut.")
             }
 
             if case let .failure(message) = store.activity {
@@ -94,14 +96,13 @@ struct SettingsView: View {
 
             Section("About") {
                 LabeledContent("Distribution", value: DistributionProfile.current.title)
+                Link("Installation Guide", destination: URL(string: "https://github.com/maxoliinyk/koreader-ios-remote/blob/main/README.md")!)
+                Link("Download KOReader Plugin", destination: URL(string: "https://github.com/maxoliinyk/koreader-ios-remote/releases")!)
                 Link("Source Code", destination: URL(string: "https://github.com/maxoliinyk/koreader-ios-remote")!)
                 Link("AGPL-3.0 License", destination: URL(string: "https://www.gnu.org/licenses/agpl-3.0.html")!)
             }
         }
         .navigationTitle("Settings")
-        .sheet(isPresented: Bindable(store).isPairingPresented) {
-            PairingView()
-        }
         .confirmationDialog("Forget this KOReader device?", isPresented: $confirmsForget, titleVisibility: .visible) {
             Button("Forget Device", role: .destructive) { store.forget() }
             Button("Cancel", role: .cancel) {}
@@ -144,8 +145,11 @@ private struct SystemControlsHelpView: View {
                 }
             }
 
-            Section("Control Center & Action Button") {
-                Label("Next Page is available", systemImage: "forward.end.fill")
+            Section("Shortcuts & Action Button") {
+                Label("Next Page is available in Shortcuts", systemImage: "forward.end.fill")
+                if DistributionProfile.current.includesControlCenterWidgets {
+                    Label("Next Page is available in Control Center", systemImage: "switch.2")
+                }
             }
 
             Section("Before locking") {
