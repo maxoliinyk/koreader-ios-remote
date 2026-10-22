@@ -83,6 +83,8 @@ If either identifier is changed, update the Watch companion identifier too.
 
 ## Downloads and updates
 
+The release page labels the three downloads **iOS IPA — AltStore Classic**, **KOReader Plugin**, and **SHA-256 Checksums**. Apple Watch installation uses Xcode; there is no standalone Watch IPA. GitHub adds the two source archives automatically.
+
 Release assets live on the [Releases page](https://github.com/maxoliinyk/koreader-ios-remote/releases). The plugin ZIP and IPA are separate downloads. GitHub's automatically generated source ZIP is a source checkout, not an installable iPhone app.
 
 To check a download on macOS, put it beside `SHA256SUMS` and compare its digest:
@@ -101,7 +103,7 @@ For app updates, install over the existing app using the same route, Apple Accou
 1. Update every target's `MARKETING_VERSION` and the plugin's `_meta.lua` version together. Keep protocol version 1 unless the wire format changes.
 2. Run `make test-plugin`, `luacheck remote_turner.koplugin/ tests/`, and `make check-distributions`.
 3. Verify plugin installation, pairing, next/previous/sleep, and wake/reconnect on a real KOReader device. Verify the intended signing route and hardware controls on an iPhone; include a real Watch for Watch releases.
-4. Push an explicitly chosen `vX.Y.Z` tag when ready to publish. The **Release** workflow validates matching versions, runs protocol tests, builds both downloads, and attaches checksums. It publishes only after both artifacts succeed; Labs is excluded from the IPA.
+4. Push an explicitly chosen `vX.Y.Z` tag when ready to publish. The **Release** workflow validates matching versions, runs protocol tests, builds both downloads, and attaches checksums. It uploads the labeled assets to a draft, then publishes only after every upload succeeds; Labs is excluded from the IPA. An interrupted draft can be retried, while published assets are never replaced by this workflow.
 5. Review the generated release notes and record the device/OS/KOReader versions actually tested. Label untested routes clearly.
 
 No signing certificate or Apple Account credential belongs in the repository or release assets. The IPA is intentionally unsigned; each user signs their own copy.
