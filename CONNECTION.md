@@ -9,6 +9,9 @@ The Apple client sends one short HTTP request to the KOReader device for each ac
 - `POST /v1/ping`: readiness check.
 - Content type: `application/json`.
 - Request body limit: 4096 bytes.
+- Header limit: 8192 bytes total, 2048 bytes per line, 64 lines including the request line.
+- One 250 ms deadline covers receipt of headers and body.
+- A single Content-Length header is required; chunked transfer encoding is unsupported.
 - Connection closes after each response.
 
 ## Pairing
@@ -19,7 +22,7 @@ KOReader generates 32 cryptographically random bytes from `/dev/urandom` and sto
 koreaderturner://pair?v=1&host=192.168.1.20&port=9090&name=KOReader&secret=<base64url>
 ```
 
-The iOS app validates every field before saving. Endpoint metadata goes into shared `UserDefaults`; the secret goes into Keychain. Generating a new secret invalidates every existing phone and watch pairing.
+The iOS app validates every field before saving. Endpoint metadata goes into `UserDefaults` (shared in the full build, app-local in sideload builds); the secret goes into Keychain. Generating a new secret invalidates every existing phone and watch pairing.
 
 ## Authenticated request
 
@@ -44,7 +47,7 @@ nonce=<nonce>
 
 `mac = HMAC-SHA256(pairing_secret_bytes, canonical_utf8)`
 
-KOReader compares the MAC without early exit, then inserts the nonce into a 128-entry bounded cache. Reusing an accepted nonce returns `409`.
+KOReader compares the MAC without early exit, then inserts the nonce into a 128-entry bounded cache. Reusing an accepted nonce returns `409`. The cache survives listener stop/start while the plugin instance remains alive, but is cleared on plugin restart or secret regeneration.
 
 ## Responses
 
@@ -65,7 +68,7 @@ Error: `{"ok":false,"message":"Authentication failed"}`
 - `previous` → `GotoViewRel(-1)`
 - `sleep` → `RequestSuspend`
 
-The plugin sends the success response before scheduling the KOReader event.
+The plugin sends the success response before scheduling the KOReader event. A timeout or lost response does not prove the action failed; do not automatically retry a page action with a new nonce. The Watch relays through iPhone only when the direct connection is unreachable.
 
 ## Security boundary
 

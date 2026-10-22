@@ -26,10 +26,15 @@ local settings = G_reader_settings:readSetting(RemoteTurner.settings_key, {
     autostart = true,
 })
 
+if type(settings.port) ~= "number" or settings.port ~= math.floor(settings.port)
+        or settings.port < 1 or settings.port > 65535 then
+    settings.port = 9090
+end
+
 local RESPONSE_REASON = {
     [200] = "OK", [400] = "Bad Request", [401] = "Unauthorized",
     [404] = "Not Found", [405] = "Method Not Allowed", [409] = "Conflict",
-    [413] = "Content Too Large", [423] = "Locked", [500] = "Internal Server Error",
+    [413] = "Content Too Large", [500] = "Internal Server Error",
 }
 
 local function persist_settings()
@@ -76,6 +81,7 @@ local function base64url(value)
 end
 
 local function decode_base64url(value)
+    if type(value) ~= "string" or not value:match("^[A-Za-z0-9_-]+$") then return nil end
     local base64 = value:gsub("-", "+"):gsub("_", "/")
     local remainder = #base64 % 4
     if remainder > 0 then base64 = base64 .. string.rep("=", 4 - remainder) end
@@ -157,11 +163,20 @@ end
 
 function RemoteTurner:start(show_error)
     if self:isRunning() then return true end
+    if not ensure_secret() then
+        if show_error then
+            UIManager:show(InfoMessage:new {
+                text = _("Could not generate a secure pairing secret. Restart KOReader and try again."),
+            })
+        end
+        return false
+    end
     local ServerClass = require("httpserver")
     self.http_socket = ServerClass:new {
         host = "*",
         port = settings.port,
         receiveCallback = function(data, client) return self:onRequest(data, client) end,
+        rejectCallback = function(client, status, message) return self:reject(client, status, message) end,
     }
     local ok, err = self.http_socket:start()
     if not ok then
@@ -212,6 +227,7 @@ end
 
 function RemoteTurner:onRequest(data, client)
     local method, path = data:match("^(%u+) ([^ ]+) HTTP/%d%.%d\r?\n")
+    if not method then return self:reject(client, 400, "Invalid request line") end
     if method ~= "POST" then return self:reject(client, 405, "POST required") end
     if path ~= "/v1/action" and path ~= "/v1/ping" then
         return self:reject(client, 404, "Unknown route")
@@ -225,7 +241,9 @@ function RemoteTurner:onRequest(data, client)
     if not ok or type(request) ~= "table" then return self:reject(client, 400, "Invalid JSON") end
     if request.version ~= 1 or type(request.action) ~= "string"
             or type(request.nonce) ~= "string" or type(request.mac) ~= "string"
-            or #request.nonce < 16 or #request.nonce > 128 or #request.mac ~= 64 then
+            or #request.nonce < 16 or #request.nonce > 128 or #request.mac ~= 64
+            or not request.nonce:match("^[A-Za-z0-9_-]+$")
+            or not request.mac:match("^[A-Fa-f0-9]+$") then
         return self:reject(client, 400, "Invalid protocol fields")
     end
 
@@ -237,7 +255,9 @@ function RemoteTurner:onRequest(data, client)
     end
 
     local canonical = string.format("version=%d\naction=%s\nnonce=%s", request.version, request.action, request.nonce)
-    local expected_mac = hmac_sha256(decode_base64url(settings.secret or ""), canonical)
+    local secret = decode_base64url(settings.secret)
+    if not secret or #secret ~= 32 then return self:reject(client, 500, "Pairing unavailable") end
+    local expected_mac = hmac_sha256(secret, canonical)
     if not constant_time_equal(expected_mac, request.mac:lower()) then
         return self:reject(client, 401, "Authentication failed")
     end
@@ -273,7 +293,10 @@ end
 
 function RemoteTurner.showManualDetails()
     local host = local_address() or _("Unavailable")
-    ensure_secret()
+    if not ensure_secret() then
+        UIManager:show(InfoMessage:new { text = _("Could not generate a secure pairing secret.") })
+        return
+    end
     UIManager:show(InfoMessage:new {
         text = T(_("Name: %1\nAddress: %2\nPort: %3\nProtocol: 1\nSecret:\n%4"),
             tostring(Device.model or "KOReader"), host, settings.port, settings.secret),
@@ -307,13 +330,16 @@ function RemoteTurner:setPort(touchmenu_instance)
             {
                 text = _("Save"),
                 callback = function()
-                    local port = dialog:getInputValue()
-                    if port and port >= 1 and port <= 65535 then
+                    local port = tonumber(dialog:getInputValue())
+                    if port and port == math.floor(port) and port >= 1 and port <= 65535 then
                         local was_running = self:isRunning()
                         if was_running then self:stop() end
                         settings.port = port
                         persist_settings()
                         if was_running then self:start(true) end
+                    else
+                        UIManager:show(InfoMessage:new { text = _("Enter a whole port number from 1 to 65535.") })
+                        return
                     end
                     UIManager:close(dialog)
                     touchmenu_instance:updateItems()
