@@ -2,67 +2,48 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLName</key>
+			<string>KORemote Pairing</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>koreaderturner</string>
+			</array>
+		</dict>
+	</array>
 	<key>KOReaderKeychainAccessGroup</key>
 	<string>$(AppIdentifierPrefix)com.maxoliinyk.koreaderremote.shared</string>
-    <key>CFBundleURLTypes</key>
-    <array>
-        <dict>
-            <key>CFBundleURLName</key>
-            <string>KORemote Pairing</string>
-            <key>CFBundleURLSchemes</key>
-            <array>
-                <string>koreaderturner</string>
-            </array>
-        </dict>
-    </array>
-    <key>NSCameraUsageDescription</key>
-    <string>Scan the pairing code displayed by the KOReader plugin.</string>
-    <key>NSLocalNetworkUsageDescription</key>
-    <string>Send page actions directly to a KOReader device on your local network.</string>
-    <key>NSAppTransportSecurity</key>
-    <dict>
-        <key>NSAllowsLocalNetworking</key>
-        <true/>
-    </dict>
-    <key>UIApplicationShortcutItems</key>
-    <array>
-        <dict>
-            <key>UIApplicationShortcutItemIconType</key>
-            <string>UIApplicationShortcutIconTypePlay</string>
-            <key>UIApplicationShortcutItemTitle</key>
-            <string>Next Page</string>
-            <key>UIApplicationShortcutItemType</key>
-            <string>com.maxoliinyk.koreaderremote.next</string>
-        </dict>
-        <dict>
-            <key>UIApplicationShortcutItemIconType</key>
-            <string>UIApplicationShortcutIconTypeRewind</string>
-            <key>UIApplicationShortcutItemTitle</key>
-            <string>Previous Page</string>
-            <key>UIApplicationShortcutItemType</key>
-            <string>com.maxoliinyk.koreaderremote.previous</string>
-        </dict>
-    </array>
-    <key>UIBackgroundModes</key>
-    <array>
-        <string>audio</string>
-    </array>
-    <key>UIApplicationSupportsIndirectInputEvents</key>
-    <true/>
-    <key>UISupportedInterfaceOrientations</key>
-    <array>
-        <string>UIInterfaceOrientationPortrait</string>
-        <string>UIInterfaceOrientationLandscapeLeft</string>
-        <string>UIInterfaceOrientationLandscapeRight</string>
-    </array>
-    <key>UISupportedInterfaceOrientations~ipad</key>
-    <array>
-        <string>UIInterfaceOrientationPortrait</string>
-        <string>UIInterfaceOrientationPortraitUpsideDown</string>
-        <string>UIInterfaceOrientationLandscapeLeft</string>
-        <string>UIInterfaceOrientationLandscapeRight</string>
-    </array>
-    <key>UILaunchScreen</key>
-    <dict/>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsLocalNetworking</key>
+		<true/>
+	</dict>
+	<key>UIApplicationShortcutItems</key>
+	<array>
+		<dict>
+			<key>UIApplicationShortcutItemIconType</key>
+			<string>UIApplicationShortcutIconTypePlay</string>
+			<key>UIApplicationShortcutItemTitle</key>
+			<string>Next Page</string>
+			<key>UIApplicationShortcutItemType</key>
+			<string>com.maxoliinyk.koreaderremote.next</string>
+		</dict>
+		<dict>
+			<key>UIApplicationShortcutItemIconType</key>
+			<string>UIApplicationShortcutIconTypeRewind</string>
+			<key>UIApplicationShortcutItemTitle</key>
+			<string>Previous Page</string>
+			<key>UIApplicationShortcutItemType</key>
+			<string>com.maxoliinyk.koreaderremote.previous</string>
+		</dict>
+	</array>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>audio</string>
+	</array>
+	<key>UILaunchScreen</key>
+	<dict/>
 </dict>
 </plist>

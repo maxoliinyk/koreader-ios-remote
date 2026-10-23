@@ -54,15 +54,15 @@ Open `KOReaderiOSRemote.xcodeproj` in Xcode 26 or later. The normal builds share
 
 ### Choose a build
 
-| Feature | Full | Free | FreeWatch | AltStore |
-| :-- | :--: | :--: | :--: | :--: |
-| QR/manual pairing · Next/Previous/Sleep | ✓ | ✓ | ✓ | ✓ |
-| Locked-screen volume & media controls | ✓ | ✓ | ✓ | ✓ |
-| Siri · Shortcuts · Action Button shortcut | ✓ | ✓ | ✓ | ✓ |
-| Native Lock Screen / Control Center controls | ✓ | — | — | — |
-| Apple Watch companion | ✓ | — | Experimental | — |
-| App Groups & shared Keychain | ✓ | — | — | — |
-| Installation route | Xcode | Xcode | Xcode | Re-sign IPA |
+| Feature                                      | Full  | Free  |  FreeWatch   |  AltStore   |
+| :------------------------------------------- | :---: | :---: | :----------: | :---------: |
+| QR/manual pairing · Next/Previous/Sleep      |   ✓   |   ✓   |      ✓       |      ✓      |
+| Locked-screen volume & media controls        |   ✓   |   ✓   |      ✓       |      ✓      |
+| Siri · Shortcuts · Action Button shortcut    |   ✓   |   ✓   |      ✓       |      ✓      |
+| Native Lock Screen / Control Center controls |   ✓   |   —   |      —       |      —      |
+| Apple Watch companion                        |   ✓   |   —   | Experimental |      —      |
+| App Groups & shared Keychain                 |   ✓   |   —   |      —       |      —      |
+| Installation route                           | Xcode | Xcode |    Xcode     | Re-sign IPA |
 
 **✓ Included · — Not bundled.** Volume/media capture is opt-in and uses background audio; real locked-screen delivery still depends on iOS and the audio session. Every build keeps the pairing secret in Keychain. “Shared Keychain” means sharing with another bundle, not stronger secret storage.
 
