@@ -1,6 +1,8 @@
 # Distribution configurations
 
-The project deliberately builds the same app sources into separate products. Do not add Labs files, private APIs, App Group entitlements, or shared-Keychain entitlements to a sideload target.
+The four normal app products build the same app sources. Full bundles Controls and Watch; the other products remove shared capabilities or embedded products to simplify provisioning. Labs is a separate research app. The README contains the [compact feature comparison](README.md#choose-a-build).
+
+Do not add Labs files, private APIs, App Group entitlements, or shared-Keychain entitlements to the app-only sideload targets. Background audio and public volume/media capture are available in every normal app product.
 
 ## Target matrix
 
@@ -61,6 +63,49 @@ Tagged GitHub releases package the plugin, build the unsigned IPA, and publish `
 - Never include in: public or externally reviewed builds
 
 Labs intentionally retains techniques that can break on any iOS update and can cause rejection. Sideloading does not bypass the sandbox, entitlement enforcement, suspension, or private-API instability.
+
+## Scheme names and build behavior
+
+- `KORemote` and `KORemoteFull` select the same `KORemote` target and bundle identifier. They do not have different feature sets.
+- `KORemoteControls` builds the Controls extension and uses the full app as its launch host. It is not an independently installable remote app.
+- `KORemoteWatch` launches the full Watch target; `KORemoteWatchFree` launches the entitlement-free Watch target. Their iPhone companion schemes are `KORemoteFull` and `KORemoteFreeWatch` respectively.
+- All schemes run Debug and archive Release. Debug adds simulator test hooks where supported; Debug Watch builds also expose Gesture Lab. Those experiments are excluded from Release.
+- `KORemoteLabs` launches its own research interface. It has no normal pairing screen and reads the pairing shared by Full; pairing only in Free or AltStore does not populate Labs.
+
+The compile flags describe the bundle contents: Full defines `KOREMOTE_FULL`, `KOREMOTE_HAS_CONTROLS`, and `KOREMOTE_HAS_WATCH`; Free defines `KOREMOTE_FREE`; FreeWatch adds `KOREMOTE_HAS_WATCH`; AltStore defines `KOREMOTE_ALTSTORE`. Free and AltStore currently have the same app features, with different product names, bundle identifiers, and packaging routes. There is no AltStore account check in the app.
+
+On iPhone, Full and Controls share endpoint metadata through an App Group and the pairing secret through shared Keychain. **Phone-to-Watch pairing always uses WatchConnectivity**, including in Full. The Full Watch target currently requests its own App Group and Keychain group; FreeWatch omits those entitlements and uses local storage without removing the Watch page controls or Double Tap action.
+
+## Third-party signing
+
+**Full is technically possible with third-party signing, but compatibility is conditional and has not been verified with Signulous or another provider.** A certificate proves who signed a binary; its provisioning profile determines which app identifiers, devices, and entitlements are authorized. Paying a provider for signing does not automatically give the customer access to manage that provider's developer team. Apple's [registered-device distribution guide](https://developer.apple.com/documentation/xcode/distributing-your-app-to-registered-devices) describes the certificate, profile, and device requirements.
+
+### App-only installation
+
+The existing unsigned `KORemoteAltStore` IPA is the simplest candidate for a compatible IPA-signing service. The name identifies our packaging route; AltStore itself is not required at runtime. [Signulous advertises custom IPA uploads](https://www.signulous.com/), but this project has not tested its signing or installation flow. Use the provider's own upload/install instructions.
+
+This build keeps QR/manual pairing, Next/Previous/Sleep, opt-in locked-screen volume/media capture, Siri, and Shortcuts. It omits the Controls extension, Watch, and shared capabilities. Normal app-local Keychain storage remains enabled. Paying for a certificate does not add the omitted bundles back into this IPA.
+
+### What Full needs
+
+For every included bundle, the provider must supply an appropriate profile and correctly sign the nested products:
+
+1. **iPhone app**: an authorized app identifier and the user's registered iPhone for ad hoc distribution.
+2. **Controls extension**: extension signing plus the same authorized App Group and shared Keychain group used by the iPhone app.
+3. **Watch app**: watchOS signing and installation support, a correctly linked companion identifier, and the Watch's registration/profile where required. An iPhone-only signing slot is not enough to establish this support.
+4. **Consistent identifiers**: the values used by the app, extension, profiles, and signed entitlements must agree. Simply changing a certificate or stripping entitlements is insufficient.
+
+In this project's code, the App Group identifier is in `ProtocolConstants.appGroup` and the entitlements files. The full app, Controls, and full Watch Info.plists also contain `KOReaderKeychainAccessGroup`; its `AppIdentifierPrefix` is expanded at build time. Signing under another team may require rebuilding with that team's authorized group identifiers and updating these values consistently. An external signer must not leave the previous keychain prefix behind.
+
+Removing App Groups can leave the app using local settings while Controls has no shared pairing. Leaving an unauthorized Keychain group can cause Keychain error `-34018`. Therefore, an IPA appearing on the Home Screen does not prove that pairing, Controls, or Watch works. These consequences follow from the current storage code; they are not results from a provider test.
+
+Apple documents [App Group registration](https://developer.apple.com/help/account/identifiers/register-an-app-group) and [Keychain sharing](https://developer.apple.com/documentation/xcode/configuring-keychain-sharing). A provider's general claim to support entitlements does not confirm this exact combination of bundles and identifiers.
+
+### What determines expiry
+
+A scheme does not enforce a subscription or a seven-day timer. Free Personal Team profiles normally expire after seven days; paid-account or provider installs follow the validity of their actual certificate/profile and can stop working if signing is revoked. A provider's purchase term is not proof that a particular installed signature remains valid for that whole term. Switching signing teams, product identifiers, or installation routes may also require pairing again.
+
+Full is currently documented as a source/Xcode route. The automated release workflow produces the app-only IPA and plugin ZIP; it does not produce a Full IPA or a separate Watch IPA. Providing a Full download would require another packaging path and validation with the intended signer's profiles. No change of scheme alone establishes third-party compatibility.
 
 ## Personal Team install
 
@@ -146,4 +191,4 @@ Simulator's own Volume Up/Down toolbar controls did not produce observable `AVAu
 
 ## Current capability boundary
 
-The full configuration is the only configuration here with cross-process state for Control Center and the original Watch app. Personal Team and AltStore builds keep page buttons, pairing, local networking, App Intents, public volume observation, volume recentering, and opt-in background audio, as does the full build. They give up Controls, shared storage, and—for the reliable routes—the Watch companion.
+The full configuration is the only configuration here with cross-process pairing storage for the Controls extension. Both Watch configurations receive pairing through WatchConnectivity. Personal Team and AltStore builds keep page buttons, pairing, local networking, App Intents, public volume observation, volume recentering, and opt-in background audio, as does the full build. They give up Controls, shared storage, and—for the reliable routes—the Watch companion.

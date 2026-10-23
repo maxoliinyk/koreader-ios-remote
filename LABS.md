@@ -10,7 +10,7 @@ All configurations offer opt-in public volume observation and Now Playing contro
 
 ## iPhone experiments
 
-Start the `KORemoteLabs` scheme after pairing in the normal app. Use the same development team for both targets so they can use the shared App Group and Keychain group.
+Start the `KORemoteLabs` scheme after pairing in `KORemoteFull` (or its `KORemote` alias). Free and AltStore keep pairing locally, so their saved pairing is not available to Labs. Use the same development team for both targets so they can use the shared App Group and Keychain group.
 
 Tap **Start Experiment**. This does three things:
 

@@ -50,13 +50,49 @@ To update, stop Remote Turner, exit KOReader, replace the plugin folder, and res
 
 ## Run the app
 
-Open `KOReaderiOSRemote.xcodeproj` in Xcode 26 or later. Select the scheme for the intended distribution route:
+Open `KOReaderiOSRemote.xcodeproj` in Xcode 26 or later. The normal builds share the same remote interface and protocol; the differences are bundled components and signing requirements.
 
-- **KORemoteFull**: full feature set with Controls and Watch; release-channel suitability is not established.
-- **KORemoteFree**: app-only free Personal Team build.
-- **KORemoteFreeWatch**: experimental free Personal Team build with Watch.
-- **KORemoteAltStore**: app-only AltStore Classic build.
-- **KORemoteLabs**: unsupported sideload research only.
+### Choose a build
+
+| Feature | Full | Free | FreeWatch | AltStore |
+| :-- | :--: | :--: | :--: | :--: |
+| QR/manual pairing · Next/Previous/Sleep | ✓ | ✓ | ✓ | ✓ |
+| Locked-screen volume & media controls | ✓ | ✓ | ✓ | ✓ |
+| Siri · Shortcuts · Action Button shortcut | ✓ | ✓ | ✓ | ✓ |
+| Native Lock Screen / Control Center controls | ✓ | — | — | — |
+| Apple Watch companion | ✓ | — | Experimental | — |
+| App Groups & shared Keychain | ✓ | — | — | — |
+| Installation route | Xcode | Xcode | Xcode | Re-sign IPA |
+
+**✓ Included · — Not bundled.** Volume/media capture is opt-in and uses background audio; real locked-screen delivery still depends on iOS and the audio session. Every build keeps the pairing secret in Keychain. “Shared Keychain” means sharing with another bundle, not stronger secret storage.
+
+- **KORemoteFull**: includes Controls and Watch; needs provisioning for the app, extension, Watch, and their sharing capabilities.
+- **KORemoteFree**: app-only build for a free Personal Team; no shared capabilities or embedded products to provision.
+- **KORemoteFreeWatch**: Free plus the Watch companion, paired through WatchConnectivity. Free-team Watch installation remains experimental; the Watch interface is the same as Full.
+- **KORemoteAltStore**: the same app-only features as Free, packaged as an unsigned IPA. It is not locked to AltStore: compatible third-party signing services can also re-sign it. Service-specific installation is unverified.
+
+Full does **not** disable locked-screen volume or media controls. Free and AltStore retain these features; they omit native Controls and Watch to simplify signing. Siri/Shortcuts remain available without the Controls extension.
+
+<details>
+<summary>Other Xcode schemes</summary>
+
+- **KORemote** builds the same full app target as **KORemoteFull**; it is not another edition.
+- **KORemoteControls** builds the Controls extension with the full app as its launch host.
+- **KORemoteWatch** launches the full build's Watch companion.
+- **KORemoteWatchFree** launches the FreeWatch companion; use **KORemoteFreeWatch** for its iPhone app.
+- **KORemoteLabs** is a separate research app with private volume/media experiments. It uses pairing saved by Full and is excluded from public release downloads.
+
+Run uses Debug; Archive uses Release. Debug Watch builds additionally expose Gesture Lab; it is absent from Release.
+
+</details>
+
+### Third-party certificates and signing services
+
+**A paid signing service may install Full, but buying a certificate alone does not guarantee all Full features.** Full needs correctly provisioned App Groups, shared Keychain access, its Controls extension, and the embedded Watch app. An iPhone registration alone does not provision the Watch. These are signing requirements, not a paywall in KORemote.
+
+For an app-only install, the existing `KORemoteAltStore-<version>-unsigned.ipa` is the simpler candidate: upload it to a compatible signing service instead of importing it into AltStore. It retains pairing, page actions, volume/media modes, and Shortcuts. Full and Watch support must be confirmed with the service; no Signulous installation has been verified for this project.
+
+See [the scheme and signing review](DISTRIBUTION.md#third-party-signing) for exactly what a provider must support. Signature expiry depends on the signing account/profile, not the scheme name.
 
 ### Install an IPA with AltStore Classic
 
