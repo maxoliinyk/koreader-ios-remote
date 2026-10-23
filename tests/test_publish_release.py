@@ -10,10 +10,11 @@ SCRIPT = Path(__file__).resolve().parents[1] / "scripts/publish-release.sh"
 
 
 class ReleasePublicationTests(unittest.TestCase):
-    def run_publisher(self, existing="missing", fail_upload=False, missing_asset=False):
+    def run_publisher(self, existing="missing", fail_upload=False, missing_asset=False, tag="v2.0.0"):
         with tempfile.TemporaryDirectory() as directory:
             folder = Path(directory)
-            for name in ("KORemoteAltStore-2.0.0-unsigned.ipa", "remote_turner-2.0.0.koplugin.zip", "SHA256SUMS"):
+            version = tag.removeprefix("v")
+            for name in (f"KORemoteAltStore-{version}-unsigned.ipa", f"remote_turner-{version}.koplugin.zip", "SHA256SUMS"):
                 if not (missing_asset and name == "SHA256SUMS"):
                     (folder / name).write_text("fixture")
             log = folder / "commands.jsonl"
@@ -33,10 +34,22 @@ if command == "upload" and os.environ["FAIL_UPLOAD"] == "1": sys.exit(1)
             environment = dict(os.environ, PATH=str(folder) + os.pathsep + os.environ["PATH"],
                                GH_REPO="example/koremote", DIST_DIR=str(folder), COMMAND_LOG=str(log),
                                EXISTING=existing, FAIL_UPLOAD=str(int(fail_upload)))
-            result = subprocess.run(["sh", str(SCRIPT), "v2.0.0"], env=environment, capture_output=True)
+            result = subprocess.run(["sh", str(SCRIPT), tag], env=environment, capture_output=True)
             commands = [json.loads(line) for line in log.read_text().splitlines()] if log.exists() else []
             notes = folder / "RELEASE_NOTES.md"
             return result.returncode, commands, notes.read_text() if notes.exists() else ""
+
+    def test_accepts_short_development_version(self):
+        status, commands, notes = self.run_publisher(tag="v0.5")
+        self.assertEqual(status, 0)
+        self.assertIn("--draft=false", commands[-1])
+        self.assertTrue(any("KORemoteAltStore-0.5-unsigned.ipa#" in asset for asset in commands[-2]))
+        self.assertIn("/blob/v0.5/README.md", notes)
+
+    def test_rejects_invalid_version_before_contacting_github(self):
+        status, commands, _ = self.run_publisher(tag="v0.5.0.1")
+        self.assertNotEqual(status, 0)
+        self.assertEqual(commands, [])
 
     def test_labels_assets_and_publishes_after_upload(self):
         status, commands, notes = self.run_publisher()

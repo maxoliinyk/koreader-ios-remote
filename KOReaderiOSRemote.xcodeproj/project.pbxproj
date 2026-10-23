@@ -758,7 +758,7 @@
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				MARKETING_VERSION = 2.0.0;
+				MARKETING_VERSION = 0.5;
 				PRODUCT_BUNDLE_IDENTIFIER = com.maxoliinyk.koreaderremote;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
@@ -791,7 +791,7 @@
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				MARKETING_VERSION = 2.0.0;
+				MARKETING_VERSION = 0.5;
 				PRODUCT_BUNDLE_IDENTIFIER = com.maxoliinyk.koreaderremote;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
@@ -816,7 +816,7 @@
 				INFOPLIST_FILE = Controls/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "KORemote Controls";
 				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
-				MARKETING_VERSION = 2.0.0;
+				MARKETING_VERSION = 0.5;
 				PRODUCT_BUNDLE_IDENTIFIER = com.maxoliinyk.koreaderremote.controls;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -839,7 +839,7 @@
 				INFOPLIST_FILE = Controls/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "KORemote Controls";
 				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
-				MARKETING_VERSION = 2.0.0;
+				MARKETING_VERSION = 0.5;
 				PRODUCT_BUNDLE_IDENTIFIER = com.maxoliinyk.koreaderremote.controls;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -868,7 +868,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.0.0;
+				MARKETING_VERSION = 0.5;
 				PRODUCT_BUNDLE_IDENTIFIER = com.maxoliinyk.koreaderremote.watch;
 				PRODUCT_NAME = KORemoteWatch;
 				SDKROOT = watchos;
@@ -899,7 +899,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.0.0;
+				MARKETING_VERSION = 0.5;
 				PRODUCT_BUNDLE_IDENTIFIER = com.maxoliinyk.koreaderremote.watch;
 				PRODUCT_NAME = KORemoteWatch;
 				SDKROOT = watchos;
@@ -927,7 +927,7 @@
 				INFOPLIST_FILE = Labs/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "KORemote Labs";
 				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
-				MARKETING_VERSION = 2.0.0;
+				MARKETING_VERSION = 0.5;
 				PRODUCT_BUNDLE_IDENTIFIER = com.maxoliinyk.koreaderremote.labs;
 				PRODUCT_NAME = KORemoteLabs;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) KOREMOTE_LABS";
@@ -953,7 +953,7 @@
 				INFOPLIST_FILE = Labs/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "KORemote Labs";
 				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
-				MARKETING_VERSION = 2.0.0;
+				MARKETING_VERSION = 0.5;
 				PRODUCT_BUNDLE_IDENTIFIER = com.maxoliinyk.koreaderremote.labs;
 				PRODUCT_NAME = KORemoteLabs;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) KOREMOTE_LABS";
@@ -978,7 +978,7 @@
 				INFOPLIST_FILE = "App/Info-Sideload.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "KORemote AltStore";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
-				MARKETING_VERSION = 2.0.0;
+				MARKETING_VERSION = 0.5;
 				PRODUCT_BUNDLE_IDENTIFIER = com.maxoliinyk.koreaderremote.altstore;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
@@ -1005,7 +1005,7 @@
 				INFOPLIST_FILE = "App/Info-Sideload.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "KORemote AltStore";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
-				MARKETING_VERSION = 2.0.0;
+				MARKETING_VERSION = 0.5;
 				PRODUCT_BUNDLE_IDENTIFIER = com.maxoliinyk.koreaderremote.altstore;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
@@ -1032,7 +1032,7 @@
 				INFOPLIST_FILE = "App/Info-Sideload.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "KORemote Free";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
-				MARKETING_VERSION = 2.0.0;
+				MARKETING_VERSION = 0.5;
 				PRODUCT_BUNDLE_IDENTIFIER = com.maxoliinyk.koreaderremote.free;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
@@ -1059,7 +1059,7 @@
 				INFOPLIST_FILE = "App/Info-Sideload.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "KORemote Free";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
-				MARKETING_VERSION = 2.0.0;
+				MARKETING_VERSION = 0.5;
 				PRODUCT_BUNDLE_IDENTIFIER = com.maxoliinyk.koreaderremote.free;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
@@ -1086,7 +1086,7 @@
 				INFOPLIST_FILE = "App/Info-Sideload.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "KORemote Free Watch";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
-				MARKETING_VERSION = 2.0.0;
+				MARKETING_VERSION = 0.5;
 				PRODUCT_BUNDLE_IDENTIFIER = com.maxoliinyk.koreaderremote.freewatch;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
@@ -1113,7 +1113,7 @@
 				INFOPLIST_FILE = "App/Info-Sideload.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "KORemote Free Watch";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
-				MARKETING_VERSION = 2.0.0;
+				MARKETING_VERSION = 0.5;
 				PRODUCT_BUNDLE_IDENTIFIER = com.maxoliinyk.koreaderremote.freewatch;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
@@ -1143,7 +1143,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.0.0;
+				MARKETING_VERSION = 0.5;
 				PRODUCT_BUNDLE_IDENTIFIER = com.maxoliinyk.koreaderremote.freewatch.watch;
 				PRODUCT_NAME = KORemoteWatchFree;
 				SDKROOT = watchos;
@@ -1174,7 +1174,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.0.0;
+				MARKETING_VERSION = 0.5;
 				PRODUCT_BUNDLE_IDENTIFIER = com.maxoliinyk.koreaderremote.freewatch.watch;
 				PRODUCT_NAME = KORemoteWatchFree;
 				SDKROOT = watchos;

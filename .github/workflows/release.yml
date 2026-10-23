@@ -20,7 +20,7 @@ jobs:
           import os, re
           from pathlib import Path
           version = os.environ['RELEASE_TAG'].removeprefix('v')
-          assert re.fullmatch(r'\d+\.\d+\.\d+', version), 'Use a vX.Y.Z release tag'
+          assert re.fullmatch(r'\d+\.\d+(?:\.\d+)?', version), 'Use a vX.Y or vX.Y.Z release tag'
           plugin = Path('remote_turner.koplugin/_meta.lua').read_text()
           project = Path('KOReaderiOSRemote.xcodeproj/project.pbxproj').read_text()
           assert re.search(r'version = "([^"]+)"', plugin).group(1) == version, 'Update the plugin version'

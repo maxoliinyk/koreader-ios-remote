@@ -2,11 +2,11 @@
 # Upload complete, clearly labeled assets before making a release public.
 set -eu
 
-release_tag=${1:?Usage: publish-release.sh vX.Y.Z}
+release_tag=${1:?Usage: publish-release.sh vX.Y or vX.Y.Z}
 release_version=${release_tag#v}
 release_repository=${GH_REPO:?Set GH_REPO to owner/repository}
-if ! printf '%s\n' "$release_tag" | grep -Eq '^v[0-9]+\.[0-9]+\.[0-9]+$'; then
-    echo "Use a vX.Y.Z release tag" >&2
+if ! printf '%s\n' "$release_tag" | grep -Eq '^v[0-9]+\.[0-9]+(\.[0-9]+)?$'; then
+    echo "Use a vX.Y or vX.Y.Z release tag" >&2
     exit 2
 fi
 release_assets=${DIST_DIR:-dist}
