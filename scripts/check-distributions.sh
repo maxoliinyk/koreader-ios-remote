@@ -29,6 +29,9 @@ build_scheme() {
     fi
 }
 
+echo "Checking locked-screen controls configuration"
+python3 -m unittest discover -s "$REPO_DIR/tests" -p test_system_controls_configuration.py
+
 echo "Testing RemoteCore"
 xcrun swift test --package-path "$REPO_DIR/Packages/RemoteCore"
 
@@ -87,12 +90,8 @@ if plutil -extract KOReaderKeychainAccessGroup raw "$altstore_app/Info.plist" >/
     echo "KORemoteAltStore unexpectedly requests a shared Keychain access group" >&2
     exit 1
 fi
-if plutil -extract UIBackgroundModes raw "$full_release_app/Info.plist" >/dev/null 2>&1; then
-    echo "Full Release unexpectedly declares a background mode" >&2
-    exit 1
-fi
-for sideload_app in "$free_release_app" "$free_watch_release_app" "$altstore_release_app"; do
-    plutil -extract UIBackgroundModes.0 raw "$sideload_app/Info.plist" | grep -qx audio
+for release_app in "$full_release_app" "$free_release_app" "$free_watch_release_app" "$altstore_release_app"; do
+    plutil -extract UIBackgroundModes.0 raw "$release_app/Info.plist" | grep -qx audio
 done
 
 for release_app in \

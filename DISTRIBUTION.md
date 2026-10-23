@@ -10,9 +10,10 @@ The project deliberately builds the same app sources into separate products. Do 
 - Audience: full-feature development and device testing
 - Signing assumption: a team that can provision the configured App Groups and shared Keychain access
 - Includes: iPhone/iPad app, Control Center extension, Apple Watch app, App Intents, App Groups, shared Keychain
-- Volume buttons: public `AVAudioSession.outputVolume` observation while the app is foregrounded
+- Volume buttons: public `AVAudioSession.outputVolume` observation with opt-in background audio for locked-screen capture
+- Media controls: opt-in Now Playing Previous/Next
 - Locked alternatives: Controls, Action Button, Shortcuts, Siri, Apple Watch
-- Excludes: background keep-alive audio, Labs, private volume events, private MediaRemote calls
+- Excludes: Labs, private volume events, private MediaRemote calls
 
 This name describes the included feature set only. It does not claim successful physical-device provisioning, external review, or suitability for any release channel. Those remain separate validation tasks.
 
@@ -145,4 +146,4 @@ Simulator's own Volume Up/Down toolbar controls did not produce observable `AVAu
 
 ## Current capability boundary
 
-The full configuration is the only configuration here with cross-process state for Control Center and the original Watch app. Personal Team and AltStore builds keep page buttons, pairing, local networking, App Intents, public volume observation, volume recentering, and sideload background audio. They give up Controls, shared storage, and—for the reliable routes—the Watch companion.
+The full configuration is the only configuration here with cross-process state for Control Center and the original Watch app. Personal Team and AltStore builds keep page buttons, pairing, local networking, App Intents, public volume observation, volume recentering, and opt-in background audio, as does the full build. They give up Controls, shared storage, and—for the reliable routes—the Watch companion.

@@ -32,15 +32,13 @@ enum DistributionProfile: Equatable, Sendable {
 
     var keepsVolumeCaptureWhileInactive: Bool {
         switch self {
-        case .full: false
-        case .personalTeam, .altStore: true
+        case .full, .personalTeam, .altStore: true
         }
     }
 
     var supportsMediaControls: Bool {
         switch self {
-        case .full: false
-        case .personalTeam, .altStore: true
+        case .full, .personalTeam, .altStore: true
         }
     }
 

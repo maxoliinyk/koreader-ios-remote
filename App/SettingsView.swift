@@ -179,11 +179,7 @@ private struct SystemControlsHelpView: View {
     }
 
     private var volumeButtonDetail: String {
-        if DistributionProfile.current.keepsVolumeCaptureWhileInactive {
-            "This sideload build keeps a quiet audio session active so volume buttons can turn pages while the app is locked."
-        } else {
-            "This full build observes volume changes only while KORemote is in the foreground."
-        }
+        "Keeps a quiet audio session active for volume buttons while locked. May interrupt other audio and use more battery."
     }
 }
 
