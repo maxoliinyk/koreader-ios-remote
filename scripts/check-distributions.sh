@@ -24,6 +24,7 @@ build_scheme() {
         CODE_SIGNING_REQUIRED=NO \
         CODE_SIGN_IDENTITY= \
         build >"$log" 2>&1; then
+        rg -n -C 2 "error:|failed|Error|signal" "$log" | tail -n 50 || true
         tail -n 80 "$log"
         return 1
     fi

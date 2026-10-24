@@ -49,13 +49,13 @@ final class WatchConnectivityBridge: NSObject, WCSessionDelegate, @unchecked Sen
         }
     }
 
-    func relay(_ action: RemoteAction) async throws {
+    func relay(_ action: RemoteAction, using configuration: PairingConfiguration) async throws {
         guard let session, session.isReachable else {
             throw WatchConnectivityError.phoneUnavailable
         }
         try await withCheckedThrowingContinuation { continuation in
             session.sendMessage(
-                ["action": action.rawValue],
+                ["action": action.rawValue, "pairingIdentifier": configuration.watchRelayIdentifier],
                 replyHandler: { reply in
                     if reply["ok"] as? Bool == true {
                         continuation.resume()

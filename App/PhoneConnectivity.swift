@@ -80,11 +80,20 @@ final class PhoneConnectivity: NSObject, WCSessionDelegate, @unchecked Sendable 
             replyHandler(["ok": false, "message": "Invalid action"])
             return
         }
+        guard let pairingIdentifier = message["pairingIdentifier"] as? String else {
+            replyHandler(["ok": false, "message": "Update the Watch app and pair KOReader again."])
+            return
+        }
         let reply = WatchReply(send: replyHandler)
         Task { @MainActor [weak self] in
             do {
                 guard let self, let configuration = try storage.load() else {
                     reply.send(["ok": false, "message": "KOReader is not paired"])
+                    return
+                }
+                guard configuration.watchRelayIdentifier == pairingIdentifier else {
+                    sync(configuration)
+                    reply.send(["ok": false, "message": "Pairing changed. Wait for the Watch to sync, then try again."])
                     return
                 }
                 _ = try await client.send(action, using: configuration)

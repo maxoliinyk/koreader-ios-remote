@@ -15,6 +15,8 @@ import UIKit
 @MainActor
 @Observable
 final class SystemControlsStore {
+    private(set) var lastError: String?
+
     var usesVolumeButtons: Bool {
         didSet {
             defaults.set(usesVolumeButtons, forKey: Keys.usesVolumeButtons)
@@ -72,6 +74,7 @@ final class SystemControlsStore {
 
     private func reconcile() {
         guard hasActivated else { return }
+        lastError = nil
 
         let shouldCaptureVolume = usesVolumeButtons
             && (isAppActive || profile.keepsVolumeCaptureWhileInactive)
@@ -90,7 +93,10 @@ final class SystemControlsStore {
     }
 
     private func startSessionIfNeeded() {
-        guard !isSessionRunning else { return }
+        if isSessionRunning {
+            guard profile.keepsVolumeCaptureWhileInactive, !audioEngine.isRunning else { return }
+            stopSession()
+        }
 
         do {
             let session = AVAudioSession.sharedInstance()
@@ -106,6 +112,7 @@ final class SystemControlsStore {
             }
         } catch {
             stopSession()
+            lastError = String(localized: "Audio controls could not start. Turn them off and on to retry.")
             Feedback.error()
         }
     }
@@ -151,7 +158,7 @@ final class SystemControlsStore {
             let oldValue = change.oldValue ?? 0
             let newValue = change.newValue ?? oldValue
             Task { @MainActor in
-                guard let self else { return }
+                guard let self, self.usesVolumeButtons, self.isSessionRunning, self.volumeObservation != nil else { return }
                 let expectedVolume = self.expectedVolume
                 if let expectedVolume, abs(newValue - expectedVolume) < 0.01 {
                     self.expectedVolume = nil
@@ -218,7 +225,8 @@ final class SystemControlsStore {
         command.isEnabled = true
         let token = command.addTarget { [weak self] _ in
             Task { @MainActor in
-                await self?.send(action)
+                guard let self, self.capturesMediaControls, !self.remoteCommandTokens.isEmpty else { return }
+                await self.send(action)
             }
             return .success
         }
@@ -226,6 +234,7 @@ final class SystemControlsStore {
     }
 
     private func removeMediaControls() {
+        guard !remoteCommandTokens.isEmpty else { return }
         remoteCommandTokens.forEach { command, token in
             command.removeTarget(token)
             command.isEnabled = false
@@ -238,12 +247,15 @@ final class SystemControlsStore {
     private func send(_ action: RemoteAction) async {
         do {
             guard let configuration = try storage.load() else {
+                lastError = String(localized: "Pair KOReader first.")
                 Feedback.error()
                 return
             }
             _ = try await client.send(action, using: configuration)
+            lastError = nil
             Feedback.success()
         } catch {
+            lastError = error.localizedDescription
             Feedback.error()
         }
     }

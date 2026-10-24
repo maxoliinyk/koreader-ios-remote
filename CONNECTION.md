@@ -70,6 +70,10 @@ Error: `{"ok":false,"message":"Authentication failed"}`
 
 The plugin sends the success response before scheduling the KOReader event. A timeout or lost response does not prove the action failed; do not automatically retry a page action with a new nonce. The Watch relays through iPhone only when the direct connection is unreachable.
 
+## Watch relay
+
+Watch-to-iPhone action messages include an identifier derived from the paired host, port, and secret. The phone verifies it against its current pairing before forwarding the action. This prevents a stale Watch pairing from sending an action to a newly paired reader. Update the iPhone and Watch apps together; relay messages without the identifier are rejected.
+
 ## Security boundary
 
 This protocol authenticates local requests; it does not encrypt them. Use it only on a trusted local Wi-Fi network. Secrets, nonces, and request bodies are intentionally excluded from logs.

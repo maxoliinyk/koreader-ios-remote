@@ -23,6 +23,7 @@ final class KORemoteStore {
     private(set) var configuration: PairingConfiguration?
     private(set) var state: State = .ready
 
+    private var pairingRevision = UUID()
     private let storage = PairingStore(defaults: .standard)
     private let client = KindleClient()
     private let connectivity = WatchConnectivityBridge.shared
@@ -54,21 +55,27 @@ final class KORemoteStore {
             WKInterfaceDevice.current().play(.failure)
             return
         }
+        let revision = pairingRevision
         state = .sending
 
         do {
             _ = try await client.send(action, using: configuration)
+            guard revision == pairingRevision else { return }
             succeed()
             return
         } catch let error as KindleClientError where error == .unreachable {
+            guard revision == pairingRevision else { return }
             do {
-                try await connectivity.relay(action)
+                try await connectivity.relay(action, using: configuration)
+                guard revision == pairingRevision else { return }
                 succeed()
             } catch {
+                guard revision == pairingRevision else { return }
                 state = .failure(error.localizedDescription)
                 WKInterfaceDevice.current().play(.failure)
             }
         } catch {
+            guard revision == pairingRevision else { return }
             state = .failure(error.localizedDescription)
             WKInterfaceDevice.current().play(.failure)
         }
@@ -106,8 +113,11 @@ final class KORemoteStore {
 #endif
 
     private func reload() {
-        configuration = try? storage.load()
-        if configuration == nil { state = .ready }
+        let pairing = try? storage.load()
+        guard pairing != configuration else { return }
+        configuration = pairing
+        pairingRevision = UUID()
+        state = .ready
     }
 
     private func succeed() {

@@ -226,6 +226,12 @@ private struct ActivityStatusView: View {
             case .idle:
                 Text("Tap a side to turn the page")
                     .foregroundStyle(.secondary)
+            case .connectionReady:
+                Label("KOReader is ready.", systemImage: "checkmark.circle")
+                    .foregroundStyle(.green)
+            case .testingConnection:
+                ProgressView("Testing…")
+                    .foregroundStyle(.secondary)
             case .sending:
                 HStack {
                     ProgressView()

@@ -23,3 +23,15 @@ public struct PairingTransfer: Codable, Equatable, Sendable {
         return try PairingConfiguration(endpoint: endpoint, secret: data)
     }
 }
+
+public extension PairingConfiguration {
+    /// Identifies a relay target without sending its pairing secret with each action.
+    var watchRelayIdentifier: String {
+        RequestSigner.mac(
+            version: endpoint.protocolVersion,
+            action: "watch-relay",
+            nonce: "\(endpoint.host):\(endpoint.port)",
+            secret: secret
+        )
+    }
+}

@@ -15,6 +15,8 @@ import RemoteCore
 final class RemoteStore {
     enum Activity: Equatable {
         case idle
+        case testingConnection
+        case connectionReady
         case sending(RemoteAction)
         case success(String)
         case failure(String)
@@ -43,7 +45,10 @@ final class RemoteStore {
     }
 
     var isSending: Bool {
-        if case .sending = activity { true } else { false }
+        switch activity {
+        case .sending, .testingConnection: true
+        case .idle, .connectionReady, .success, .failure: false
+        }
     }
 
     func clearPairingError() {
@@ -60,7 +65,7 @@ final class RemoteStore {
 
     func pair(name: String, host: String, port: Int, secret: String) {
         do {
-            guard let secretData = Data(base64URLEncoded: secret) else {
+            guard let secretData = Data(base64URLEncoded: secret.trimmingCharacters(in: .whitespacesAndNewlines)) else {
                 throw PairingError.invalidSecret
             }
             let value = try PairingConfiguration(
@@ -100,12 +105,12 @@ final class RemoteStore {
         }
         guard !isSending else { return }
         let revision = pairingRevision
-        activity = .sending(.nextPage)
+        activity = .testingConnection
 
         do {
             _ = try await client.ping(using: configuration)
             guard revision == pairingRevision else { return }
-            activity = .success(String(localized: "KOReader is ready."))
+            activity = .connectionReady
             Feedback.success()
         } catch {
             guard revision == pairingRevision else { return }

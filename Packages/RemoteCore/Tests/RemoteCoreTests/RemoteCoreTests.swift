@@ -49,6 +49,23 @@ struct PairingPayloadTests {
     }
 }
 
+@Suite("Watch relay identity")
+struct WatchRelayIdentityTests {
+    @Test func bindsActionsToThePairedReader() throws {
+        let secret = Data(repeating: 7, count: 32)
+        let original = try PairingConfiguration(endpoint: KindleEndpoint(name: "Reader", host: "reader.local"), secret: secret)
+        let renamed = try PairingConfiguration(endpoint: KindleEndpoint(name: "Bedroom", host: "reader.local"), secret: secret)
+        let changedHost = try PairingConfiguration(endpoint: KindleEndpoint(name: "Reader", host: "other.local"), secret: secret)
+        let changedPort = try PairingConfiguration(endpoint: KindleEndpoint(name: "Reader", host: "reader.local", port: 9091), secret: secret)
+        let changedSecret = try PairingConfiguration(endpoint: original.endpoint, secret: Data(repeating: 8, count: 32))
+
+        #expect(original.watchRelayIdentifier == renamed.watchRelayIdentifier)
+        #expect(original.watchRelayIdentifier != changedHost.watchRelayIdentifier)
+        #expect(original.watchRelayIdentifier != changedPort.watchRelayIdentifier)
+        #expect(original.watchRelayIdentifier != changedSecret.watchRelayIdentifier)
+    }
+}
+
 @Suite("Request authentication")
 struct RequestSignerTests {
     @Test func canonicalInputAndMACAreStable() {
