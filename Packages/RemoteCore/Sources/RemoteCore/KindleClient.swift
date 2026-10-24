@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import OSLog
 #if canImport(FoundationNetworking)
 import FoundationNetworking
 #endif
@@ -55,10 +56,12 @@ public enum KindleClientError: Error, Equatable, LocalizedError, Sendable {
 
 public actor KindleClient {
     private let session: URLSession
+    private let statistics: PageTurnStatistics
     private let encoder = JSONEncoder()
     private let decoder = JSONDecoder()
 
-    public init(session: URLSession? = nil) {
+    public init(session: URLSession? = nil, statistics: PageTurnStatistics = .shared) {
+        self.statistics = statistics
         if let session {
             self.session = session
         } else {
@@ -72,7 +75,17 @@ public actor KindleClient {
     }
 
     public func send(_ action: RemoteAction, using configuration: PairingConfiguration) async throws -> ActionResponse {
-        try await perform(action: action.rawValue, path: ProtocolConstants.actionPath, using: configuration)
+        let response = try await perform(action: action.rawValue, path: ProtocolConstants.actionPath, using: configuration)
+        if action == .nextPage {
+            do {
+                try await statistics.recordNextPage()
+            } catch {
+                // Delivery succeeded; a statistics failure must not invite a duplicate turn.
+                Logger(subsystem: "com.maxoliinyk.koreaderremote", category: "statistics")
+                    .error("Could not save page-turn statistics: \(error.localizedDescription, privacy: .private)")
+            }
+        }
+        return response
     }
 
     public func ping(using configuration: PairingConfiguration) async throws -> ActionResponse {

@@ -138,6 +138,41 @@ struct PairingStoreTests {
 
 @Suite("Client responses", .serialized)
 struct KindleClientTests {
+    @Test func countsOnlyConfirmedNextPageCommands() async throws {
+        let directory = FileManager.default.temporaryDirectory.appending(path: UUID().uuidString)
+        defer { try? FileManager.default.removeItem(at: directory) }
+        let statistics = PageTurnStatistics(fileURL: directory.appending(path: "counts.json"))
+        let client = makeClient(status: 200, body: #"{"ok":true}"#, statistics: statistics)
+
+        _ = try await client.send(.nextPage, using: configuration)
+        _ = try await client.send(.previousPage, using: configuration)
+        _ = try await client.send(.sleep, using: configuration)
+        _ = try await client.ping(using: configuration)
+        #expect(try await statistics.summary().allTime == 1)
+
+        for (status, body) in [(500, #"{"ok":false}"#), (200, #"{"ok":false}"#)] {
+            let failingClient = makeClient(status: status, body: body, statistics: statistics)
+            await #expect(throws: (any Error).self) {
+                try await failingClient.send(.nextPage, using: configuration)
+            }
+        }
+        #expect(try await statistics.summary().allTime == 1)
+    }
+
+    @Test func statisticsFailureDoesNotFailDeliveredCommand() async throws {
+        let directory = FileManager.default.temporaryDirectory.appending(path: UUID().uuidString)
+        try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
+        defer { try? FileManager.default.removeItem(at: directory) }
+        let fileURL = directory.appending(path: "counts.json")
+        try Data("invalid".utf8).write(to: fileURL)
+        let statistics = PageTurnStatistics(fileURL: fileURL)
+        let client = makeClient(status: 200, body: #"{"ok":true}"#, statistics: statistics)
+
+        let response = try await client.send(.nextPage, using: configuration)
+        #expect(response.ok)
+        #expect(try Data(contentsOf: fileURL) == Data("invalid".utf8))
+    }
+
     @Test func distinguishesUncertainDelivery() async {
         let client = makeClient { _ in throw URLError(.networkConnectionLost) }
         await #expect(throws: KindleClientError.deliveryUncertain) {
@@ -217,20 +252,24 @@ struct KindleClientTests {
         }
     }
 
-    private func makeClient(status: Int, body: String) -> KindleClient {
-        makeClient { request in
+    private func makeClient(status: Int, body: String, statistics: PageTurnStatistics? = nil) -> KindleClient {
+        makeClient(statistics: statistics) { request in
             let response = HTTPURLResponse(url: request.url!, statusCode: status, httpVersion: nil, headerFields: nil)!
             return (response, Data(body.utf8))
         }
     }
 
     private func makeClient(
+        statistics: PageTurnStatistics? = nil,
         handler: @escaping (URLRequest) throws -> (HTTPURLResponse, Data)
     ) -> KindleClient {
         let config = URLSessionConfiguration.ephemeral
         config.protocolClasses = [StubURLProtocol.self]
         StubURLProtocol.handler = handler
-        return KindleClient(session: URLSession(configuration: config))
+        let isolatedStatistics = statistics ?? PageTurnStatistics(
+            fileURL: FileManager.default.temporaryDirectory.appending(path: "KORemoteTests-\(UUID().uuidString)/counts.json")
+        )
+        return KindleClient(session: URLSession(configuration: config), statistics: isolatedStatistics)
     }
 }
 

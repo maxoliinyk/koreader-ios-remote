@@ -31,6 +31,8 @@ struct SettingsView: View {
                 }
             }
 
+            PageTurnStatisticsSection()
+
             Section("KOReader") {
                 if let endpoint = store.configuration?.endpoint {
                     LabeledContent("Name", value: endpoint.name)
@@ -111,6 +113,48 @@ struct SettingsView: View {
                 .foregroundStyle(.secondary)
         case let .failure(message):
             Text(message).foregroundStyle(.red)
+        }
+    }
+}
+
+private struct PageTurnStatisticsSection: View {
+    @Environment(\.scenePhase) private var scenePhase
+    @State private var summary: PageTurnStatistics.Summary?
+    @State private var failedToLoad = false
+
+    var body: some View {
+        TimelineView(.periodic(from: .now, by: 60)) { context in
+            Section {
+                if let summary {
+                    LabeledContent("This month", value: summary.thisMonth.formatted())
+                    LabeledContent("All time", value: summary.allTime.formatted())
+                } else if failedToLoad {
+                    Text("Page-turn statistics could not be loaded.")
+                        .foregroundStyle(.secondary)
+                } else {
+                    ProgressView()
+                }
+            } header: {
+                Text("Pages Turned")
+            } footer: {
+                Text("Successful next-page commands on this device, starting with this update.")
+            }
+            .task(id: context.date) { await loadSummary() }
+            .onChange(of: scenePhase) { _, phase in
+                if phase == .active {
+                    Task { await loadSummary() }
+                }
+            }
+        }
+    }
+
+    private func loadSummary() async {
+        do {
+            summary = try await PageTurnStatistics.shared.summary()
+            failedToLoad = false
+        } catch {
+            summary = nil
+            failedToLoad = true
         }
     }
 }
