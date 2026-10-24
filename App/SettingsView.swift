@@ -11,9 +11,12 @@ import UIKit
 
 struct SettingsView: View {
     @Environment(RemoteStore.self) private var store
+    @Environment(\.scenePhase) private var scenePhase
     @Environment(SystemControlsStore.self) private var systemControls
     @AppStorage(RemoteLayoutStyle.storageKey) private var remoteLayout = RemoteLayoutStyle.fullSplit
     @State private var confirmsForget = false
+    @State private var summary: PageTurnStatistics.Summary?
+    @State private var failedToLoadStatistics = false
 
     var body: some View {
         @Bindable var systemControls = systemControls
@@ -31,7 +34,17 @@ struct SettingsView: View {
                 }
             }
 
-            PageTurnStatisticsSection()
+            Section("Pages Turned") {
+                if let summary {
+                    LabeledContent("This month", value: summary.thisMonth.formatted())
+                    LabeledContent("All time", value: summary.allTime.formatted())
+                } else if failedToLoadStatistics {
+                    Text("Page-turn statistics could not be loaded.")
+                        .foregroundStyle(.secondary)
+                } else {
+                    ProgressView()
+                }
+            }
 
             Section("KOReader") {
                 if let endpoint = store.configuration?.endpoint {
@@ -95,9 +108,30 @@ struct SettingsView: View {
             }
         }
         .navigationTitle("Settings")
+        .task(id: scenePhase) {
+            guard scenePhase == .active else { return }
+            while !Task.isCancelled {
+                await loadStatistics()
+                do {
+                    try await Task.sleep(for: .seconds(60))
+                } catch {
+                    return
+                }
+            }
+        }
         .confirmationDialog("Forget this KOReader device?", isPresented: $confirmsForget, titleVisibility: .visible) {
             Button("Forget Device", role: .destructive) { store.forget() }
             Button("Cancel", role: .cancel) {}
+        }
+    }
+
+    private func loadStatistics() async {
+        do {
+            summary = try await PageTurnStatistics.shared.summary()
+            failedToLoadStatistics = false
+        } catch {
+            summary = nil
+            failedToLoadStatistics = true
         }
     }
 
@@ -113,48 +147,6 @@ struct SettingsView: View {
                 .foregroundStyle(.secondary)
         case let .failure(message):
             Text(message).foregroundStyle(.red)
-        }
-    }
-}
-
-private struct PageTurnStatisticsSection: View {
-    @Environment(\.scenePhase) private var scenePhase
-    @State private var summary: PageTurnStatistics.Summary?
-    @State private var failedToLoad = false
-
-    var body: some View {
-        TimelineView(.periodic(from: .now, by: 60)) { context in
-            Section {
-                if let summary {
-                    LabeledContent("This month", value: summary.thisMonth.formatted())
-                    LabeledContent("All time", value: summary.allTime.formatted())
-                } else if failedToLoad {
-                    Text("Page-turn statistics could not be loaded.")
-                        .foregroundStyle(.secondary)
-                } else {
-                    ProgressView()
-                }
-            } header: {
-                Text("Pages Turned")
-            } footer: {
-                Text("Successful next-page commands on this device, starting with this update.")
-            }
-            .task(id: context.date) { await loadSummary() }
-            .onChange(of: scenePhase) { _, phase in
-                if phase == .active {
-                    Task { await loadSummary() }
-                }
-            }
-        }
-    }
-
-    private func loadSummary() async {
-        do {
-            summary = try await PageTurnStatistics.shared.summary()
-            failedToLoad = false
-        } catch {
-            summary = nil
-            failedToLoad = true
         }
     }
 }
