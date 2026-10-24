@@ -177,7 +177,7 @@ The full build includes native **Next Page** and **Previous Page** controls for 
 - Full build — Control Center: touch and hold an empty area, choose **Add a Control**, then add **Next Page**.
 - Action Button: open **Settings → Action Button**, choose Controls (full build) or Shortcut, then select **KORemote — Next Page**.
 - Siri and Shortcuts: use the supplied Next Page or Previous Page action.
-- Volume buttons: open **Settings → System Controls** and enable **Use Volume Buttons**. Volume Up sends Next; Volume Down sends Previous. The app keeps system volume near 50% so both directions remain available.
+- Volume buttons: open **Settings → Controls** and enable **Use Volume Buttons**. Volume Up sends Next; Volume Down sends Previous. The app keeps system volume near 50% so both directions remain available.
 - Now Playing: All builds can enable **Capture Media Controls** for the Lock Screen or connected media accessories.
 
 When volume or media controls are enabled, all iPhone builds retain an effectively inaudible background-audio session for locked-screen capture; it can interrupt other audio and use more battery. KOReader still needs to be active and reachable on the same network.

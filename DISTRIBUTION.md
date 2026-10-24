@@ -198,7 +198,7 @@ The launch pass also restarts each distributable app through a debug-only simula
 
 Both Watch products also run an authenticated `next` action. The harness first gives WatchConnectivity a chance to transfer the iPhone pairing, then uses a debug-simulator-only copy of the same mock pairing when Simulator does not deliver application context. This validates the Watch store/client/network path, but not real pairing transfer, reachability relay, or free-team provisioning.
 
-Simulator's own Volume Up/Down toolbar controls did not produce observable `AVAudioSession.outputVolume` changes in the tested iOS 26.5 runtime. Consequently, the system-KVO boundary and locked-screen behavior remain physical-device-only tests. Debug simulator builds expose **Settings → System Controls → Simulator Volume Test** buttons for manual end-to-end checks of everything after that boundary.
+Simulator's own Volume Up/Down toolbar controls did not produce observable `AVAudioSession.outputVolume` changes in the tested iOS 26.5 runtime. Consequently, the system-KVO boundary and locked-screen behavior remain physical-device-only tests. Debug simulator builds expose **Settings → Simulator Tools** buttons for manual end-to-end checks of everything after that boundary.
 
 ## Current capability boundary
 

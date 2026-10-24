@@ -24,14 +24,6 @@ enum RemoteLayoutStyle: String, CaseIterable, Identifiable {
         }
     }
 
-    var detail: LocalizedStringResource {
-        switch self {
-        case .fullSplit: "Previous and Next share the available screen."
-        case .nextFocused: "Next gets a larger tap area for one-handed reading."
-        case .compact: "Smaller controls leave more open space on screen."
-        }
-    }
-
     var symbol: String {
         switch self {
         case .fullSplit: "rectangle.split.2x1"

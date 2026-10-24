@@ -108,10 +108,6 @@ private struct ManualPairingForm: View {
                 SecureField("Base64URL secret", text: $secret)
                     .textInputAutocapitalization(.never)
                     .autocorrectionDisabled()
-                    .textContentType(.oneTimeCode)
-                Text("Enter the secret exactly as shown in KOReader.")
-                    .font(.footnote)
-                    .foregroundStyle(.secondary)
             }
 
             Button("Save and Pair") {
@@ -125,7 +121,7 @@ private struct ManualPairingForm: View {
             .disabled(
                 name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
                     || host.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
-                    || secret.isEmpty
+                    || secret.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
             )
         }
     }
