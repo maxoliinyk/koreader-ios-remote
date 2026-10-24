@@ -10,10 +10,23 @@ SCRIPT = Path(__file__).resolve().parents[1] / "scripts/publish-release.sh"
 
 
 class ReleasePublicationTests(unittest.TestCase):
-    def run_publisher(self, existing="missing", fail_upload=False, missing_asset=False, tag="v2.0.0"):
+    def run_publisher(self, existing="missing", fail_upload=False, missing_asset=False, tag="v2.0.0",
+                      changes="### Added\n\n- Adaptive icons — light, dark, clear, and tinted.\n",
+                      notes_version=None):
         with tempfile.TemporaryDirectory() as directory:
             folder = Path(directory)
+            # Copy the real publishing inputs so each test owns its release notes.
+            script = folder / "scripts/publish-release.sh"
+            script.parent.mkdir()
+            script.write_bytes(SCRIPT.read_bytes())
+            template = folder / ".github/RELEASE_TEMPLATE.md"
+            template.parent.mkdir()
+            template.write_bytes((SCRIPT.parent.parent / ".github/RELEASE_TEMPLATE.md").read_bytes())
             version = tag.removeprefix("v")
+            if changes is not None:
+                source = folder / "release-notes" / f"{notes_version or version}.md"
+                source.parent.mkdir()
+                source.write_text(changes)
             for name in (f"KORemoteAltStore-{version}-unsigned.ipa", f"remote_turner-{version}.koplugin.zip", "SHA256SUMS"):
                 if not (missing_asset and name == "SHA256SUMS"):
                     (folder / name).write_text("fixture")
@@ -34,7 +47,7 @@ if command == "upload" and os.environ["FAIL_UPLOAD"] == "1": sys.exit(1)
             environment = dict(os.environ, PATH=str(folder) + os.pathsep + os.environ["PATH"],
                                GH_REPO="example/koremote", DIST_DIR=str(folder), COMMAND_LOG=str(log),
                                EXISTING=existing, FAIL_UPLOAD=str(int(fail_upload)))
-            result = subprocess.run(["sh", str(SCRIPT), tag], env=environment, capture_output=True)
+            result = subprocess.run(["sh", str(script), tag], env=environment, capture_output=True)
             commands = [json.loads(line) for line in log.read_text().splitlines()] if log.exists() else []
             notes = folder / "RELEASE_NOTES.md"
             return result.returncode, commands, notes.read_text() if notes.exists() else ""
@@ -78,5 +91,33 @@ if command == "upload" and os.environ["FAIL_UPLOAD"] == "1": sys.exit(1)
 
     def test_missing_asset_never_contacts_github(self):
         status, commands, _ = self.run_publisher(missing_asset=True)
+        self.assertNotEqual(status, 0)
+        self.assertEqual(commands, [])
+
+    def test_version_notes_precede_downloads_and_preserve_markdown(self):
+        changes = "### Fixed\n\n- Reader’s connection & `@TAG@` handling.\n"
+        status, commands, notes = self.run_publisher(changes=changes)
+        self.assertEqual(status, 0)
+        self.assertTrue(notes.startswith(changes))
+        self.assertLess(notes.index("### Fixed"), notes.index("## Downloads"))
+        self.assertIn("--notes-file", commands[1])
+        self.assertNotIn("--generate-notes", commands[1])
+
+    def test_missing_or_blank_notes_never_contact_github(self):
+        for changes in (None, "", " \n\t\n"):
+            with self.subTest(changes=changes):
+                status, commands, _ = self.run_publisher(changes=changes)
+                self.assertNotEqual(status, 0)
+                self.assertEqual(commands, [])
+
+    def test_draft_retry_updates_notes_before_upload(self):
+        status, commands, notes = self.run_publisher(existing="draft", changes="- Revised notes.\n")
+        self.assertEqual(status, 0)
+        self.assertEqual([command[1] for command in commands], ["view", "edit", "upload", "edit"])
+        self.assertIn("--notes-file", commands[1])
+        self.assertTrue(notes.startswith("- Revised notes.\n"))
+
+    def test_does_not_reuse_notes_from_another_version(self):
+        status, commands, _ = self.run_publisher(tag="v2.0.0", notes_version="0.5")
         self.assertNotEqual(status, 0)
         self.assertEqual(commands, [])

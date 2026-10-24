@@ -147,10 +147,11 @@ For app updates, install over the existing app using the same route, Apple Accou
 ## Creating a release
 
 1. Update every target's `MARKETING_VERSION` and the plugin's `_meta.lua` version together. Keep protocol version 1 unless the wire format changes.
+   Add user-facing changes to `release-notes/<version>.md` (for example, `release-notes/0.5.md` for `v0.5`). Use Added, Fixed, Changed, or Updating sections as needed. The publishing script requires a nonempty file matching the exact tag version and places it above the download/setup instructions. Generated commit summaries are not included. Keep older files as release history; create a new file for each version.
 2. Run `make test-plugin`, `luacheck remote_turner.koplugin/ tests/`, and `make check-distributions`.
 3. Verify plugin installation, pairing, next/previous/sleep, and wake/reconnect on a real KOReader device. Verify the intended signing route and hardware controls on an iPhone; include a real Watch for Watch releases.
 4. Push a matching `vX.Y` or `vX.Y.Z` tag when ready to publish (currently `v0.5`). The **Release** workflow validates matching versions, runs protocol tests, builds both downloads, and attaches checksums. It uploads the labeled assets to a draft, then publishes only after every upload succeeds; Labs is excluded from the IPA. An interrupted draft can be retried, while published assets are never replaced by this workflow.
-5. Review the generated release notes and record the device/OS/KOReader versions actually tested. Label untested routes clearly.
+5. Review the assembled release notes in `dist/RELEASE_NOTES.md` when publishing locally, or on the finished GitHub release. Record the device/OS/KOReader versions actually tested in the version's notes before tagging, and label untested routes clearly. Retrying an interrupted draft refreshes its notes before uploading; published releases remain unchanged.
 
 For the current version, run these commands only when you want to publish:
 

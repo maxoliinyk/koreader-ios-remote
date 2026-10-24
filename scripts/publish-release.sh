@@ -11,6 +11,7 @@ if ! printf '%s\n' "$release_tag" | grep -Eq '^v[0-9]+\.[0-9]+(\.[0-9]+)?$'; the
 fi
 release_assets=${DIST_DIR:-dist}
 release_template=$(dirname "$0")/../.github/RELEASE_TEMPLATE.md
+release_changes=$(dirname "$0")/../release-notes/$release_version.md
 release_notes="$release_assets/RELEASE_NOTES.md"
 release_ipa="$release_assets/KORemoteAltStore-$release_version-unsigned.ipa"
 release_plugin="$release_assets/remote_turner-$release_version.koplugin.zip"
@@ -21,8 +22,16 @@ if ! printf '%s\n' "$release_repository" | grep -Eq '^[A-Za-z0-9_.-]+/[A-Za-z0-9
     echo "GH_REPO must be owner/repository" >&2
     exit 2
 fi
-sed -e "s/@TAG@/$release_tag/g" -e "s|@REPOSITORY@|$release_repository|g" \
-    "$release_template" > "$release_notes"
+if ! test -f "$release_changes" || ! LC_ALL=C grep -q '[^[:space:]]' "$release_changes"; then
+    echo "Add release notes to release-notes/$release_version.md before publishing" >&2
+    exit 2
+fi
+{
+    cat "$release_changes"
+    printf '\n\n'
+    sed -e "s/@TAG@/$release_tag/g" -e "s|@REPOSITORY@|$release_repository|g" \
+        "$release_template"
+} > "$release_notes"
 
 # Resume an interrupted draft, but never replace an already published release.
 if release_draft=$(gh release view "$release_tag" --json isDraft --jq .isDraft 2>/dev/null); then
@@ -30,9 +39,9 @@ if release_draft=$(gh release view "$release_tag" --json isDraft --jq .isDraft 2
         echo "This release is already published; its assets will not be replaced" >&2
         exit 2
     fi
-    gh release edit "$release_tag" --title "KORemote $release_tag"
+    gh release edit "$release_tag" --title "KORemote $release_tag" --notes-file "$release_notes"
 else
-    gh release create "$release_tag" --verify-tag --draft --generate-notes \
+    gh release create "$release_tag" --verify-tag --draft \
         --title "KORemote $release_tag" --notes-file "$release_notes"
 fi
 
