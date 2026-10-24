@@ -3,6 +3,15 @@ name: Release
 on:
   push:
     tags: ['v*']
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: Existing release tag to build and publish (for example, v0.6.1)
+        required: true
+        type: string
+
+env:
+  RELEASE_TAG: ${{ github.event_name == 'workflow_dispatch' && inputs.tag || github.ref_name }}
 
 permissions:
   contents: read
@@ -12,9 +21,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ env.RELEASE_TAG }}
       - name: Check release version
-        env:
-          RELEASE_TAG: ${{ github.ref_name }}
         run: |
           python3 - <<'PY'
           import os, re
@@ -30,8 +39,6 @@ jobs:
       - run: luacheck remote_turner.koplugin/ tests/
       - run: make test-plugin LUA=lua5.1
       - name: Package plugin
-        env:
-          RELEASE_TAG: ${{ github.ref_name }}
         run: python3 scripts/package-plugin.py "${RELEASE_TAG#v}"
       - uses: actions/upload-artifact@v4
         with:
@@ -43,10 +50,10 @@ jobs:
     runs-on: macos-26
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ env.RELEASE_TAG }}
       - run: xcrun swift test --package-path Packages/RemoteCore
       - name: Build unsigned AltStore Classic IPA
-        env:
-          RELEASE_TAG: ${{ github.ref_name }}
         run: ./scripts/build-altstore-ipa.sh "${RELEASE_TAG#v}"
       - uses: actions/upload-artifact@v4
         with:
@@ -61,6 +68,8 @@ jobs:
       contents: write
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ env.RELEASE_TAG }}
       - uses: actions/download-artifact@v4
         with:
           path: dist
@@ -72,5 +81,4 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
           GH_REPO: ${{ github.repository }}
-          RELEASE_TAG: ${{ github.ref_name }}
         run: sh scripts/publish-release.sh "$RELEASE_TAG"

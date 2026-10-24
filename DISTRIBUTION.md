@@ -163,6 +163,14 @@ git push origin v0.6.1
 
 `git tag v0.6.1` labels the current commit locally; pushing that tag starts the release workflow. Pushing `main` by itself does not publish a release. Follow progress under **Actions → Release**; the finished downloads appear under **Releases**. The Xcode version is `0.6.1`, without the `v` prefix. For the next release, update the versions together, commit them, and use a new matching tag such as `v0.6.2`.
 
+Push release tags individually, rather than pushing all inherited tags with `git push --tags`. GitHub does not trigger tag workflows when more than three tags are pushed together.
+
+If a tag already exists on GitHub but no release workflow started, use **Actions → Release → Run workflow**. Select `main` as the workflow branch and enter the existing tag (for example, `v0.6.1`). All build and publishing jobs check out that tag and use its versions and release notes. This recovery trigger must first be committed and pushed to `main`. From the terminal, the equivalent command is:
+
+```bash
+gh workflow run release.yml --ref main -f tag=v0.6.1
+```
+
 
 No signing certificate or Apple Account credential belongs in the repository or release assets. The IPA is intentionally unsigned; each user signs their own copy.
 
