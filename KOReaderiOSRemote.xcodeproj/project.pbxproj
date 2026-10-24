@@ -130,6 +130,27 @@
 			);
 			target = B10000000000000000000006 /* KORemoteAltStore */;
 		};
+		C42D24A8308D498600E412EE /* Exceptions for "App" folder in "KORemoteWatch" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				AppIcon.icon,
+			);
+			target = A30000000000000000000006 /* KORemoteWatch */;
+		};
+		C42D24A9308D498600E412EE /* Exceptions for "App" folder in "KORemoteLabs" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				AppIcon.icon,
+			);
+			target = A40000000000000000000003 /* KORemoteLabs */;
+		};
+		C42D24AA308D498600E412EE /* Exceptions for "App" folder in "KORemoteWatchFree" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				AppIcon.icon,
+			);
+			target = F30000000000000000000006 /* KORemoteWatchFree */;
+		};
 		F10000000000000000000004 /* Exceptions for "App" folder in "KORemoteFree" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
@@ -161,9 +182,12 @@
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
 				A10000000000000000000013 /* Exceptions for "App" folder in "KORemote" target */,
+				C42D24A8308D498600E412EE /* Exceptions for "App" folder in "KORemoteWatch" target */,
+				C42D24A9308D498600E412EE /* Exceptions for "App" folder in "KORemoteLabs" target */,
 				B10000000000000000000004 /* Exceptions for "App" folder in "KORemoteAltStore" target */,
 				F10000000000000000000004 /* Exceptions for "App" folder in "KORemoteFree" target */,
 				F20000000000000000000004 /* Exceptions for "App" folder in "KORemoteFreeWatch" target */,
+				C42D24AA308D498600E412EE /* Exceptions for "App" folder in "KORemoteWatchFree" target */,
 			);
 			path = App;
 			sourceTree = "<group>";
