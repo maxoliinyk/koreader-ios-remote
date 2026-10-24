@@ -1,4 +1,4 @@
-VERSION ?= 0.5
+VERSION ?= 0.6.1
 DIST_DIR ?= dist
 LUA ?= lua
 .PHONY: all build check-distributions ipa-altstore smoke-simulator test test-plugin koplugin clean

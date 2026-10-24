@@ -49,10 +49,10 @@ Use `KORemoteFree` if Watch provisioning fails. Treat the Watch configuration as
 Build it with:
 
 ```bash
-make ipa-altstore VERSION=0.5
+make ipa-altstore VERSION=0.6.1
 ```
 
-The resulting `dist/KORemoteAltStore-0.5-unsigned.ipa` is not installable by itself. Install [AltStore Classic](https://faq.altstore.io/altstore-classic/your-altstore) first. Save the IPA in Files, then use **My Apps → +** and select it. Follow the official setup for AltStore/AltServer, use your own Apple Account, refresh the app before expiry, and keep app/App-ID slots available. See the official [App ID limits](https://faq.altstore.io/altstore-classic/app-ids). Apple Watch installation is not documented by AltStore Classic, so it is intentionally absent from this IPA.
+The resulting `dist/KORemoteAltStore-0.6.1-unsigned.ipa` is not installable by itself. Install [AltStore Classic](https://faq.altstore.io/altstore-classic/your-altstore) first. Save the IPA in Files, then use **My Apps → +** and select it. Follow the official setup for AltStore/AltServer, use your own Apple Account, refresh the app before expiry, and keep app/App-ID slots available. See the official [App ID limits](https://faq.altstore.io/altstore-classic/app-ids). Apple Watch installation is not documented by AltStore Classic, so it is intentionally absent from this IPA.
 
 Tagged GitHub releases package the plugin, build the unsigned IPA, and publish `SHA256SUMS`. The manual **Build AltStore Classic IPA** workflow also provides an Actions artifact and checksum for testing before a release. A GitHub runner cannot create a transferable Personal Team signature.
 
@@ -147,21 +147,21 @@ For app updates, install over the existing app using the same route, Apple Accou
 ## Creating a release
 
 1. Update every target's `MARKETING_VERSION` and the plugin's `_meta.lua` version together. Keep protocol version 1 unless the wire format changes.
-   Add user-facing changes to `release-notes/<version>.md` (for example, `release-notes/0.5.md` for `v0.5`). Use Added, Fixed, Changed, or Updating sections as needed. The publishing script requires a nonempty file matching the exact tag version and places it above the download/setup instructions. Generated commit summaries are not included. Keep older files as release history; create a new file for each version.
+   Add user-facing changes to `release-notes/<version>.md` (for example, `release-notes/0.6.1.md` for `v0.6.1`). Use Added, Fixed, Changed, or Updating sections as needed. The publishing script requires a nonempty file matching the exact tag version and places it above the download/setup instructions. Generated commit summaries are not included. Keep older files as release history; create a new file for each version.
 2. Run `make test-plugin`, `luacheck remote_turner.koplugin/ tests/`, and `make check-distributions`.
 3. Verify plugin installation, pairing, next/previous/sleep, and wake/reconnect on a real KOReader device. Verify the intended signing route and hardware controls on an iPhone; include a real Watch for Watch releases.
-4. Push a matching `vX.Y` or `vX.Y.Z` tag when ready to publish (currently `v0.5`). The **Release** workflow validates matching versions, runs protocol tests, builds both downloads, and attaches checksums. It uploads the labeled assets to a draft, then publishes only after every upload succeeds; Labs is excluded from the IPA. An interrupted draft can be retried, while published assets are never replaced by this workflow.
+4. Push a matching `vX.Y` or `vX.Y.Z` tag when ready to publish (currently `v0.6.1`). The **Release** workflow validates matching versions, runs protocol tests, builds both downloads, and attaches checksums. It uploads the labeled assets to a draft, then publishes only after every upload succeeds; Labs is excluded from the IPA. An interrupted draft can be retried, while published assets are never replaced by this workflow.
 5. Review the assembled release notes in `dist/RELEASE_NOTES.md` when publishing locally, or on the finished GitHub release. Record the device/OS/KOReader versions actually tested in the version's notes before tagging, and label untested routes clearly. Retrying an interrupted draft refreshes its notes before uploading; published releases remain unchanged.
 
 For the current version, run these commands only when you want to publish:
 
 ```bash
 git push origin main
-git tag v0.5
-git push origin v0.5
+git tag v0.6.1
+git push origin v0.6.1
 ```
 
-`git tag v0.5` labels the current commit locally; pushing that tag starts the release workflow. Pushing `main` by itself does not publish a release. Follow progress under **Actions → Release**; the finished downloads appear under **Releases**. The Xcode version is `0.5`, without the `v` prefix. For the next release, update the versions together, commit them, and use a new matching tag such as `v0.5.1`.
+`git tag v0.6.1` labels the current commit locally; pushing that tag starts the release workflow. Pushing `main` by itself does not publish a release. Follow progress under **Actions → Release**; the finished downloads appear under **Releases**. The Xcode version is `0.6.1`, without the `v` prefix. For the next release, update the versions together, commit them, and use a new matching tag such as `v0.6.2`.
 
 
 No signing certificate or Apple Account credential belongs in the repository or release assets. The IPA is intentionally unsigned; each user signs their own copy.
