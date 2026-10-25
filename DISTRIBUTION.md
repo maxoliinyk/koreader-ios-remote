@@ -174,6 +174,32 @@ gh workflow run release.yml --ref main -f tag=v0.6.1
 
 No signing certificate or Apple Account credential belongs in the repository or release assets. The IPA is intentionally unsigned; each user signs their own copy.
 
+## Bundle identifiers
+
+The project uses one reverse-domain identifier family:
+
+- App: `com.maxoliinyk.koreaderremote`
+- Controls: `com.maxoliinyk.koreaderremote.controls`
+- Watch: `com.maxoliinyk.koreaderremote.watch`
+- Labs: `com.maxoliinyk.koreaderremote.labs`
+- Personal Team app: `com.maxoliinyk.koreaderremote.free`
+- Personal Team + Watch app: `com.maxoliinyk.koreaderremote.freewatch`
+- Entitlement-free Watch: `com.maxoliinyk.koreaderremote.freewatch.watch`
+- AltStore Classic app: `com.maxoliinyk.koreaderremote.altstore`
+- Shared App Group: `group.com.maxoliinyk.koreaderremote`
+
+These identifiers intentionally remain stable across the KORemote rename, preserving pairing data and existing system controls for current users.
+
+## Simulator setup
+
+1. Open `KOReaderiOSRemote.xcodeproj` in Xcode 26 or later.
+2. Select your app scheme and an iPhone simulator running iOS 26 or later, then press **Run**.
+3. Tap **Pair KOReader**, switch to **Manual**, and enter the values shown by **Tools → Remote Turner → Show manual pairing details**. The simulator cannot scan a pairing QR code.
+
+Let Xcode sign the simulator build normally. `CODE_SIGNING_ALLOWED=NO` is only for compile checks; an unsigned simulator build cannot save the pairing secret to Keychain.
+
+If Xcode has an old paused process, stop it and run your selected app scheme again rather than using the SwiftUI Preview button. If needed, remove the app and reinstall; this may require pairing again.
+
 ## Automated verification
 
 Run the whole compile and structure matrix:

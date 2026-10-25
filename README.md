@@ -10,17 +10,13 @@ The plugin is developed and tested on a jailbroken Kindle. Other KOReader device
 - [Install the KOReader plugin](#install-the-koreader-plugin)
 - [Run the app](#run-the-app)
   - [Choose a build](#choose-a-build)
-  - [Third-party certificates and signing services](#third-party-certificates-and-signing-services)
   - [Install an IPA with AltStore Classic](#install-an-ipa-with-altstore-classic)
   - [Install from source](#install-from-source)
-  - [Simulator](#simulator)
-  - [Physical iPhone](#physical-iphone)
 - [Pair and use it](#pair-and-use-it)
 - [Use it while the iPhone is locked](#use-it-while-the-iphone-is-locked)
 - [Apple Watch](#apple-watch)
-- [Bundle identifiers](#bundle-identifiers)
 - [Troubleshooting](#troubleshooting)
-- [Development checks](#development-checks)
+- [Development](#development)
 - [License](#license)
 
 ## Requirements
@@ -30,19 +26,12 @@ The plugin is developed and tested on a jailbroken Kindle. Other KOReader device
 - For source installation: a Mac with Xcode 26 or later
 - Both devices on the same Wi-Fi network
 
-The simulator is useful for interface testing but cannot scan a pairing QR code. Use manual pairing there.
-
 ## Install the KOReader plugin
 
-Open [Releases](https://github.com/maxoliinyk/koreader-ios-remote/releases) and download `remote_turner-<version>.koplugin.zip` from **Assets**. This is the plugin download; the IPA is the iPhone app. No Xcode is needed to install the plugin.
-
-If no release is available yet, use GitHub's **Code → Download ZIP**, extract it, and copy the `remote_turner.koplugin` folder from inside the source archive. Or build the plugin archive from a checkout:
-
-```bash
-make koplugin VERSION=dev
-```
-
-This creates `dist/remote_turner-dev.koplugin.zip`. Extract it and copy the enclosed `remote_turner.koplugin` directory into KOReader's `plugins` directory. A common installation looks like this:
+1. Open [Releases](https://github.com/maxoliinyk/koreader-ios-remote/releases) and download `remote_turner-<version>.koplugin.zip` from **Assets**. The IPA is a separate download for the iPhone app.
+2. Extract the ZIP and copy `remote_turner.koplugin` into KOReader's `plugins` directory.
+3. Check the folder layout below: do not leave an extra directory level around `remote_turner.koplugin`.
+4. Restart KOReader completely, open a book, then choose **Tools → Remote Turner** from the top menu. Confirm it is listening on port `9090`.
 
 ```text
 koreader/
@@ -53,15 +42,22 @@ koreader/
         └── main.lua
 ```
 
-Do not leave an extra directory level around `remote_turner.koplugin`. Restart KOReader completely after copying the plugin. The exact KOReader directory depends on the device; `koreader/plugins/` is the usual path and the layout used by the [KOReader community plugin collection](https://github.com/koreader/contrib).
+The KOReader directory depends on your device; `koreader/plugins/` is the usual path. The Remote Turner menu provides QR/manual pairing details, listener start/stop, port settings, and secret regeneration.
 
-Open a book, open KOReader's top menu, then choose **Tools → Remote Turner**. The menu should show that it is listening on port `9090`. From there you can:
+<details>
+<summary>Install without a release</summary>
 
-- show the pairing QR code;
-- show the address, port, and secret as text;
-- stop or start the listener;
-- change the port;
-- generate a new pairing secret.
+Use GitHub's **Code → Download ZIP**, extract it, and copy the `remote_turner.koplugin` folder from the source archive into KOReader's `plugins` directory. Then follow steps 3–4 above.
+
+Or build the plugin archive from a checkout:
+
+```bash
+make koplugin VERSION=dev
+```
+
+Extract `dist/remote_turner-dev.koplugin.zip` and follow steps 2–4 above.
+
+</details>
 
 The listener runs only while KOReader is active. It closes during suspend or exit and starts again when KOReader resumes. Keep Wi-Fi enabled on the KOReader device. The plugin does not wake a suspended device; wake it using its hardware button before reconnecting.
 
@@ -69,49 +65,18 @@ To update, stop Remote Turner, exit KOReader, replace the plugin folder, and res
 
 ## Run the app
 
-Open `KOReaderiOSRemote.xcodeproj` in Xcode 26 or later. The normal builds share the same remote interface and protocol; the differences are bundled components and signing requirements.
+Choose an installation route: [install an IPA with AltStore Classic](#install-an-ipa-with-altstore-classic), or [build from source with Xcode](#install-from-source).
 
 ### Choose a build
 
-| Feature                                      | Full  | Free  |  FreeWatch   |  AltStore   |
-| :------------------------------------------- | :---: | :---: | :----------: | :---------: |
-| QR/manual pairing · Next/Previous/Sleep      |   ✓   |   ✓   |      ✓       |      ✓      |
-| Locked-screen volume & media controls        |   ✓   |   ✓   |      ✓       |      ✓      |
-| Siri · Shortcuts · Action Button shortcut    |   ✓   |   ✓   |      ✓       |      ✓      |
-| Native Lock Screen / Control Center controls |   ✓   |   —   |      —       |      —      |
-| Apple Watch companion                        |   ✓   |   —   | Experimental |      —      |
-| App Groups & shared Keychain                 |   ✓   |   —   |      —       |      —      |
-| Installation route                           | Xcode | Xcode |    Xcode     | Re-sign IPA |
+Every build includes QR/manual pairing, Previous/Next/Sleep, Siri and Shortcuts (including Action Button shortcuts), and opt-in locked-screen volume/media controls. Pairing secrets are stored in Keychain.
 
-**✓ Included · — Not bundled.** Volume/media capture is opt-in and uses background audio; real locked-screen delivery still depends on iOS and the audio session. Every build keeps the pairing secret in Keychain. “Shared Keychain” means sharing with another bundle, not stronger secret storage.
+- **KORemoteFree** — iPhone app for a free Apple Account; install with Xcode.
+- **KORemoteAltStore** — the same app features as Free, packaged as an unsigned IPA for AltStore Classic or a compatible signing service.
+- **KORemoteFull** — adds native Lock Screen / Control Center controls and Apple Watch; requires a team that can provision the app, extension, Watch, and shared capabilities.
+- **KORemoteFreeWatch** — Free plus an experimental Apple Watch companion; install with Xcode. Free-team Watch installation is unverified.
 
-- **KORemoteFull**: includes Controls and Watch; needs provisioning for the app, extension, Watch, and their sharing capabilities.
-- **KORemoteFree**: app-only build for a free Personal Team; no shared capabilities or embedded products to provision.
-- **KORemoteFreeWatch**: Free plus the Watch companion, paired through WatchConnectivity. Free-team Watch installation remains experimental; the Watch interface is the same as Full.
-- **KORemoteAltStore**: the same app-only features as Free, packaged as an unsigned IPA. It is not locked to AltStore: compatible third-party signing services can also re-sign it. Service-specific installation is unverified.
-
-Full does **not** disable locked-screen volume or media controls. Free and AltStore retain these features; they omit native Controls and Watch to simplify signing. Siri/Shortcuts remain available without the Controls extension.
-
-<details>
-<summary>Other Xcode schemes</summary>
-
-- **KORemote** builds the same full app target as **KORemoteFull**; it is not another edition.
-- **KORemoteControls** builds the Controls extension with the full app as its launch host.
-- **KORemoteWatch** launches the full build's Watch companion.
-- **KORemoteWatchFree** launches the FreeWatch companion; use **KORemoteFreeWatch** for its iPhone app.
-- **KORemoteLabs** is a separate research app with private volume/media experiments. It uses pairing saved by Full and is excluded from public release downloads.
-
-Run uses Debug; Archive uses Release. Debug Watch builds additionally expose Gesture Lab; it is absent from Release.
-
-</details>
-
-### Third-party certificates and signing services
-
-**A paid signing service may install Full, but buying a certificate alone does not guarantee all Full features.** Full needs correctly provisioned App Groups, shared Keychain access, its Controls extension, and the embedded Watch app. An iPhone registration alone does not provision the Watch. These are signing requirements, not a paywall in KORemote.
-
-For an app-only install, the existing `KORemoteAltStore-<version>-unsigned.ipa` is the simpler candidate: upload it to a compatible signing service instead of importing it into AltStore. It retains pairing, page actions, volume/media modes, and Shortcuts. Full and Watch support must be confirmed with the service; no Signulous installation has been verified for this project.
-
-See [the scheme and signing review](DISTRIBUTION.md#third-party-signing) for exactly what a provider must support. Signature expiry depends on the signing account/profile, not the scheme name.
+For third-party signing, use the app-only AltStore IPA unless your provider confirms Full and Watch support. Buying a certificate alone does not guarantee those features; service-specific installation is unverified. See [signing requirements](DISTRIBUTION.md#third-party-signing) and [other Xcode schemes](DISTRIBUTION.md#scheme-names-and-build-behavior).
 
 ### Install an IPA with AltStore Classic
 
@@ -120,62 +85,30 @@ See [the scheme and signing review](DISTRIBUTION.md#third-party-signing) for exa
 3. In AltStore Classic, open **My Apps → +** and select the IPA. AltStore signs it using your Apple Account.
 4. Open KORemote, pair KOReader, and allow Local Network access. Keep the app refreshed in AltStore before its signature expires.
 
-This route includes the iPhone app and Shortcuts, volume, and media controls. It does not include the Apple Watch app or Control Center extension. For details, checksums, and building an IPA yourself, see [DISTRIBUTION.md](DISTRIBUTION.md).
+For checksums, updates, and building an IPA yourself, see [DISTRIBUTION.md](DISTRIBUTION.md#downloads-and-updates).
 
 ### Install from source
 
 You need a Mac, an iPhone, an Apple Account, and [Xcode 26](https://apps.apple.com/app/xcode/id497799835) or later.
 
-Clone the project:
-
 ```bash
 git clone https://github.com/maxoliinyk/koreader-ios-remote.git
-```
-
-Enter the project folder:
-
-```bash
 cd koreader-ios-remote
-```
-
-Open the project in Xcode:
-
-```bash
 open KOReaderiOSRemote.xcodeproj
 ```
 
-Then:
-
 1. Connect and unlock the iPhone. Tap **Trust** if asked.
 2. In Xcode, sign in under **Xcode → Settings → Accounts**.
-3. Select **KORemoteFree**, select the iPhone, and choose your Personal Team under **Signing & Capabilities**.
+3. Select the **KORemoteFree** scheme and your iPhone. Under **Signing & Capabilities**, choose your Personal Team. If Xcode says the bundle identifier is unavailable, change it to a unique one.
 4. Press **Run**. Enable Developer Mode on the iPhone if asked.
 
-The full target uses App Groups and shared Keychain access for its Controls and Watch app. `KORemoteFree` removes those capabilities and stores pairing data inside the app, so each user can attempt signing it with a free Personal Team.
+For Full or FreeWatch, choose the corresponding scheme and follow the [signing and target configuration](DISTRIBUTION.md#target-matrix).
 
 With a free Personal Team, supported apps expire after 7 days. To sign one again, reconnect the iPhone, reopen the project, and press **Run**. You do not need to clone it again. See Apple's [free-account limits](https://developer.apple.com/support/compare-memberships/).
 
-### Simulator
-
-1. Select an iPhone simulator running iOS 26 or later.
-2. Press Run.
-3. Tap **Pair KOReader**, switch to **Manual**, and enter the values shown by **Tools → Remote Turner → Show manual pairing details**.
-
-Let Xcode sign the simulator build normally. `CODE_SIGNING_ALLOWED=NO` is only for compile checks; an unsigned simulator build cannot save the pairing secret to Keychain.
-
-### Physical iPhone
-
-1. Connect and unlock the iPhone. Enable Developer Mode if Xcode requests it.
-2. Select `KORemoteFree` for a free Apple Account, open **Signing & Capabilities**, and choose your Personal Team.
-3. For the full build, use `KORemoteFull` and select a team that supports App Groups for `KORemote`, `KORemoteControls`, and `KORemoteWatch`. Labs is a separate experiment.
-4. Select the iPhone and press Run.
-5. Accept Camera access when scanning and Local Network access when the app first tests KOReader.
-
-If Xcode still has an old paused process, stop it, remove KORemote from the device or simulator, and run again. Launch the `KORemote` scheme rather than the SwiftUI Preview button.
-
 ## Pair and use it
 
-On a physical iPhone, tap **Pair KOReader** and scan **Tools → Remote Turner → Show pairing QR code**. Manual entry is always available.
+On a physical iPhone, tap **Pair KOReader** and scan **Tools → Remote Turner → Show pairing QR code**. Allow Camera access when scanning and Local Network access when prompted. You can also choose **Manual** and enter the address, port, and secret from **Show manual pairing details**.
 
 After pairing, the app tests the connection. A successful test shows **KOReader is ready**. The Remote tab provides Previous, Next, and Sleep controls. Settings can test the connection, rescan, or forget the device.
 
@@ -185,8 +118,6 @@ For the first test:
 2. Confirm **Remote Turner** says it is listening.
 3. Keep the KOReader device awake and on the same Wi-Fi as the iPhone.
 4. Tap **Test Connection**, then **Next**.
-
-Some guest and mesh networks block communication between clients. If pairing succeeds but the connection times out, try the main Wi-Fi network and confirm client isolation is disabled.
 
 ## Use it while the iPhone is locked
 
@@ -199,40 +130,24 @@ The full build includes native **Next Page** and **Previous Page** controls for 
 - Volume buttons: open **Settings → Controls** and enable **Use Volume Buttons**. Volume Up sends Next; Volume Down sends Previous. The app keeps system volume near 50% so both directions remain available.
 - Now Playing: All builds can enable **Capture Media Controls** for the Lock Screen or connected media accessories.
 
-When volume or media controls are enabled, all iPhone builds retain an effectively inaudible background-audio session for locked-screen capture; it can interrupt other audio and use more battery. KOReader still needs to be active and reachable on the same network.
+When volume or media controls are enabled, all iPhone builds retain an effectively inaudible background-audio session for locked-screen capture; it can interrupt other audio and use more battery. Locked-screen delivery depends on iOS and the audio session. KOReader still needs to be active and reachable on the same network.
 
 ## Apple Watch
 
-Pair KOReader in the iPhone app first. The full build includes `KORemoteWatch`. `KORemoteFreeWatch` includes an entitlement-free experimental companion that receives pairing through WatchConnectivity. AltStore Classic and the app-only `KORemoteFree` route do not include Watch. The watch tries KOReader directly over Wi-Fi and falls back through the paired iPhone when a direct connection cannot be established. It does not automatically resend after a timeout or interrupted response, because the first action may already have reached KOReader.
+Install a build with Watch support, then pair KOReader in the iPhone app first. Pairing transfers to the Watch automatically. The Watch tries KOReader directly over Wi-Fi and falls back through the paired iPhone when a direct connection cannot be established. It does not automatically resend after a timeout or interrupted response, because the first action may already have reached KOReader.
 
-The Next button is the watch scene's primary hand-gesture action, so supported watches can use Double Tap while the app is visible. Debug builds also contain Gesture Lab, an experimental Core Motion impulse detector that requires physical-watch calibration.
-
-## Bundle identifiers
-
-The project uses one reverse-domain identifier family:
-
-- App: `com.maxoliinyk.koreaderremote`
-- Controls: `com.maxoliinyk.koreaderremote.controls`
-- Watch: `com.maxoliinyk.koreaderremote.watch`
-- Labs: `com.maxoliinyk.koreaderremote.labs`
-- Personal Team app: `com.maxoliinyk.koreaderremote.free`
-- Personal Team + Watch app: `com.maxoliinyk.koreaderremote.freewatch`
-- Entitlement-free Watch: `com.maxoliinyk.koreaderremote.freewatch.watch`
-- AltStore Classic app: `com.maxoliinyk.koreaderremote.altstore`
-- Shared App Group: `group.com.maxoliinyk.koreaderremote`
-
-These identifiers intentionally remain stable across the KORemote rename, preserving pairing data and existing system controls for current users.
+On supported watches, Double Tap activates Next while the app is visible.
 
 ## Troubleshooting
 
 - **Scanner unavailable:** expected in the simulator; use Manual pairing.
 - **Connection refused:** start Remote Turner in KOReader and check that the port matches.
-- **Connection timed out:** wake the KOReader device, enable Wi-Fi, and confirm both devices are on the same LAN.
+- **Connection timed out:** wake the KOReader device, enable Wi-Fi, and confirm both devices are on the same LAN. Guest or mesh networks may block communication between devices; try the main network and check client isolation.
 - **Authentication failed:** pair again or copy the current secret exactly. Regenerating the secret invalidates older pairings.
 - **No Remote Turner menu:** verify the final path ends in `koreader/plugins/remote_turner.koplugin/main.lua`, then restart KOReader.
 - **Keychain error `-34018` in the simulator:** rebuild without `CODE_SIGNING_ALLOWED=NO`.
 
-## Development checks
+## Development
 
 ```bash
 xcrun swift test --package-path Packages/RemoteCore
@@ -242,7 +157,12 @@ make test-plugin
 make check-distributions
 ```
 
-The request format and authentication details are documented in [CONNECTION.md](CONNECTION.md). Install routes and their exact losses are in [DISTRIBUTION.md](DISTRIBUTION.md). Plugin checks need Lua (5.1 on KOReader), Python 3, and optionally `luacheck`; the app has no third-party package dependencies.
+Plugin checks need Lua (5.1 on KOReader), Python 3, and optionally `luacheck`; the app has no third-party package dependencies.
+
+- [Protocol and authentication](CONNECTION.md)
+- [Build configurations and signing](DISTRIBUTION.md)
+- [Simulator setup](DISTRIBUTION.md#simulator-setup)
+- [Bundle identifiers](DISTRIBUTION.md#bundle-identifiers)
 
 Unsupported experiments stay isolated in the Labs target; see [LABS.md](LABS.md).
 
