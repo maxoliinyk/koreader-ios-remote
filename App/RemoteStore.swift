@@ -25,6 +25,7 @@ final class RemoteStore {
     private(set) var configuration: PairingConfiguration?
     private(set) var activity: Activity = .idle
     var isPairingPresented = false
+    let airPods = AirPodsGestureStore()
 
     private var pairingRevision = UUID()
     private let client: KindleClient

@@ -10,18 +10,33 @@ import SwiftUI
 struct RootView: View {
     @Environment(RemoteStore.self) private var store
     @Environment(SystemControlsStore.self) private var systemControls
+    @Environment(\.scenePhase) private var scenePhase
+    @State private var selectedTab = 0
+
+    private var allowsHeadGestures: Bool {
+        scenePhase == .active && selectedTab == 0 && store.configuration != nil && !store.isPairingPresented
+    }
 
     var body: some View {
-        TabView {
-            Tab("Remote", systemImage: "book.pages") {
+        TabView(selection: $selectedTab) {
+            Tab("Remote", systemImage: "book.pages", value: 0) {
                 NavigationStack {
                     RemoteView()
                 }
             }
 
-            Tab("Settings", systemImage: "gear") {
+            Tab("Settings", systemImage: "gear", value: 1) {
                 NavigationStack {
                     SettingsView()
+                }
+            }
+        }
+        .onChange(of: allowsHeadGestures, initial: true) { [store] _, allowed in
+            store.airPods.setListeningAllowed(allowed) { [weak store] action in
+                Task { @MainActor [weak store] in
+                    guard let store, store.airPods.isRunning, store.airPods.isEnabled,
+                          store.configuration != nil, !store.isPairingPresented else { return }
+                    await store.send(action)
                 }
             }
         }

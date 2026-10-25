@@ -16,6 +16,7 @@ __pycache__/
 *.pyc
 
 # Local editors and tooling
+/plans/
 .idea/
 /node_modules/
 /package-lock.json

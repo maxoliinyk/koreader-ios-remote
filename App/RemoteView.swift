@@ -42,6 +42,10 @@ struct RemoteView: View {
         } message: {
             Text("This suspends the paired device.")
         }
+        .onChange(of: confirmsSleep) { _, isPresented in
+            store.airPods.isConfirmationPresented = isPresented
+        }
+        .onDisappear { store.airPods.isConfirmationPresented = false }
     }
 
     private var unpairedContent: some View {
@@ -63,6 +67,10 @@ struct RemoteView: View {
     private func pairedContent(endpoint: KindleEndpoint) -> some View {
         VStack(spacing: 12) {
             DeviceStatusHeader(endpoint: endpoint)
+
+            if store.airPods.isEnabled {
+                AirPodsGestureStatusView(airPods: store.airPods)
+            }
 
             GeometryReader { geometry in
                 pageControls(in: geometry.size)
@@ -144,6 +152,31 @@ struct RemoteView: View {
     private func pageButton(_ action: RemoteAction) -> some View {
         RemotePageButton(action: action, isSending: store.isSending) {
             Task { await store.send(action) }
+        }
+    }
+}
+
+private struct AirPodsGestureStatusView: View {
+    let airPods: AirPodsGestureStore
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 4) {
+            Label(airPods.status, systemImage: "airpodspro")
+                .font(.footnote)
+                .foregroundStyle(.secondary)
+            if let lastGesture = airPods.lastGesture {
+                Text(lastGesture)
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+            }
+            HStack {
+                Button(airPods.isRunning ? "Recalibrate" : "Retry") {
+                    airPods.isRunning ? airPods.recalibrate() : airPods.retry()
+                }
+                Spacer()
+                Button("Stop") { airPods.isEnabled = false }
+            }
+            .font(.footnote)
         }
     }
 }

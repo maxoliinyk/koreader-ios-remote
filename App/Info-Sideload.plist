@@ -20,6 +20,8 @@
     </dict>
     <key>NSCameraUsageDescription</key>
     <string>Scan the pairing code displayed by the KOReader plugin.</string>
+    <key>NSMotionUsageDescription</key>
+    <string>Detect AirPods head gestures to turn pages in KOReader.</string>
     <key>NSLocalNetworkUsageDescription</key>
     <string>Send page actions directly to a KOReader device on your local network.</string>
     <key>UIApplicationShortcutItems</key>

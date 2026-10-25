@@ -20,6 +20,7 @@ struct SettingsView: View {
 
     var body: some View {
         @Bindable var systemControls = systemControls
+        @Bindable var airPods = store.airPods
         Form {
             Section("Remote") {
                 Picker("Button Layout", selection: $remoteLayout) {
@@ -89,6 +90,22 @@ struct SettingsView: View {
                 if systemControls.usesVolumeButtons || systemControls.capturesMediaControls {
                     Text("May interrupt other audio.")
                 }
+            }
+
+            Section {
+                Toggle("AirPods Head Gestures", isOn: $airPods.isEnabled)
+                if airPods.isEnabled {
+                    LabeledContent("Gesture Size", value: "\(Int(airPods.thresholdDegrees))°")
+                    Slider(value: $airPods.thresholdDegrees, in: 10...30, step: 1) {
+                        Text("Gesture Size")
+                    }
+                    Text(airPods.status)
+                        .foregroundStyle(.secondary)
+                }
+            } header: {
+                Text("Experimental")
+            } footer: {
+                Text("With compatible AirPods connected, open Remote and hold your head still to calibrate. Nod and return to center for next; shake left and right, then center, for previous. Works while Remote is visible and the app is active. Smaller gestures are easier to trigger accidentally.")
             }
 
             Section {
