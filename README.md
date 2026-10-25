@@ -4,6 +4,25 @@ A native iPhone and Apple Watch remote for KOReader. It sends authenticated page
 
 The plugin is developed and tested on a jailbroken Kindle. Other KOReader devices should work if they support external plugins, can accept an inbound TCP connection, and expose the same KOReader page and suspend events. Automatic firewall configuration is currently Kindle-specific.
 
+## Contents
+
+- [Requirements](#requirements)
+- [Install the KOReader plugin](#install-the-koreader-plugin)
+- [Run the app](#run-the-app)
+  - [Choose a build](#choose-a-build)
+  - [Third-party certificates and signing services](#third-party-certificates-and-signing-services)
+  - [Install an IPA with AltStore Classic](#install-an-ipa-with-altstore-classic)
+  - [Install from source](#install-from-source)
+  - [Simulator](#simulator)
+  - [Physical iPhone](#physical-iphone)
+- [Pair and use it](#pair-and-use-it)
+- [Use it while the iPhone is locked](#use-it-while-the-iphone-is-locked)
+- [Apple Watch](#apple-watch)
+- [Bundle identifiers](#bundle-identifiers)
+- [Troubleshooting](#troubleshooting)
+- [Development checks](#development-checks)
+- [License](#license)
+
 ## Requirements
 
 - A network-connected device running KOReader
